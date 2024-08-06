@@ -1,5 +1,5 @@
 # Hongos Homongos
-A Dark Fantasy Per Turn Strategy 2D Sidescroller RPG depicting Fungus Humongus in a battle against ferocious foes
+A Dark Fantasy turn based Strategy 2D Sidescroller RPG depicting Fungus Humongus in a battle against ferocious foes
 
 # Unity
 Version: 2022.3.40f1
