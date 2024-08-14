@@ -8,7 +8,7 @@ A turn based Strategy 2D Sidescroller RPG depicting Fungus Humongus in a battle 
 Version: 2022.3.40f1
 
 # Integrantes
-Juan Bordachar - Franco Rivas - Luciano Pueyo
+Ariel Irala - Alesio Rojas - Luciano Pueyo
 
 ##
 UADE - CABA - Argentina - 2do Cuatrimestre 2024
