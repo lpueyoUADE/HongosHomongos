@@ -27,7 +27,7 @@ public class MainMenu : MonoBehaviour
 
     public void PlayButton()
     {
-        StartCoroutine(PlayClickSoundAndChangeScene("Level 1"));
+        StartCoroutine(PlayClickSoundAndChangeScene("TestScene"));
     }
 
     public void SettingsButton()

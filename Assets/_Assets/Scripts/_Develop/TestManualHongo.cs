@@ -38,34 +38,36 @@ public class TestManualHongo : MonoBehaviour
     {
         charge = isCharging;
 
-        if (!isCharging && triggerProjectile)
+        if (!PauseManager.Instance.IsGamePaused)
         {
-            Debug.Log("Spawn projectile");
-            lastProjectileForce = fillBar.fillAmount;
+            if (!isCharging && triggerProjectile)
+            {
+                Debug.Log("Spawn projectile");
+                lastProjectileForce = fillBar.fillAmount;
 
-            var spawnedProjectile = Instantiate(projectile, weapon.transform.position, new Quaternion());
-            SphereCollider collider = spawnedProjectile.GetComponent<SphereCollider>();
-            Physics.IgnoreCollision(_baseCollider, collider, true);
+                var spawnedProjectile = Instantiate(projectile, weapon.transform.position, new Quaternion());
+                SphereCollider collider = spawnedProjectile.GetComponent<SphereCollider>();
+                Physics.IgnoreCollision(_baseCollider, collider, true);
 
-            IProjectile proData = spawnedProjectile.GetComponent<IProjectile>();
-            proData?.UpdateDirection(pOut.transform.right);
-            proData?.UpdateSpeedMultiplier(lastProjectileForce);
-            
-            triggerProjectile = false;
-            chargeValue = 0;
+                IProjectile proData = spawnedProjectile.GetComponent<IProjectile>();
+                proData?.UpdateDirection(pOut.transform.right);
+                proData?.UpdateSpeedMultiplier(lastProjectileForce);
+
+                triggerProjectile = false;
+                chargeValue = 0;
+            }
+
+            if (isCharging)
+            {
+                if (!triggerProjectile) startTime = Time.time;
+
+                triggerProjectile = true;
+                chargeValue = (Time.time - startTime) * 2;
+                fillBar.fillAmount = Mathf.PingPong(chargeValue, 1);
+            }
+
+            else fillBar.fillAmount = 0;
         }
-
-
-        if (isCharging)
-        {
-            if (!triggerProjectile) startTime = Time.time;
-
-            triggerProjectile = true;
-            chargeValue = (Time.time - startTime) * 2;
-            fillBar.fillAmount = Mathf.PingPong(chargeValue, 1);
-        }
-
-        else fillBar.fillAmount = 0;
     }
 
     private void FixedUpdate()
