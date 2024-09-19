@@ -196,6 +196,8 @@ MonoBehaviour:
   - {fileID: 1142994417}
   - {fileID: 1003503942}
   - {fileID: 360739227}
+  _playerAliveCharacters: []
+  _aiAliveCharacters: []
 --- !u!1001 &360739226
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -255,6 +257,10 @@ PrefabInstance:
     - target: {fileID: 7874213218477846514, guid: d87c81214fae857418ff945c4d503c58, type: 3}
       propertyPath: m_Constraints
       value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 8640528283629015980, guid: d87c81214fae857418ff945c4d503c58, type: 3}
+      propertyPath: _maxLife
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1620,6 +1626,10 @@ PrefabInstance:
     - target: {fileID: 7874213218477846514, guid: d87c81214fae857418ff945c4d503c58, type: 3}
       propertyPath: m_Constraints
       value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 8640528283629015980, guid: d87c81214fae857418ff945c4d503c58, type: 3}
+      propertyPath: _maxLife
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
