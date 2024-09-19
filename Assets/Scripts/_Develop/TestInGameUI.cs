@@ -10,8 +10,10 @@ public class TestInGameUI : MonoBehaviour
 
     [Header("Timer")]
     public TextMeshProUGUI _turnTimeText;
+    public Animator _turnTimeAnimation;
     public AudioClip _timeClickSound;
     public AudioClip _timeEndSound;
+    public string _waitingText;
 
     [Header("Charging bar")]
     public Image _chargingWeaponBar;
@@ -26,6 +28,7 @@ public class TestInGameUI : MonoBehaviour
 
         InGameUIEvents.OnUpdateTurnTime += UpdateTurnTime;
         InGameUIEvents.OnChargingWeaponBar += ChargingBar;
+        InGameUIEvents.OnTimerWait += WaitTimer;
     }
 
     private void Start()
@@ -37,6 +40,7 @@ public class TestInGameUI : MonoBehaviour
     {
         InGameUIEvents.OnUpdateTurnTime -= UpdateTurnTime;
         InGameUIEvents.OnChargingWeaponBar -= ChargingBar;
+        InGameUIEvents.OnTimerWait -= WaitTimer;
     }
 
     private void Update()
@@ -60,6 +64,12 @@ public class TestInGameUI : MonoBehaviour
         }
     }
 
+    private void WaitTimer()
+    {
+        _turnTimeText.text = _waitingText;
+        _turnTimeAnimation.SetTrigger("TimeWait");
+    }
+
     private void UpdateTurnTime(string newTime)
     {
         _turnTimeText.text = newTime;
@@ -67,13 +77,13 @@ public class TestInGameUI : MonoBehaviour
         if (newTime == "0")
         {
             _audio.PlayOneShot(_timeEndSound);
-            _turnTimeText.color = Color.red;
+            _turnTimeAnimation.SetTrigger("TimeOut");
         }
 
         else
         {
             _audio.PlayOneShot(_timeClickSound);
-            _turnTimeText.color = Color.green;
+            _turnTimeAnimation.SetTrigger("TimePassing");
         }
     }
 

@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BaseCharacterControl : MonoBehaviour, IControlleable
 {
+    public float _aimSpeed = 2;
+
     private BaseCharacter _character;
     public BaseCharacter Character => _character;
 

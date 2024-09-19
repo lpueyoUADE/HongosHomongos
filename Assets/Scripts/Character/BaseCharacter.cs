@@ -58,6 +58,8 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     {
         _inControl = isInControl;
         _controlsScript.enabled = isInControl;
+
+        if (!isInControl) InGameUIEvents.OnChargingWeaponBar?.Invoke(false);
     }
 
     virtual public void Move(Vector3 direction, float speed, ForceMode mode = ForceMode.Impulse)

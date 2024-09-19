@@ -17,7 +17,6 @@ public class BasePlayerControls : BaseCharacterControl
     private void Update()
     {
         if (!Character.CharacterInControl) return;
-        Character.Aim(InputDir);
 
         // Running out of time while aiming
         if (!Character.CharacterInControl && _isChargingWeapon)
@@ -42,6 +41,7 @@ public class BasePlayerControls : BaseCharacterControl
     private void FixedUpdate()
     {
         if (!Character.CharacterInControl) return;
+        Character.Aim(InputDir * _aimSpeed);
         Character.Move(new Vector3(InputDir.x, 0));
     }
 }

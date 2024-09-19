@@ -291,6 +291,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 844c6d45a5f171341ac2f6c35b80b914, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _aimSpeed: 2
 --- !u!82 &20924462
 AudioSource:
   m_ObjectHideFlags: 0
@@ -968,6 +969,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 844c6d45a5f171341ac2f6c35b80b914, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _aimSpeed: 2
 --- !u!82 &691664208
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1360,8 +1362,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _turnTimeText: {fileID: 947514790}
+  _turnTimeAnimation: {fileID: 947514792}
   _timeClickSound: {fileID: 8300000, guid: ba6114f48112a634598beee52a28b875, type: 3}
   _timeEndSound: {fileID: 8300000, guid: 85a9ce9a86d8dab46bdc23826ef13384, type: 3}
+  _waitingText: "\u05F2"
   _chargingWeaponBar: {fileID: 1845925448}
   _chargeWeaponBarValue: 0
   _chargeWeaponBar: 0
@@ -1647,6 +1651,7 @@ GameObject:
   - component: {fileID: 947514789}
   - component: {fileID: 947514791}
   - component: {fileID: 947514790}
+  - component: {fileID: 947514792}
   m_Layer: 5
   m_Name: TurnTime
   m_TagString: Untagged
@@ -1770,6 +1775,27 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 947514788}
   m_CullTransparentMesh: 1
+--- !u!95 &947514792
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 947514788}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 14405583cea86554f9203ef0d8693659, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &952462490
 GameObject:
   m_ObjectHideFlags: 0
@@ -2113,6 +2139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d754e1bdb67eec48a8d40ce97fef520, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _aimSpeed: 2
 --- !u!82 &1050026376
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2410,6 +2437,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d754e1bdb67eec48a8d40ce97fef520, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _aimSpeed: 2
 --- !u!82 &1126757221
 AudioSource:
   m_ObjectHideFlags: 0
@@ -2800,6 +2828,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 844c6d45a5f171341ac2f6c35b80b914, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _aimSpeed: 2
 --- !u!82 &1433704209
 AudioSource:
   m_ObjectHideFlags: 0
@@ -3477,6 +3506,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9d754e1bdb67eec48a8d40ce97fef520, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _aimSpeed: 2
 --- !u!82 &1940359979
 AudioSource:
   m_ObjectHideFlags: 0

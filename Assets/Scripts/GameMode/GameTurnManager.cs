@@ -107,6 +107,7 @@ public class GameTurnManager : MonoBehaviour
     private void EndTurn(IProjectile spawnedProjectile)
     {
         CameraEvents.OnCameraUpdateObjectToFollow(spawnedProjectile.Projectile);
+        InGameUIEvents.OnTimerWait?.Invoke();
         StopTimers();
         EndTurnTimeOut();
     }

@@ -4,6 +4,7 @@ public class InGameUIEvents
 {
     private static float _chargeBarIntensity;
 
+    public static Action OnTimerWait;
     public static Action<string> OnUpdateTurnTime;
     public static Action<bool> OnChargingWeaponBar;
 
