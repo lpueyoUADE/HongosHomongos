@@ -5,6 +5,7 @@ using UnityEngine;
 public class BaseProjectile : MonoBehaviour, IProjectile
 {
     [Header("Projectile settings")]
+    public float _baseDamage = 2.2f;
     public float _baseSpeed = 0.25f;
     public float _baseLife = 5;
     public AudioClip _destroyedSound;
@@ -38,8 +39,16 @@ public class BaseProjectile : MonoBehaviour, IProjectile
 
     private void OnCollisionEnter(Collision collision)
     {
+        collision.gameObject.TryGetComponent(out IDamageable character);
+        if (character != null) DamageCharacter(character);
+
         OnDeath();
         Destroy(gameObject);
+    }
+
+    private void DamageCharacter(IDamageable objetive)
+    {
+        objetive.AnyDamage(_baseDamage);
     }
 
     public void OnDeath()

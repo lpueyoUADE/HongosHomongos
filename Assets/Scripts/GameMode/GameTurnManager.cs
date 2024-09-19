@@ -11,15 +11,10 @@ public class GameTurnManager : MonoBehaviour
     public float _maxDelayAfterProjectileDeath = 4;
     public Vector3 _cameraOffset = Vector3.zero;
 
-    [Header("Playable characters list")]
-    public List<BaseCharacter> _characters = new List<BaseCharacter>();
-    public BaseCharacter _currentCharacterTurn;
-
-    [Header("Other values")]
-    public int _roundedMaxTurnTime;
-
     [Header("Status")]
-    public bool _start = false;
+    private List<BaseCharacter> _characters = new List<BaseCharacter>();
+    public int _roundedMaxTurnTime;
+    public BaseCharacter _currentCharacterTurn;
     public Vector3 _cameraPositionResult;
     public bool _moveCamera = false;
 
@@ -30,25 +25,27 @@ public class GameTurnManager : MonoBehaviour
     public Coroutine _timerBeforeExitingProjectileDamage;
 
     // Default events
-
     private void Awake()
     {
         GameTurnEvents.OnTurnEnd += EndTurn;
         GameTurnEvents.OnProjectileDeath += OnProjectileDeath;
+        GameTurnEvents.OnCharactersListUpdate += InitializeTurns;
+        GameTurnEvents.OnGameEnded += GameEnded;
 
         _roundedMaxTurnTime = (int)_maxTurnTime;
     }
 
-    private void Start()
+    private void OnDestroy()
     {
-        GetNextTurn();
-        _start = true;
+        UnsubscribeFromEvents();
     }
 
-    private void OnDestroy()
+    private void UnsubscribeFromEvents()
     {
         GameTurnEvents.OnTurnEnd -= EndTurn;
         GameTurnEvents.OnProjectileDeath -= OnProjectileDeath;
+        GameTurnEvents.OnCharactersListUpdate -= InitializeTurns;
+        GameTurnEvents.OnGameEnded -= GameEnded;
     }
 
     // Events
@@ -58,15 +55,24 @@ public class GameTurnManager : MonoBehaviour
         _timerBeforeExitingProjectileDamage = StartCoroutine(ProjectileDamageTimer());
     }
 
-    // Turns
+    private void InitializeTurns(List<BaseCharacter> newCharactersList)
+    {
+        _characters = newCharactersList;
+        GetNextTurn();
+    }
 
+    private void GameEnded()
+    {
+        Debug.Log("GAME ENDED - TURN MANAGER STOPPING...");
+        StopTimers();
+        UnsubscribeFromEvents();
+    }
+
+    // Turns
     private void GetNextTurn()
     {
         // Nullify any pending timer
         StopTimers();
-        Debug.Log("Getting next turn...");
-
-        // Add some checks for win/lose conditions..
 
         // First turn
         if (_currentCharacterTurn == null) _currentCharacterTurn = _characters[0];

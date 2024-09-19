@@ -1,7 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.Experimental.GraphView;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 {
@@ -15,7 +14,12 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     [SerializeField] private GameObject _projectileOutReference;
     [SerializeField] private AudioClip _projectileSound;
 
+    [Header("UI Stuff")]
+    [SerializeField] private TextMeshProUGUI _nameTextRef;
+    [SerializeField] private Image _lifeBar;
+
     // Values
+    private float _initialLife;
     private AudioSource _audio;
     private BaseCharacterControl _controlsScript;
     private CapsuleCollider _baseCollider;
@@ -32,6 +36,8 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
         _rBody = GetComponent<Rigidbody>();
         _controlsScript = GetComponent<BaseCharacterControl>();
         _baseCollider = GetComponent<CapsuleCollider>();
+
+        _initialLife = _maxLife;
     }
 
     protected virtual void Update()
@@ -41,17 +47,27 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 
     virtual public void AnyDamage(float amount)
     {
+        _maxLife -= amount;
         OnDamage();
     }
 
     virtual public void AnyDamage(int amount)
     {
+        _maxLife -= amount;
         OnDamage();
     }
 
     virtual public void OnDamage()
     {
+        _lifeBar.fillAmount = (_maxLife / _initialLife) * 1;
         if (CharacterInControl) GameTurnEvents.OnTurnEnd?.Invoke(null);
+
+        if (IsDead) OnDeath();
+    }
+
+    virtual public void OnDeath()
+    {
+        GameManagerEvents.OnCharacterDeath?.Invoke(this);
     }
 
     virtual public void InControl(bool isInControl = false)
@@ -106,5 +122,10 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
             GameTurnEvents.OnTurnEnd?.Invoke(null);
 
         InGameUIEvents.OnChargingWeaponBar?.Invoke(false);
+    }
+
+    public void UpdateName(string newName)
+    {
+        _nameTextRef.text = newName;
     }
 }
