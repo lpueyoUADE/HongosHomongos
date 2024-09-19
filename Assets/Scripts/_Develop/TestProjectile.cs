@@ -9,6 +9,8 @@ public class TestProjectile : MonoBehaviour, IProjectile
 
     private Rigidbody _rBody;
 
+    public GameObject Projectile => throw new System.NotImplementedException();
+
     private void Awake()
     {
         _rBody = GetComponent<Rigidbody>();
@@ -22,5 +24,10 @@ public class TestProjectile : MonoBehaviour, IProjectile
     public void UpdateSpeedMultiplier(float speedMultiplier)
     {
         _rBody.AddForce(direction * baseSpeed * speedMultiplier, ForceMode.Impulse);
+    }
+
+    public void OnDeath()
+    {
+        throw new System.NotImplementedException();
     }
 }

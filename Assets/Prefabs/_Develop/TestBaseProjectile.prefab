@@ -13,9 +13,9 @@ GameObject:
   - component: {fileID: 4411293374153671680}
   - component: {fileID: 8425133197187648343}
   - component: {fileID: 6233648481572275792}
-  - component: {fileID: 5948283791196903330}
+  - component: {fileID: 4453694735902730189}
   m_Layer: 0
-  m_Name: TestProjectile
+  m_Name: TestBaseProjectile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64,7 +64,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 6ddb6a961532e7b409708534dc62cba6, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -134,7 +134,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 8
   m_CollisionDetection: 1
---- !u!114 &5948283791196903330
+--- !u!114 &4453694735902730189
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -143,8 +143,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 6765357232671632441}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e77934dfe40e83e4fb76349e951adc8f, type: 3}
+  m_Script: {fileID: 11500000, guid: 6261829f18e2700488fe93d2d8a0db0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseSpeed: 22
-  direction: {x: 0, y: 0, z: 0}
+  _baseSpeed: 22
+  _baseLife: 5
+  _destroyedSound: {fileID: 8300000, guid: 37013edb9262d134a98d035f672219f2, type: 3}

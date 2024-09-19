@@ -4,50 +4,66 @@ using UnityEngine;
 
 public class GameTurnManager : MonoBehaviour
 {
-    [Header("References")]
-    public Camera _camera;
-
     [Header("Settings")]
     public float _maxTurnTime = 15;
     public float _maxDelayBetweenTurns = 3;
     public float _cameraTransitionTime = 3;
+    public float _maxDelayAfterProjectileDeath = 4;
     public Vector3 _cameraOffset = Vector3.zero;
 
     [Header("Playable characters list")]
     public List<BaseCharacter> _characters = new List<BaseCharacter>();
     public BaseCharacter _currentCharacterTurn;
 
-    // Variables
+    [Header("Other values")]
     public int _roundedMaxTurnTime;
 
-    // Status
+    [Header("Status")]
     public bool _start = false;
-    public Coroutine _turnTimer;
-    public Coroutine _turnTimerShow;
-    public Coroutine _timerBeforeNextTurn;
-
     public Vector3 _cameraPositionResult;
     public bool _moveCamera = false;
 
+    // Timers
+    public Coroutine _turnTimer;
+    public Coroutine _turnTimerShow;
+    public Coroutine _timerBeforeNextTurn;
+    public Coroutine _timerBeforeExitingProjectileDamage;
+
+    // Default events
+
     private void Awake()
     {
+        GameTurnEvents.OnTurnEnd += EndTurn;
+        GameTurnEvents.OnProjectileDeath += OnProjectileDeath;
+
         _roundedMaxTurnTime = (int)_maxTurnTime;
     }
 
     private void Start()
     {
-        if (_camera == null) _camera = FindAnyObjectByType<Camera>();
         GetNextTurn();
         _start = true;
-
     }
+
+    private void OnDestroy()
+    {
+        GameTurnEvents.OnTurnEnd -= EndTurn;
+        GameTurnEvents.OnProjectileDeath -= OnProjectileDeath;
+    }
+
+    // Events
+    private void OnProjectileDeath()
+    {
+        CameraEvents.OnCameraUpdateObjectToFollow(null);
+        _timerBeforeExitingProjectileDamage = StartCoroutine(ProjectileDamageTimer());
+    }
+
+    // Turns
 
     private void GetNextTurn()
     {
         // Nullify any pending timer
-        if (_turnTimer != null) StopCoroutine(_turnTimer);
-        if (_turnTimerShow != null) StopCoroutine(_turnTimerShow);
-        if (_timerBeforeNextTurn != null) StopCoroutine(_timerBeforeNextTurn);
+        StopTimers();
         Debug.Log("Getting next turn...");
 
         // Add some checks for win/lose conditions..
@@ -84,11 +100,18 @@ public class GameTurnManager : MonoBehaviour
             _roundedMaxTurnTime = (int)_maxTurnTime;
             _turnTimer = StartCoroutine(TurnTime());
             _turnTimerShow = StartCoroutine(ShowTimer());
-            _timerBeforeNextTurn = StartCoroutine(NextTurnTimer());
+            CameraEvents.OnCameraUpdateObjectToFollow(_currentCharacterTurn.gameObject);
         }
     }
 
-    private void EndTurn()
+    private void EndTurn(IProjectile spawnedProjectile)
+    {
+        CameraEvents.OnCameraUpdateObjectToFollow(spawnedProjectile.Projectile);
+        StopTimers();
+        EndTurnTimeOut();
+    }
+
+    private void EndTurnTimeOut()
     {
         if (_currentCharacterTurn == null) return;
 
@@ -96,20 +119,13 @@ public class GameTurnManager : MonoBehaviour
         _currentCharacterTurn.InControl();
     }
 
-    private void Update()
+    // Timers
+    private void StopTimers() 
     {
-        if (!_start) return;
-    }
-
-    private void FixedUpdate()
-    {
-        if (!_start) return;
-
-        if (_moveCamera && _camera.transform.position != _cameraPositionResult)
-            _camera.transform.position = Vector3.LerpUnclamped(_camera.transform.position, _cameraPositionResult, _cameraTransitionTime * 0.05f);
-
-        if (_moveCamera && Vector3.Distance(_camera.transform.position, _cameraPositionResult) <= 0.25f) 
-            _moveCamera = false;
+        if (_turnTimer != null) StopCoroutine(_turnTimer);
+        if (_turnTimerShow != null) StopCoroutine(_turnTimerShow);
+        if (_timerBeforeNextTurn != null) StopCoroutine(_timerBeforeNextTurn);
+        if (_timerBeforeExitingProjectileDamage != null) StopCoroutine(_timerBeforeExitingProjectileDamage);
     }
 
     IEnumerator TurnTime()
@@ -117,8 +133,9 @@ public class GameTurnManager : MonoBehaviour
         InGameUIEvents.OnUpdateTurnTime?.Invoke(_maxTurnTime.ToString());
         yield return new WaitForSeconds(_maxTurnTime);
 
-        EndTurn();
+        EndTurnTimeOut();
         _turnTimer = null;
+        _timerBeforeNextTurn = StartCoroutine(NextTurnTimer()); // After a turn ends, start a timer to get next turn
     }
 
     IEnumerator ShowTimer()
@@ -137,8 +154,15 @@ public class GameTurnManager : MonoBehaviour
 
     IEnumerator NextTurnTimer()
     {
-        yield return new WaitForSeconds(_maxTurnTime + _maxDelayBetweenTurns);
+        yield return new WaitForSeconds(_maxDelayBetweenTurns);
         _timerBeforeNextTurn = null;
+        GetNextTurn();
+    }
+
+    IEnumerator ProjectileDamageTimer()
+    {
+        yield return new WaitForSeconds(_maxDelayAfterProjectileDeath);
+        _timerBeforeExitingProjectileDamage = null;
         GetNextTurn();
     }
 }
