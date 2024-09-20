@@ -193,6 +193,7 @@ MonoBehaviour:
   _uiObjects: {fileID: 4877751449185292230}
   _nameTextRef: {fileID: 4637371315955111417}
   _lifeBar: {fileID: 2147716704200056727}
+  _deathSound: {fileID: 8300000, guid: dea7927385620b74d8e633ae608c7be6, type: 3}
 --- !u!114 &893253451636816460
 MonoBehaviour:
   m_ObjectHideFlags: 0

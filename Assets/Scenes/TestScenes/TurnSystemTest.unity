@@ -194,6 +194,8 @@ MonoBehaviour:
   - {fileID: 1433704207}
   - {fileID: 1277497136}
   - {fileID: 1142994417}
+  - {fileID: 1003503942}
+  - {fileID: 360739227}
   _playerAliveCharacters: []
   _aiAliveCharacters: []
 --- !u!1001 &66710873
@@ -621,6 +623,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d87c81214fae857418ff945c4d503c58, type: 3}
+--- !u!114 &360739227 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8640528283629015980, guid: d87c81214fae857418ff945c4d503c58, type: 3}
+  m_PrefabInstance: {fileID: 360739226}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5de1d4af69254c1448aa98e2d2abf9a5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &384684492
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1879,6 +1892,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c0ee92d7e6bbb6e4d8afa83e3fb2ba93, type: 3}
+--- !u!114 &1003503942 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1417774646271874255, guid: c0ee92d7e6bbb6e4d8afa83e3fb2ba93, type: 3}
+  m_PrefabInstance: {fileID: 1003503941}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cae8dea7fbc3a949b7bece77dd28bbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!4 &1003503949 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8513286447472282450, guid: c0ee92d7e6bbb6e4d8afa83e3fb2ba93, type: 3}
@@ -3608,7 +3632,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1591164271976144261, guid: d87c81214fae857418ff945c4d503c58, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 7.46994
+      value: 7.58
       objectReference: {fileID: 0}
     - target: {fileID: 1591164271976144261, guid: d87c81214fae857418ff945c4d503c58, type: 3}
       propertyPath: m_LocalPosition.y

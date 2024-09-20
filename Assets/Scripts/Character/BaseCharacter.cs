@@ -19,7 +19,11 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     [SerializeField] private TextMeshProUGUI _nameTextRef;
     [SerializeField] private Image _lifeBar;
 
+    [Header("Others")]
+    [SerializeField] private AudioClip _deathSound;
+
     // Values
+    private bool _alreadyDead;
     private float _initialLife;
     private AudioSource _audio;
     private BaseCharacterControl _controlsScript;
@@ -68,8 +72,12 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 
     virtual public void OnDeath()
     {
+        if (_alreadyDead) return;
+
         _uiObjects.SetActive(false);
+        _audio.PlayOneShot(_deathSound);
         GameManagerEvents.OnCharacterDeath?.Invoke(this);
+        _alreadyDead = true;
     }
 
     virtual public void InControl(bool isInControl = false)
