@@ -11,9 +11,11 @@ public class BaseProjectile : MonoBehaviour, IProjectile
     public AudioClip _destroyedSound;
 
     // Values
-    private Vector3 direction;
+    private Vector3 _direction;
+    private Vector3 _lastPosition;
     private Rigidbody _rBody;
     private Coroutine _lifeTimer;
+    private bool _alreadyDead;
 
     public GameObject Projectile => this.gameObject;
 
@@ -29,16 +31,17 @@ public class BaseProjectile : MonoBehaviour, IProjectile
 
     public void UpdateDirection(Vector3 direction)
     {
-        this.direction = direction;
+        this._direction = direction;
     }
 
     public void UpdateSpeedMultiplier(float speedMultiplier)
     {
-        _rBody.AddForce(direction * _baseSpeed * speedMultiplier, ForceMode.Impulse);
+        _rBody.AddForce(_direction * _baseSpeed * speedMultiplier, ForceMode.Impulse);
     }
 
     private void OnCollisionEnter(Collision collision)
     {
+        _lastPosition = transform.position;
         collision.gameObject.TryGetComponent(out IDamageable character);
         if (character != null) DamageCharacter(character);
 
@@ -53,9 +56,12 @@ public class BaseProjectile : MonoBehaviour, IProjectile
 
     public void OnDeath()
     {
+        if (_alreadyDead) return;
         if (_lifeTimer != null) StopCoroutine(_lifeTimer);
-        PlaySoundEvents.PlaySound(transform.position, _destroyedSound, 1);
+
+        PlaySoundEvents.PlaySound?.Invoke(_lastPosition, _destroyedSound, 1);
         GameTurnEvents.OnProjectileDeath?.Invoke();
+        _alreadyDead = true;
     }
 
     IEnumerator ProjectileLife()

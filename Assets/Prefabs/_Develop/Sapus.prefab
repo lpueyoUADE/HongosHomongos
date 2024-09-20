@@ -100,7 +100,7 @@ Transform:
   m_GameObject: {fileID: 1093563061575511995}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.5, y: 0, z: 0}
+  m_LocalPosition: {x: 0.5, y: 0, z: 1.22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -246,7 +246,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 
+  m_text: Name
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ff5f6c797e33f374cbbab424d93d4bd8, type: 2}
   m_sharedMaterial: {fileID: -7903198284579699686, guid: ff5f6c797e33f374cbbab424d93d4bd8, type: 2}
@@ -492,7 +492,7 @@ Transform:
   m_GameObject: {fileID: 7729561722066762102}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.27, y: 1.5450051, z: 2.3975916}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -618,6 +618,7 @@ MonoBehaviour:
   _weaponReference: {fileID: 5211081869495712368}
   _projectileOutReference: {fileID: 0}
   _projectileSound: {fileID: 8300000, guid: 54526597f69b0a841a8c12399e0df529, type: 3}
+  _uiObjects: {fileID: 7181127862726166983}
   _nameTextRef: {fileID: 3635456510200750918}
   _lifeBar: {fileID: 5599481768290087143}
 --- !u!114 &1326555253612581497

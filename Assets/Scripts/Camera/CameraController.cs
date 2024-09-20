@@ -27,7 +27,12 @@ public class CameraController : MonoBehaviour
         if (_currentTarget != null || _lastTargetPos != Vector3.zero)
         {
             Vector3 positionResult;
-            if (_currentTarget != null) positionResult = _currentTarget.transform.position + _offset;
+            if (_currentTarget != null)
+            {
+                _lastTargetPos = _currentTarget.transform.position;
+                positionResult = _currentTarget.transform.position + _offset;
+            }
+
             else positionResult = _lastTargetPos + _offset;                
 
             _cameraArrivedToPos = Vector3.Distance(transform.position, positionResult) < _tolerance;
@@ -42,8 +47,6 @@ public class CameraController : MonoBehaviour
 
     private void UpdateObjectToFollow(GameObject newObject)
     {
-        if (newObject == null) _lastTargetPos = _currentTarget.transform.position;
-
         _currentTarget = newObject;
     }
 }

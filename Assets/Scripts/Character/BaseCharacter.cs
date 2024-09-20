@@ -15,6 +15,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     [SerializeField] private AudioClip _projectileSound;
 
     [Header("UI Stuff")]
+    [SerializeField] private GameObject _uiObjects;
     [SerializeField] private TextMeshProUGUI _nameTextRef;
     [SerializeField] private Image _lifeBar;
 
@@ -67,6 +68,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 
     virtual public void OnDeath()
     {
+        _uiObjects.SetActive(false);
         GameManagerEvents.OnCharacterDeath?.Invoke(this);
     }
 
