@@ -53,6 +53,7 @@ public class BaseBreakable : MonoBehaviour, IDamageable
 
     public void OnBreak()
     {
+        PlaySoundEvents.PlaySound(transform.position, _breakClips[Random.Range(0, _breakClips.Count)], 1);
         Destroy(gameObject);
     }
 }

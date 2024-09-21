@@ -613,10 +613,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxLife: 5
-  _speed: 1.2
-  _spawnedProjectile: {fileID: 0}
+  _speed: 0.4
+  _spawnedProjectile: {fileID: 4453694735902730189, guid: 99fd2558c783fdb4a8530b86f3701b28, type: 3}
   _weaponReference: {fileID: 5211081869495712368}
-  _projectileOutReference: {fileID: 0}
+  _projectileOutReference: {fileID: 1093563061575511995}
   _projectileSound: {fileID: 8300000, guid: 54526597f69b0a841a8c12399e0df529, type: 3}
   _uiObjects: {fileID: 7181127862726166983}
   _nameTextRef: {fileID: 3635456510200750918}
@@ -645,7 +645,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 593169629847190922, guid: f600b800c7ebfa041a28f231ac71f7cd, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 54526597f69b0a841a8c12399e0df529, type: 3}
+  m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1

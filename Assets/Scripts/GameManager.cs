@@ -8,11 +8,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<BaseCharacter> _characters = new List<BaseCharacter>();
 
     [Header("Session status")]
-    public List<BaseCharacter> _playerAliveCharacters = new List<BaseCharacter>();
+    public static List<BaseCharacter> _playerAliveCharacters = new List<BaseCharacter>();
     public List<BaseCharacter> _aiAliveCharacters = new List<BaseCharacter>();
 
     private void Awake()
     {
+        _playerAliveCharacters.Clear();
         GameManagerEvents.OnCharacterDeath += OnCharacterDeath;
     }
 
@@ -20,6 +21,7 @@ public class GameManager : MonoBehaviour
     {
         GenerateNames();
         GameTurnEvents.OnCharactersListUpdate(_characters);
+        AIManagerEvents.OnUpdateAICharacters(_aiAliveCharacters);
     }
 
     private void OnDestroy()
@@ -68,5 +70,18 @@ public class GameManager : MonoBehaviour
             GameTurnEvents.OnGameEnded?.Invoke();
         }
 
+    }
+
+    public static BaseCharacter GetRandomPlayerCharacterAlive()
+    {
+        List<BaseCharacter> aliveCharacters = new List<BaseCharacter>();
+
+        foreach (BaseCharacter item in _playerAliveCharacters)
+        {
+            if (item.IsDead) continue;
+            aliveCharacters.Add(item);
+        }
+
+        return aliveCharacters[Random.Range(0, aliveCharacters.Count)];
     }
 }

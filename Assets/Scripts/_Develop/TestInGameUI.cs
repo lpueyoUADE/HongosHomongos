@@ -21,10 +21,14 @@ public class TestInGameUI : MonoBehaviour
     public bool _chargeWeaponBar;           // Show/Hide charging bar
     public float _chargeWeaponBarStartTime; // Makes charging bar reset when ping poing
     public bool _lockWeaponChargeBar;       // Makes ping pong work
+    private static float _chargingBarPower; // Used for AI
+
+    public static float CurrentChargeBarPower => _chargingBarPower;
 
     private void Awake()
     {
         _audio = GetComponent<AudioSource>();
+        _chargingBarPower = 0;
 
         InGameUIEvents.OnUpdateTurnTime += UpdateTurnTime;
         InGameUIEvents.OnChargingWeaponBar += ChargingBar;
@@ -52,7 +56,10 @@ public class TestInGameUI : MonoBehaviour
             _lockWeaponChargeBar = true;
             _chargeWeaponBarValue = (Time.time - _chargeWeaponBarStartTime) * 2;
             _chargingWeaponBar.fillAmount = Mathf.PingPong(_chargeWeaponBarValue, 1);
-            InGameUIEvents.UpdateChargeBarIntensity(_chargingWeaponBar.fillAmount); // Fill amount is used to get values from 0 to 1.
+
+            float power = _chargingWeaponBar.fillAmount;
+            _chargingBarPower = power;
+            InGameUIEvents.UpdateChargeBarIntensity(power); // Fill amount is used to get values from 0 to 1.
         }
         
         else
@@ -60,6 +67,8 @@ public class TestInGameUI : MonoBehaviour
             _chargeWeaponBarValue = 0;
             _chargingWeaponBar.fillAmount = 0;
             _lockWeaponChargeBar = false;
+
+            _chargingBarPower = 0;
             InGameUIEvents.UpdateChargeBarIntensity();
         }
     }
