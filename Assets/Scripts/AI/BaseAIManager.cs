@@ -87,7 +87,6 @@ public class BaseAIManager : MonoBehaviour
     private void OnControlledCharacterUpdated(IControlleable newControlleable, bool inControl)
     {
         if (newControlleable == null) return;
-        Debug.Log($"AI Character update: {newControlleable} - {inControl}");
 
         if (inControl) _currentInControllCharacter = newControlleable;
         else _currentInControllCharacter = null;
@@ -98,7 +97,7 @@ public class BaseAIManager : MonoBehaviour
         if (_selectedEnemy == null || _currentInControllCharacter == null) return;
 
         Debug.DrawLine(_currentInControllCharacter.Position, _selectedEnemy.transform.position, Color.cyan);
-        Debug.DrawLine(_currentInControllCharacter.ProjectileOutPosition, _currentInControllCharacter.AimDirection * 20, Color.red);
+        Debug.DrawLine(_currentInControllCharacter.ProjectileOutPosition, _currentInControllCharacter.Position + _currentInControllCharacter.AimDirection * 50, Color.red);
     }
 
     public virtual void AILateExecution(float delta)

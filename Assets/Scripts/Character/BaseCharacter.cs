@@ -34,7 +34,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     public GameObject WeaponReference => _weaponReference;
     virtual public bool IsDead => _maxLife <= 0;
     public bool CharacterInControl => _inControl;
-    public Vector3 AimingDirection => _projectileOutReference.transform.right.normalized;
+    public Vector3 AimingDirection => _projectileOutReference.transform.right;
     public Vector3 ProjectileOutPosition => _projectileOutReference.transform.position;
 
     private void Awake()
@@ -45,11 +45,6 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
         _baseCollider = GetComponent<CapsuleCollider>();
 
         _initialLife = _maxLife;
-    }
-
-    protected virtual void Update()
-    {
-        if (!CharacterInControl) return;
     }
 
     virtual public void AnyDamage(float amount)
