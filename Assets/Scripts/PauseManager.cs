@@ -31,8 +31,6 @@ public class PauseManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
-        DontDestroyOnLoad(gameObject);
     }
 
     void Start()
@@ -56,6 +54,8 @@ public class PauseManager : MonoBehaviour
     {
         actionSound.Play();
         isGamePaused = false;
+
+        Cursor.visible = false;
     }
 
     public void ReturnToMenu()

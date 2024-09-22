@@ -27,7 +27,7 @@ public class MainMenu : MonoBehaviour
 
     public void PlayButton()
     {
-        StartCoroutine(PlayClickSoundAndChangeScene("TestScene"));
+        StartCoroutine(PlayClickSoundAndChangeScene("TurnSystemTest"));
     }
 
     public void SettingsButton()
@@ -57,7 +57,6 @@ public class MainMenu : MonoBehaviour
     {
         actionSound.Play();
 
-        // Espera hasta que el sonido termine de reproducirse
         yield return new WaitForSeconds(actionSound.clip.length);
 
         ChangeScene(sceneToLoad);
@@ -67,7 +66,6 @@ public class MainMenu : MonoBehaviour
     {
         actionSound.Play();
 
-        // Espera hasta que el sonido termine de reproducirse
         yield return new WaitForSeconds(actionSound.clip.length);
 
         Application.Quit();
