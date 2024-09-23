@@ -16,3 +16,11 @@ Ariel Irala - Alesio Rojas - Luciano Pueyo
 
 ##
 UADE - CABA - Argentina - 2do Cuatrimestre 2024
+
+##
+TODOS:
+ - Jump
+ - Make breakable object movable
+ - Projectiles explotions
+ - Change controls to WASD + Mouse
+ - Dead entities shouldnt collide with projectiles

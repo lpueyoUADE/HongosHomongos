@@ -23,6 +23,9 @@ public class TestInGameUI : MonoBehaviour
     public bool _lockWeaponChargeBar;       // Makes ping pong work
     private static float _chargingBarPower; // Used for AI
 
+    [Header("Result")]
+    public TextMeshProUGUI _resultText;
+
     public static float CurrentChargeBarPower => _chargingBarPower;
 
     private void Awake()
@@ -30,9 +33,13 @@ public class TestInGameUI : MonoBehaviour
         _audio = GetComponent<AudioSource>();
         _chargingBarPower = 0;
 
+        _resultText.text = "";
+
         InGameUIEvents.OnUpdateTurnTime += UpdateTurnTime;
         InGameUIEvents.OnChargingWeaponBar += ChargingBar;
         InGameUIEvents.OnTimerWait += WaitTimer;
+
+        GameTurnEvents.OnGameEnded += ShowResultText;
     }
 
     private void Start()
@@ -45,6 +52,8 @@ public class TestInGameUI : MonoBehaviour
         InGameUIEvents.OnUpdateTurnTime -= UpdateTurnTime;
         InGameUIEvents.OnChargingWeaponBar -= ChargingBar;
         InGameUIEvents.OnTimerWait -= WaitTimer;
+
+        GameTurnEvents.OnGameEnded -= ShowResultText;
     }
 
     private void Update()
@@ -100,5 +109,10 @@ public class TestInGameUI : MonoBehaviour
     {
         _chargeWeaponBar = show;
         _chargingWeaponBar.gameObject.SetActive(show);
+    }
+
+    private void ShowResultText()
+    { 
+        _resultText.text = GameManager._playerAliveCharacters.Count == 0 ? "DERROTA" : "VICTORIA";
     }
 }
