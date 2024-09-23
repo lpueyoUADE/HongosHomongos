@@ -44,7 +44,7 @@ public class MainMenu : MonoBehaviour
 
     public void CreditsButton()
     {
-        StartCoroutine(PlayClickSoundAndChangeScene("Creditos"));
+        StartCoroutine(PlayClickSoundAndChangeScene("Credits"));
     }
 
     public void ExitButton()
