@@ -9,6 +9,9 @@ EditorBuildSettings:
     path: Assets/Scenes/Menu.unity
     guid: 1482fa9a07b023248b1861b164ff635a
   - enabled: 1
+    path: Assets/Scenes/Credits.unity
+    guid: 0ff79883a353d1c42b98437926c79ee3
+  - enabled: 1
     path: Assets/Scenes/TestScenes/TurnSystemTest.unity
     guid: 6a529adcb1e28dc4cb23797a93d9982e
   m_configObjects: {}

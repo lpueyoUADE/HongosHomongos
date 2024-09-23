@@ -961,15 +961,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Jugar
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9cd570902bd0a4e4780683c22c31feb4, type: 2}
-  m_sharedMaterial: {fileID: -1411364845471900401, guid: 9cd570902bd0a4e4780683c22c31feb4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7d7c0e8bca76ef745b42b597205c78ff, type: 2}
+  m_sharedMaterial: {fileID: 5939211199076181378, guid: 7d7c0e8bca76ef745b42b597205c78ff, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278255475
-  m_fontColor: {r: 0.45141125, g: 1, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -986,8 +986,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -1623,19 +1623,17 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'AJUSTES
-
-'
+  m_text: Ajustes
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9cd570902bd0a4e4780683c22c31feb4, type: 2}
-  m_sharedMaterial: {fileID: -1411364845471900401, guid: 9cd570902bd0a4e4780683c22c31feb4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7d7c0e8bca76ef745b42b597205c78ff, type: 2}
+  m_sharedMaterial: {fileID: 5939211199076181378, guid: 7d7c0e8bca76ef745b42b597205c78ff, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278255476
-  m_fontColor: {r: 0.45490196, g: 1, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1652,8 +1650,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2073,10 +2071,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 1326746620}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -74.00006, y: 334}
-  m_SizeDelta: {x: 555.6631, y: 126.1025}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 6.8688, y: -259}
+  m_SizeDelta: {x: 1055.8593, y: 412.97986}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &493891223
 MonoBehaviour:
@@ -2100,15 +2098,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Hongos Homongos
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9cd570902bd0a4e4780683c22c31feb4, type: 2}
-  m_sharedMaterial: {fileID: -1411364845471900401, guid: 9cd570902bd0a4e4780683c22c31feb4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7d7c0e8bca76ef745b42b597205c78ff, type: 2}
+  m_sharedMaterial: {fileID: 5939211199076181378, guid: 7d7c0e8bca76ef745b42b597205c78ff, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
-  m_fontColor: {r: 0, g: 0, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2125,8 +2123,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
-  m_fontSizeBase: 100
+  m_fontSize: 222.1
+  m_fontSizeBase: 222.1
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -2161,7 +2159,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -152.1872, w: 0}
+  m_margin: {x: 0, y: 0, z: -0.17367554, w: 2.451477}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
@@ -2461,7 +2459,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &581522119
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5036,15 +5034,15 @@ MonoBehaviour:
       m_Calls: []
   m_text: Salir
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9cd570902bd0a4e4780683c22c31feb4, type: 2}
-  m_sharedMaterial: {fileID: -1411364845471900401, guid: 9cd570902bd0a4e4780683c22c31feb4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7d7c0e8bca76ef745b42b597205c78ff, type: 2}
+  m_sharedMaterial: {fileID: 5939211199076181378, guid: 7d7c0e8bca76ef745b42b597205c78ff, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278255476
-  m_fontColor: {r: 0.45490196, g: 1, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -5061,8 +5059,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -8513,17 +8511,17 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: CREDITOS
+  m_text: "Cr\xE9ditos"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9cd570902bd0a4e4780683c22c31feb4, type: 2}
-  m_sharedMaterial: {fileID: -1411364845471900401, guid: 9cd570902bd0a4e4780683c22c31feb4, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 7d7c0e8bca76ef745b42b597205c78ff, type: 2}
+  m_sharedMaterial: {fileID: 5939211199076181378, guid: 7d7c0e8bca76ef745b42b597205c78ff, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278255476
-  m_fontColor: {r: 0.45490196, g: 1, b: 0, a: 1}
+    rgba: 4294967295
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -8540,8 +8538,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 28
-  m_fontSizeBase: 28
+  m_fontSize: 35
+  m_fontSizeBase: 35
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
