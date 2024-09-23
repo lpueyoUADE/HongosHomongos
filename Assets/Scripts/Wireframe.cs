@@ -132,17 +132,17 @@ public class Wireframe : MonoBehaviour
     {
 
     }
-
-
-    // panel Career vacio por ahora
-
+    public void Career()
+    {
+        ShowCurrentPanel(3);
+    }
 
 
     // panel Battle preparations for career mode and Quick game
 
     public void StartBattle()
     {
-        SceneManager.LoadScene("Aca iria el nombre de la escena");
+        SceneManager.LoadScene("TurnSystemTest");
     }
 
     public void StartQuickGame()

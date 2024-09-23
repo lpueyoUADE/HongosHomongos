@@ -60,7 +60,7 @@ public class PauseManager : MonoBehaviour
 
     public void ReturnToMenu()
     {
-        StartCoroutine(PlayClickSoundAndChangeScene("Menu"));
+        StartCoroutine(PlayClickSoundAndChangeScene("UI"));
         isGamePaused = false;
     }
 
