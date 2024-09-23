@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public enum AIStates
 {
@@ -24,20 +23,26 @@ public class BaseAIManager : MonoBehaviour
 
     [Header("Time settings")]
     [Range(0.5f, 3)] public float _minWaitTime = 0.5f;
-    [Range(0.5f, 3)] public float _maxWaitTime = 1f;
+    [Range(0.5f, 3)] public float _maxWaitTime = 1;
+    [Range(0.1f, 3)] public float _minShootTimeWait = 1;
+    [Range(0.9f, 3)] public float _maxShootTimeWait = 1;
 
     // Values
     Coroutine _waitTimer;
     Coroutine _movingTimer;
     Coroutine _aimTimer;
+    Coroutine _chargeTimer;
+
     public float _currentSwapEnemyChances;
     public float _currentMoveTowardsEnemyChances;
     public float _currentMoveAwayFromEnemyChances;
     public float _currentAimChances;
 
+    public bool TEST_randAimDir = false;
+
     public bool IsIdle => _waitTimer == null && _movingTimer == null && _aimTimer == null;
     public bool IsAITurn => _currentInControllCharacter != null;
-    public float PlayerDirection => (_currentInControllCharacter.Position - _selectedEnemy.transform.position).normalized.x;
+    public float PlayerDirection => (_currentInControllCharacter.Character.CharacterPosition - _selectedEnemy.transform.position).normalized.x;
 
     private void Awake()
     {
@@ -96,8 +101,29 @@ public class BaseAIManager : MonoBehaviour
     {
         if (_selectedEnemy == null || _currentInControllCharacter == null) return;
 
-        Debug.DrawLine(_currentInControllCharacter.Position, _selectedEnemy.transform.position, Color.cyan);
-        Debug.DrawLine(_currentInControllCharacter.ProjectileOutPosition, _currentInControllCharacter.Position + _currentInControllCharacter.AimDirection * 50, Color.red);
+        Vector3 charPos = _currentInControllCharacter.Character.CharacterPosition;
+        Vector3 charForward = _currentInControllCharacter.Character.CharacterForward;
+        Vector3 charDown = -_currentInControllCharacter.Character.CharacterUp;
+
+        Debug.DrawLine(charPos, _selectedEnemy.transform.position, Color.cyan);
+        Debug.DrawLine(_currentInControllCharacter.Character.ProjectileOutPosition, charPos + _currentInControllCharacter.Character.AimingDirection * 50, Color.red);
+
+        switch (_state)
+        {
+            case AIStates.MoveTowards:
+                Debug.DrawLine(charPos, charPos - charForward, Color.magenta);
+                Debug.DrawLine(charPos - charForward, charPos - charForward + charDown * 5, Color.magenta);
+                break;
+
+            case AIStates.MoveAway:
+                Debug.DrawLine(charPos, charPos + charForward, Color.yellow);
+                Debug.DrawLine(charPos + charForward, charPos + charForward + charDown * 5, Color.yellow);
+                break;
+
+            case AIStates.Attack:
+                if (_chargeTimer == null) _chargeTimer = StartCoroutine(WaitForChargedShot());
+                break;
+        }
     }
 
     public virtual void AILateExecution(float delta)
@@ -150,14 +176,15 @@ public class BaseAIManager : MonoBehaviour
     // lucho cucurucho pone akakakakakakaka
     private void AimToTarget()
     {
-        Vector3 direction = _selectedEnemy.transform.position - _currentInControllCharacter.ProjectileOutPosition;
+        Vector3 direction = _selectedEnemy.transform.position - _currentInControllCharacter.Character.ProjectileOutPosition;
         float distance = direction.magnitude;
-        float heightDifference = _selectedEnemy.transform.position.y - _currentInControllCharacter.ProjectileOutPosition.y;
+        float heightDifference = _selectedEnemy.transform.position.y - _currentInControllCharacter.Character.ProjectileOutPosition.y;
 
         float power = 1 * TestInGameUI.CurrentChargeBarPower; // gotta change this later
 
-
-        _currentInControllCharacter.InputAim(new Vector3(0, -0.25f));
+        // test random aim up or down
+        if (TEST_randAimDir) _currentInControllCharacter.InputAim(new Vector3(0, -0.25f));
+        else _currentInControllCharacter.InputAim(new Vector3(0, 0.25f));
     }
 
     private void SetNextAction(float value)
@@ -196,6 +223,7 @@ public class BaseAIManager : MonoBehaviour
         if (_waitTimer != null) _waitTimer = null;
         if (_movingTimer != null) _movingTimer = null;
         if (_aimTimer != null) _aimTimer = null;
+        if (_chargeTimer != null) _chargeTimer = null;
     }
 
     private void ResetChances()
@@ -230,9 +258,20 @@ public class BaseAIManager : MonoBehaviour
 
     IEnumerator WaitForAim()
     {
+        TEST_randAimDir = Random.Range(0, 2) >= 1f;
         yield return new WaitForSeconds(Random.Range(_minWaitTime, _minWaitTime + _maxWaitTime));
         Debug.Log("aim ended");
-        _state = AIStates.Idle;
+        _state = AIStates.Attack;
         _aimTimer = null;
+    }
+
+    IEnumerator WaitForChargedShot()
+    {
+        _currentInControllCharacter.Character.ChargeWeapon();
+        yield return new WaitForSeconds(Random.Range(_minShootTimeWait, _minShootTimeWait + _maxShootTimeWait));
+        Debug.Log("charging weapon ended");
+        _currentInControllCharacter.Character.ChargeWeaponStop();
+        _state = AIStates.Idle;
+        _chargeTimer = null;
     }
 }

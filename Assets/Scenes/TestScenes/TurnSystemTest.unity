@@ -4481,11 +4481,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4106027422538013046, guid: 8c80ad3795afce54ead729383588041a, type: 3}
       propertyPath: _maxWaitTime
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4106027422538013046, guid: 8c80ad3795afce54ead729383588041a, type: 3}
       propertyPath: _minWaitTime
-      value: 1
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4106027422538013046, guid: 8c80ad3795afce54ead729383588041a, type: 3}
+      propertyPath: _maxShootTimeWait
+      value: 1.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4106027422538013046, guid: 8c80ad3795afce54ead729383588041a, type: 3}
+      propertyPath: _minShootTimeWait
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 8813808723715475265, guid: 8c80ad3795afce54ead729383588041a, type: 3}
       propertyPath: m_LocalPosition.x

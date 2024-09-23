@@ -31,9 +31,13 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     private Rigidbody _rBody;
     private bool _inControl = false;
 
+
     public GameObject WeaponReference => _weaponReference;
     virtual public bool IsDead => _maxLife <= 0;
     public bool CharacterInControl => _inControl;
+    public Vector3 CharacterForward => transform.right;
+    public Vector3 CharacterUp => transform.up;
+    public Vector3 CharacterPosition => transform.position;
     public Vector3 AimingDirection => _projectileOutReference.transform.right;
     public Vector3 ProjectileOutPosition => _projectileOutReference.transform.position;
 
