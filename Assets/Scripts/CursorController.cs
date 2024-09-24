@@ -33,7 +33,7 @@ public class CursorController : MonoBehaviour
 
         switch (currentScene.name)
         {
-            case "Menu":
+            case "Menu": case "UI":
 
                 Cursor.visible = true;
 

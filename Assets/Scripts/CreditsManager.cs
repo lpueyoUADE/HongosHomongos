@@ -7,7 +7,6 @@ public class CreditsManager : MonoBehaviour
 {
     public void GoToMainMenu()
     { 
-        SceneManager.LoadScene("Menu");
+        SceneManager.LoadScene("UI");
     }
-
 }

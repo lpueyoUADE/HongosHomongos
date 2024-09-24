@@ -9,12 +9,14 @@ public class Wireframe : MonoBehaviour
 {
     [SerializeField] private GameObject[] panels;
 
-    private int currentPanelIndex = 0;
+    private AudioSource soundOption;
 
 
     void Start()
     {
-        ShowCurrentPanel(currentPanelIndex);
+        soundOption = GetComponent<AudioSource>();
+
+        ShowCurrentPanel(0);
     }
 
     private void ShowCurrentPanel(int panelIndex)
@@ -27,55 +29,76 @@ public class Wireframe : MonoBehaviour
         if (panelIndex >= 0 && panelIndex < panels.Length)
         {
             panels[panelIndex].SetActive(true);
-            currentPanelIndex = panelIndex;
         }
+    }
+
+    private IEnumerator PlayClickSoundAndLoadScene(string sceneName)
+    {
+        soundOption.Play();
+        yield return new WaitForSeconds(soundOption.clip.length);
+        SceneManager.LoadScene(sceneName);
+    }
+
+    private IEnumerator PlayClickSoundAndQuitGmae()
+    {
+        soundOption.Play();
+        yield return new WaitForSeconds(soundOption.clip.length);
+        Application.Quit();
     }
 
 
     public void BackButton(int indexPanel)
     {
+        soundOption.Play();
         ShowCurrentPanel(indexPanel);    
     }
 
 
-    // panel Main Menu
+    // panel Main Menu \\
     public void PlayButton()
     {
-        ShowCurrentPanel(1);
+        soundOption.Play();
+        ShowCurrentPanel(2);
     }
 
     public void SettingsButton()
     {
-
+        soundOption.Play();
+        ShowCurrentPanel(1);
     }
 
     public void CrditsButton()
     {
-        SceneManager.LoadScene("Crdits");
+        soundOption.Play();
+        StartCoroutine(PlayClickSoundAndLoadScene("Credits"));
     }
 
     public void QuitButton()
     {
-        Application.Quit();
+        soundOption.Play();
+        PlayClickSoundAndQuitGmae();
     }
 
 
-    // panel New Game
+    // panel New Game \\
     public void QuickGameButton()
     {
-        ShowCurrentPanel(2);
+        soundOption.Play();
+        ShowCurrentPanel(3);
     }
 
     public void CareerButton()
     {
-        ShowCurrentPanel(3);
+        soundOption.Play();
+        ShowCurrentPanel(4);
     }
 
 
-    // panel Quick Game
+    // panel Quick Game and Career \\
     public void CP1Level1()
     {
-
+        soundOption.Play();
+        ShowCurrentPanel(5);
     }
 
     public void CP1Level2()
@@ -132,27 +155,14 @@ public class Wireframe : MonoBehaviour
     {
 
     }
-    public void Career()
-    {
-        ShowCurrentPanel(3);
-    }
 
 
-    // panel Battle preparations for career mode and Quick game
+    // panel Battle preparations \\
 
     public void StartBattle()
     {
-        SceneManager.LoadScene("TurnSystemTest");
-    }
-
-    public void StartQuickGame()
-    {
-        SceneManager.LoadScene("Aca iria el nombre de la escena");
-    }
-
-    public void Item()
-    {
-
+        soundOption.Play();
+        StartCoroutine(PlayClickSoundAndLoadScene("TurnSystemTest"));
     }
 
     public void BuyWarrior()
@@ -166,6 +176,11 @@ public class Wireframe : MonoBehaviour
     }
 
     public void BuyMage()
+    {
+
+    }
+
+    public void Item()
     {
 
     }
