@@ -201,6 +201,7 @@ MonoBehaviour:
   _lifeBar: {fileID: 2147716704200056727}
   _deathSound: {fileID: 8300000, guid: dea7927385620b74d8e633ae608c7be6, type: 3}
   _fallDamageSound: {fileID: 8300000, guid: 6f6d26b7bf967ea438d9dccfd14820a0, type: 3}
+  _jumpSound: {fileID: 8300000, guid: 7ff01ac866b70b74c92ab33896562d68, type: 3}
   _isInAir: 0
   _isFalling: 0
   _lastFallDistanceWithDamage: 0
@@ -554,9 +555,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _speed: 25
+  _collisionSpeedDivisor: 2
   _tolerance: 50
   _localPos: {x: 0, y: 0, z: 0}
   _rotation: {x: 0, y: 0, z: 0, w: 0}
+  _doLerp: 0
 --- !u!1 &3532797683731650511
 GameObject:
   m_ObjectHideFlags: 0

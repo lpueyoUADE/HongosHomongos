@@ -666,6 +666,7 @@ MonoBehaviour:
   _lifeBar: {fileID: 1580992514839141984}
   _deathSound: {fileID: 8300000, guid: dea7927385620b74d8e633ae608c7be6, type: 3}
   _fallDamageSound: {fileID: 8300000, guid: 6f6d26b7bf967ea438d9dccfd14820a0, type: 3}
+  _jumpSound: {fileID: 8300000, guid: 7ff01ac866b70b74c92ab33896562d68, type: 3}
   _isInAir: 0
   _isFalling: 0
   _lastFallDistanceWithDamage: 0

@@ -27,9 +27,10 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     [SerializeField] private TextMeshProUGUI _nameTextRef;
     [SerializeField] private Image _lifeBar;
 
-    [Header("Others")]
+    [Header("Sounds")]
     [SerializeField] private AudioClip _deathSound;
     [SerializeField] private AudioClip _fallDamageSound;
+    [SerializeField] private AudioClip _jumpSound;
 
     [Header("Status")]
     public bool _isInAir;
@@ -172,6 +173,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     {
         if (!CanJump) return;
 
+        _audio.PlayOneShot(_jumpSound);
         _rBody.AddForce(transform.up * _jumpForce, ForceMode.Impulse);
         _fallDistance = 0;
     }
@@ -180,6 +182,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     {
         if (!_isInAir) return;
 
+        _audio.PlayOneShot(_jumpSound);
         _rBody.AddForce(transform.up * jumpForce, ForceMode.Impulse);
         _fallDistance = 0;
     }
