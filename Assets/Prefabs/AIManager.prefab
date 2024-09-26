@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8813808723715475265}
-  - component: {fileID: 4106027422538013046}
+  - component: {fileID: 7633839280310118159}
   m_Layer: 0
   m_Name: AIManager
   m_TagString: Untagged
@@ -32,7 +32,7 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &4106027422538013046
+--- !u!114 &7633839280310118159
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -41,15 +41,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 802643968883887571}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0866565710fbb3546a5d83e72114b1ec, type: 3}
+  m_Script: {fileID: 11500000, guid: b8d3a46a6a0d7ca45a2018310da69c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _state: 0
+  _minActionTime: 1
+  _maxActionTime: 2
+  _minShootTimeWait: 1
+  _maxShootTimeWait: 2
+  _intentionalIdleChances: 5
+  _swapTargetChances: 15
+  _moveTowardsChances: 8
+  _moveAwayChances: 8
+  _aimChances: 10
   _aiCharacters: []
   _selectedEnemy: {fileID: 0}
-  _swapEnemyChances: 15
-  _moveTowardsEnemyChanches: 10
-  _moveAwayFromEnemyChances: 18
-  _attackEnemyChances: 30
-  _minWaitTime: 1.5
-  _maxWaitTime: 1.5
+  _isAiTurn: 0

@@ -49,7 +49,7 @@ GameObject:
   - component: {fileID: 893253451636816460}
   - component: {fileID: 7167701903290374955}
   m_Layer: 0
-  m_Name: Hongus
+  m_Name: DevelopHongus
   m_TagString: Character
   m_Icon: {fileID: 3936346786652291628, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
