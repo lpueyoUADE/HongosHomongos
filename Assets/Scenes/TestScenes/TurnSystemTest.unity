@@ -4350,6 +4350,18 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4794666402613678372, guid: 0da7cca1dc3c53145b1136b9138c0418, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 1ab6e63cf691d4442846868f149b58da, type: 2}
+    - target: {fileID: 4794666402613678372, guid: 0da7cca1dc3c53145b1136b9138c0418, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: 5939211199076181378, guid: 1ab6e63cf691d4442846868f149b58da, type: 2}
+    - target: {fileID: 4794666402613678372, guid: 0da7cca1dc3c53145b1136b9138c0418, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7288047502381847248, guid: 0da7cca1dc3c53145b1136b9138c0418, type: 3}
       propertyPath: m_Name
       value: DevelopInGameUI
@@ -4528,6 +4540,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2161558836650272420, guid: 3db82427798cfdf429839e8db3a3327b, type: 3}
+      propertyPath: _maxTurnTime
+      value: 20
+      objectReference: {fileID: 0}
     - target: {fileID: 4676817343597987655, guid: 3db82427798cfdf429839e8db3a3327b, type: 3}
       propertyPath: m_Name
       value: GameManager

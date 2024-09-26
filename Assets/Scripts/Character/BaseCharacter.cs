@@ -5,12 +5,14 @@ using UnityEngine.UI;
 public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 {
     [Header("Character settings")]
-    [SerializeField] private float _maxLife = 10;
+    [SerializeField] private float _life = 10;
     [SerializeField, Range(0.1f, 2)] private float _speed = 0.65f;
     [SerializeField, Range(0, 20)] private float _jumpForce = 12;
+
+    [Header("Falling settings")]
     [SerializeField, Range(0, 1)] private float _fallSpeedModifier = 0.45f;
     [SerializeField, Range(25, 50)] private float _fallMaxSpeed = 35;
-    [SerializeField, Range(0.5f, 5)] private float _fallDamageMinDistance = 6;
+    [SerializeField, Range(0.5f, 10)] private float _fallDamageMinDistance = 6;
     [SerializeField, Range(0.1f, 10)] private float _fallDamageMultiplier = 4;
     [SerializeField, Range(0.1f, 0.5f)] private float _fallMinVelocityTolerance = 0.25f;
 
@@ -32,7 +34,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     [Header("Status")]
     public bool _isInAir;
     public bool _isFalling;
-    public float _fallDistance;
+    [Tooltip("Not used - only for show.")] public float _lastFallDistanceWithDamage;
 
     // Values
     private bool _alreadyDead;
@@ -43,9 +45,10 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     private Rigidbody _rBody;
     private bool _inControl = false;
     private float _fallStartingY;
+    private float _fallDistance;
 
     public GameObject WeaponReference => _weaponReference;
-    virtual public bool IsDead => _maxLife <= 0;
+    virtual public bool IsDead => _life <= 0;
     public bool CanJump => !_isInAir && !_isFalling;
     public bool CharacterInControl => _inControl;
     public Vector3 CharacterForward => transform.right;
@@ -61,7 +64,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
         _controlsScript = GetComponent<BaseCharacterControl>();
         _baseCollider = GetComponent<CapsuleCollider>();
 
-        _initialLife = _maxLife;
+        _initialLife = _life;
     }
 
     public virtual void Update()
@@ -81,19 +84,19 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 
     virtual public void AnyDamage(float amount)
     {
-        _maxLife -= amount;
+        _life -= amount;
         OnDamage();
     }
 
     virtual public void AnyDamage(int amount)
     {
-        _maxLife -= amount;
+        _life -= amount;
         OnDamage();
     }
 
     virtual public void OnDamage()
     {
-        _lifeBar.fillAmount = (_maxLife / _initialLife) * 1;
+        _lifeBar.fillAmount = (_life / _initialLife) * 1;
         if (CharacterInControl) GameTurnEvents.OnTurnEnd?.Invoke(null);
 
         if (IsDead) OnDeath();
@@ -144,7 +147,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
         // If we are in control then OnTurnEnd True will make camera follow the spawned projectile.
         if (CharacterInControl)
         {
-            Vector3 fixedProjectilePos = new Vector3(ProjectileOutPosition.x, CharacterPosition.y, ProjectileOutPosition.z);
+            Vector3 fixedProjectilePos = new Vector3(ProjectileOutPosition.x, ProjectileOutPosition.y, CharacterPosition.z);
 
             // WIP - needs to modify to make self-damage possible
             var spawnedProjectile = Instantiate(_spawnedProjectile, fixedProjectilePos, new Quaternion());
@@ -208,6 +211,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 
                 _audio.PlayOneShot(_fallDamageSound);
                 AnyDamage(damage);
+                _lastFallDistanceWithDamage = _fallDistance;
             }
 
             //  Reset
