@@ -184,24 +184,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cae8dea7fbc3a949b7bece77dd28bbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _life: 10
-  _speed: 0.45
-  _jumpForce: 13
-  _fallSpeedModifier: 0.35
-  _fallMaxSpeed: 35
-  _fallDamageMinDistance: 6.5
-  _fallDamageMultiplier: 1
-  _fallMinVelocityTolerance: 0.25
-  _spawnedProjectile: {fileID: 4453694735902730189, guid: 99fd2558c783fdb4a8530b86f3701b28, type: 3}
+  _characterData: {fileID: 11400000, guid: d87944f724678f44b9d7458651487730, type: 2}
   _weaponReference: {fileID: 1011929385765942717}
   _projectileOutReference: {fileID: 5564357932960066980}
-  _projectileSound: {fileID: 8300000, guid: 54526597f69b0a841a8c12399e0df529, type: 3}
   _uiObjects: {fileID: 3154905522155154108}
   _nameTextRef: {fileID: 4637371315955111417}
   _lifeBar: {fileID: 2147716704200056727}
-  _deathSound: {fileID: 8300000, guid: dea7927385620b74d8e633ae608c7be6, type: 3}
-  _fallDamageSound: {fileID: 8300000, guid: 6f6d26b7bf967ea438d9dccfd14820a0, type: 3}
-  _jumpSound: {fileID: 8300000, guid: 7ff01ac866b70b74c92ab33896562d68, type: 3}
   _isInAir: 0
   _isFalling: 0
   _lastFallDistanceWithDamage: 0

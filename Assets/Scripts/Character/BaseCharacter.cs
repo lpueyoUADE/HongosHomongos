@@ -4,33 +4,17 @@ using UnityEngine.UI;
 
 public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 {
-    [Header("Character settings")]
-    [SerializeField] private float _life = 10;
-    [SerializeField, Range(0.1f, 2)] private float _speed = 0.65f;
-    [SerializeField, Range(0, 20)] private float _jumpForce = 12;
-
-    [Header("Falling settings")]
-    [SerializeField, Range(0, 1)] private float _fallSpeedModifier = 0.45f;
-    [SerializeField, Range(25, 50)] private float _fallMaxSpeed = 35;
-    [SerializeField, Range(0.5f, 10)] private float _fallDamageMinDistance = 6;
-    [SerializeField, Range(0.1f, 10)] private float _fallDamageMultiplier = 4;
-    [SerializeField, Range(0.1f, 0.5f)] private float _fallMinVelocityTolerance = 0.25f;
+    [Header("Character data")]
+    [SerializeField] private CharacterData _characterData;
 
     [Header("Projectile settings")]
-    [SerializeField] private BaseProjectile _spawnedProjectile;
     [SerializeField] private GameObject _weaponReference;
     [SerializeField] private GameObject _projectileOutReference;
-    [SerializeField] private AudioClip _projectileSound;
 
     [Header("UI Stuff")]
     [SerializeField] private GameObject _uiObjects;
     [SerializeField] private TextMeshProUGUI _nameTextRef;
     [SerializeField] private Image _lifeBar;
-
-    [Header("Sounds")]
-    [SerializeField] private AudioClip _deathSound;
-    [SerializeField] private AudioClip _fallDamageSound;
-    [SerializeField] private AudioClip _jumpSound;
 
     [Header("Status")]
     public bool _isInAir;
@@ -38,8 +22,9 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     [Tooltip("Not used - only for show.")] public float _lastFallDistanceWithDamage;
 
     // Values
-    private bool _alreadyDead;
+    private float _currentLife = 1;
     private float _initialLife;
+    private bool _alreadyDead;
     private AudioSource _audio;
     private BaseCharacterControl _controlsScript;
     private CapsuleCollider _baseCollider;
@@ -48,13 +33,15 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     private float _fallStartingY;
     private float _fallDistance;
 
-    public GameObject WeaponReference => _weaponReference;
-    virtual public bool IsDead => _life <= 0;
+    virtual public bool IsDead => _currentLife <= 0;
     public bool CanJump => !_isInAir && !_isFalling;
     public bool CharacterInControl => _inControl;
     public Vector3 CharacterForward => transform.right;
     public Vector3 CharacterUp => transform.up;
     public Vector3 CharacterPosition => transform.position;
+    public CharacterData CharacterData => _characterData;
+
+    public GameObject WeaponReference => _weaponReference;
     public Vector3 AimingDirection => _projectileOutReference.transform.right;
     public Vector3 ProjectileOutPosition => _projectileOutReference.transform.position;
 
@@ -65,7 +52,8 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
         _controlsScript = GetComponent<BaseCharacterControl>();
         _baseCollider = GetComponent<CapsuleCollider>();
 
-        _initialLife = _life;
+        _currentLife = CharacterData.Life;
+        _initialLife = _currentLife;
     }
 
     public virtual void Update()
@@ -85,19 +73,19 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 
     virtual public void AnyDamage(float amount)
     {
-        _life -= amount;
+        _currentLife -= amount;
         OnDamage();
     }
 
     virtual public void AnyDamage(int amount)
     {
-        _life -= amount;
+        _currentLife -= amount;
         OnDamage();
     }
 
     virtual public void OnDamage()
     {
-        _lifeBar.fillAmount = (_life / _initialLife) * 1;
+        _lifeBar.fillAmount = (_currentLife / _initialLife) * 1;
         if (CharacterInControl) GameTurnEvents.OnTurnEnd?.Invoke(null);
 
         if (IsDead) OnDeath();
@@ -108,7 +96,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
         if (_alreadyDead) return;
 
         _uiObjects.SetActive(false);
-        _audio.PlayOneShot(_deathSound);
+        _audio.PlayOneShot(CharacterData.DeathSound);
         GameManagerEvents.OnCharacterDeath?.Invoke(this);
         _alreadyDead = true;
     }
@@ -128,7 +116,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 
     virtual public void Move(Vector3 direction, ForceMode mode = ForceMode.Impulse)
     {
-        _rBody.AddForce(direction * _speed / 2, mode);
+        _rBody.AddForce(direction * CharacterData.Speed / 2, mode);
     }
 
     virtual public void Aim(Vector3 direction)
@@ -151,7 +139,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
             Vector3 fixedProjectilePos = new Vector3(ProjectileOutPosition.x, ProjectileOutPosition.y, CharacterPosition.z);
 
             // WIP - needs to modify to make self-damage possible
-            var spawnedProjectile = Instantiate(_spawnedProjectile, fixedProjectilePos, new Quaternion());
+            var spawnedProjectile = Instantiate(CharacterData.Projectile, fixedProjectilePos, new Quaternion());
             SphereCollider collider = spawnedProjectile.GetComponent<SphereCollider>();
             Physics.IgnoreCollision(_baseCollider, collider, true);
 
@@ -159,7 +147,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
             proData?.UpdateDirection(_projectileOutReference.transform.right);
             proData?.UpdateSpeedMultiplier(force);
 
-            _audio.PlayOneShot(_projectileSound);
+            _audio.PlayOneShot(CharacterData.ProjectileSound);
             GameTurnEvents.OnTurnEnd?.Invoke(proData);
         }
 
@@ -173,8 +161,8 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     {
         if (!CanJump) return;
 
-        _audio.PlayOneShot(_jumpSound);
-        _rBody.AddForce(transform.up * _jumpForce, ForceMode.Impulse);
+        _audio.PlayOneShot(CharacterData.JumpSound);
+        _rBody.AddForce(transform.up * CharacterData.JumpForce, ForceMode.Impulse);
         _fallDistance = 0;
     }
 
@@ -182,7 +170,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     {
         if (!_isInAir) return;
 
-        _audio.PlayOneShot(_jumpSound);
+        _audio.PlayOneShot(CharacterData.JumpSound);
         _rBody.AddForce(transform.up * jumpForce, ForceMode.Impulse);
         _fallDistance = 0;
     }
@@ -191,8 +179,8 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     {
         // Main CanJump conditions
         float yVelocity = _rBody.velocity.y;
-        _isInAir = yVelocity > _fallMinVelocityTolerance || yVelocity < -_fallMinVelocityTolerance;
-        _isFalling = yVelocity < -_fallMinVelocityTolerance;
+        _isInAir = yVelocity > CharacterData.FallMinVelocityTolerance || yVelocity < -CharacterData.FallMinVelocityTolerance;
+        _isFalling = yVelocity < -CharacterData.FallMinVelocityTolerance;
 
         // If falling, save Y position
         if (_isFalling && _fallStartingY == 0)  _fallStartingY = CharacterPosition.y;
@@ -207,12 +195,12 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
         // Check if fall damage applies
         if (!_isFalling && _fallDistance > 0)
         {
-            if (_fallDistance > _fallDamageMinDistance)
+            if (_fallDistance > CharacterData.FallDamageMinDistance)
             {
-                float extraDistance = _fallDistance - _fallDamageMinDistance;
-                float damage = _fallDamageMultiplier * extraDistance;
+                float extraDistance = _fallDistance - CharacterData.FallDamageMinDistance;
+                float damage = CharacterData.FallDamageMultiplier * extraDistance;
 
-                _audio.PlayOneShot(_fallDamageSound);
+                _audio.PlayOneShot(CharacterData.FallDamageSound);
                 AnyDamage(damage);
                 _lastFallDistanceWithDamage = _fallDistance;
             }
@@ -229,13 +217,13 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
         Vector3 velocity = _rBody.velocity;
 
         // Add "gravity" when the character is not on ground.
-        if (_isInAir) velocity -= new Vector3(0, _fallSpeedModifier);
+        if (_isInAir) velocity -= new Vector3(0, CharacterData.FallSpeedModifier);
 
         // If falling, add more "gravity" and start fall damage checks
-        if (_isFalling) velocity -= new Vector3(0, _fallSpeedModifier);
+        if (_isFalling) velocity -= new Vector3(0, CharacterData.FallSpeedModifier);
 
         // Don't exceed this fall speed
-        if (velocity.y < -_fallMaxSpeed) velocity.y = -_fallMaxSpeed;
+        if (velocity.y < -CharacterData.FallMaxSpeed) velocity.y = -CharacterData.FallMaxSpeed;
 
         // Set final velocity
         _rBody.velocity = velocity;
