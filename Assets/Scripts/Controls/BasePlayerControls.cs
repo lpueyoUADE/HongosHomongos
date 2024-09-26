@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class BasePlayerControls : BaseCharacterControl
@@ -8,6 +6,7 @@ public class BasePlayerControls : BaseCharacterControl
 
     public Vector3 InputDir => new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
     public bool InputChargeWeapon => Input.GetButton("Jump");
+    public bool InputJump => Input.GetKeyDown(KeyCode.LeftControl);
 
     private void OnDisable()
     {
@@ -32,10 +31,8 @@ public class BasePlayerControls : BaseCharacterControl
             Character.ChargeWeapon();
         }
 
-        if (Character.CharacterInControl && _isChargingWeapon && !InputChargeWeapon)
-        {
-            Character.ChargeWeaponStop();
-        }
+        if (_isChargingWeapon && !InputChargeWeapon) Character.ChargeWeaponStop();
+        if (InputJump) Character.Jump();
     }
 
     private void FixedUpdate()

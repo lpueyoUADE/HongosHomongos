@@ -50,9 +50,9 @@ MonoBehaviour:
   _maxShootTimeWait: 2
   _intentionalIdleChances: 5
   _swapTargetChances: 15
-  _moveTowardsChances: 8
-  _moveAwayChances: 8
-  _aimChances: 10
+  _moveTowardsChances: 12
+  _moveAwayChances: 10
+  _aimChances: 8
   _aiCharacters: []
   _selectedEnemy: {fileID: 0}
   _isAiTurn: 0

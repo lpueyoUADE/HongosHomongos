@@ -47,6 +47,7 @@ public class CameraController : MonoBehaviour
 
     private void UpdateObjectToFollow(GameObject newObject)
     {
+        if (newObject == null) return;
         _currentTarget = newObject;
     }
 }

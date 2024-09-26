@@ -583,7 +583,7 @@ Rigidbody:
   serializedVersion: 4
   m_Mass: 1
   m_Drag: 3
-  m_AngularDrag: 0.05
+  m_AngularDrag: 1
   m_CenterOfMass: {x: 0, y: 0, z: 0}
   m_InertiaTensor: {x: 1, y: 1, z: 1}
   m_InertiaRotation: {x: 0, y: 0, z: 0, w: 1}
@@ -598,7 +598,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 112
+  m_Constraints: 120
   m_CollisionDetection: 1
 --- !u!114 &8640528283629015980
 MonoBehaviour:
@@ -613,7 +613,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _maxLife: 5
-  _speed: 0.4
+  _speed: 0.5
+  _jumpForce: 13
+  _fallSpeedModifier: 0.35
+  _fallMaxSpeed: 35
+  _fallDamageMinDistance: 4.5
+  _fallDamageMultiplier: 1
+  _fallMinVelocityTolerance: 0.25
   _spawnedProjectile: {fileID: 4453694735902730189, guid: 99fd2558c783fdb4a8530b86f3701b28, type: 3}
   _weaponReference: {fileID: 5211081869495712368}
   _projectileOutReference: {fileID: 1093563061575511995}
@@ -622,6 +628,10 @@ MonoBehaviour:
   _nameTextRef: {fileID: 3635456510200750918}
   _lifeBar: {fileID: 5599481768290087143}
   _deathSound: {fileID: 8300000, guid: dea7927385620b74d8e633ae608c7be6, type: 3}
+  _fallDamageSound: {fileID: 8300000, guid: 6f6d26b7bf967ea438d9dccfd14820a0, type: 3}
+  _isInAir: 0
+  _isFalling: 0
+  _fallDistance: 0
 --- !u!114 &1326555253612581497
 MonoBehaviour:
   m_ObjectHideFlags: 0

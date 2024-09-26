@@ -143,7 +143,7 @@ public class AIManager : MonoBehaviour
 
         var randListedNodes = new Dictionary<StatesEnum, ITreeNode>
         {
-            [StatesEnum.IntentionalIdle] = intentionalidle,
+            [StatesEnum.IntentionalIdle] =  intentionalidle,
             [StatesEnum.SwapTarget] =       swaptarget,
             [StatesEnum.MoveTowards] =      movetowards,
             [StatesEnum.MoveAway] =         moveaway,
@@ -205,17 +205,15 @@ public class AIManager : MonoBehaviour
     {
         if (!IsAITurn || QuestionIsChargingShot() || QuestionIsAiming()) return;
 
-# if UNITY_EDITOR
+        _selectedEnemy = GameManager.GetRandomPlayerCharacterAlive();
+#if UNITY_EDITOR
         TestAIStates.OnUpdateAIDebug?.Invoke($"Swapping enemy.");
 # endif
-
-        _selectedEnemy = GameManager.GetRandomPlayerCharacterAlive();
     }
 
     public void StartTimer(StatesEnum type)
     {
         if (!IsAITurn || AnyTimerRunning()) return;
-
         float newTime = Random.Range(_minActionTime, _minActionTime + _maxActionTime);
 
         switch (type)

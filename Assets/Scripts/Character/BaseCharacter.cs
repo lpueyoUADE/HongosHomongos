@@ -6,7 +6,13 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 {
     [Header("Character settings")]
     [SerializeField] private float _maxLife = 10;
-    [SerializeField] private float _speed = 3;
+    [SerializeField, Range(0.1f, 2)] private float _speed = 0.65f;
+    [SerializeField, Range(0, 20)] private float _jumpForce = 12;
+    [SerializeField, Range(0, 1)] private float _fallSpeedModifier = 0.45f;
+    [SerializeField, Range(25, 50)] private float _fallMaxSpeed = 35;
+    [SerializeField, Range(0.5f, 5)] private float _fallDamageMinDistance = 6;
+    [SerializeField, Range(0.1f, 10)] private float _fallDamageMultiplier = 4;
+    [SerializeField, Range(0.1f, 0.5f)] private float _fallMinVelocityTolerance = 0.25f;
 
     [Header("Projectile settings")]
     [SerializeField] private BaseProjectile _spawnedProjectile;
@@ -21,6 +27,12 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 
     [Header("Others")]
     [SerializeField] private AudioClip _deathSound;
+    [SerializeField] private AudioClip _fallDamageSound;
+
+    [Header("Status")]
+    public bool _isInAir;
+    public bool _isFalling;
+    public float _fallDistance;
 
     // Values
     private bool _alreadyDead;
@@ -30,10 +42,11 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     private CapsuleCollider _baseCollider;
     private Rigidbody _rBody;
     private bool _inControl = false;
-
+    private float _fallStartingY;
 
     public GameObject WeaponReference => _weaponReference;
     virtual public bool IsDead => _maxLife <= 0;
+    public bool CanJump => !_isInAir && !_isFalling;
     public bool CharacterInControl => _inControl;
     public Vector3 CharacterForward => transform.right;
     public Vector3 CharacterUp => transform.up;
@@ -49,6 +62,21 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
         _baseCollider = GetComponent<CapsuleCollider>();
 
         _initialLife = _maxLife;
+    }
+
+    public virtual void Update()
+    {
+        UpdateFall();
+    }
+
+    public virtual void FixedUpdate()
+    {
+        LateUpdateFall();
+    }
+
+    public void UpdateName(string newName)
+    {
+        _nameTextRef.text = newName;
     }
 
     virtual public void AnyDamage(float amount)
@@ -116,8 +144,10 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
         // If we are in control then OnTurnEnd True will make camera follow the spawned projectile.
         if (CharacterInControl)
         {
+            Vector3 fixedProjectilePos = new Vector3(ProjectileOutPosition.x, CharacterPosition.y, ProjectileOutPosition.z);
+
             // WIP - needs to modify to make self-damage possible
-            var spawnedProjectile = Instantiate(_spawnedProjectile, _weaponReference.transform.position, new Quaternion());
+            var spawnedProjectile = Instantiate(_spawnedProjectile, fixedProjectilePos, new Quaternion());
             SphereCollider collider = spawnedProjectile.GetComponent<SphereCollider>();
             Physics.IgnoreCollision(_baseCollider, collider, true);
 
@@ -129,14 +159,78 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
             GameTurnEvents.OnTurnEnd?.Invoke(proData);
         }
 
-        else
+        else // If no projectile is spawned then just end turn.
             GameTurnEvents.OnTurnEnd?.Invoke(null);
 
         InGameUIEvents.OnChargingWeaponBar?.Invoke(false);
     }
 
-    public void UpdateName(string newName)
+    virtual public void Jump()
     {
-        _nameTextRef.text = newName;
+        if (!CanJump) return;
+
+        _rBody.AddForce(transform.up * _jumpForce, ForceMode.Impulse);
+        _fallDistance = 0;
+    }
+
+    virtual public void Jump(float jumpForce)
+    {
+        if (!_isInAir) return;
+
+        _rBody.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        _fallDistance = 0;
+    }
+
+    virtual public void UpdateFall()
+    {
+        // Main CanJump conditions
+        float yVelocity = _rBody.velocity.y;
+        _isInAir = yVelocity > _fallMinVelocityTolerance || yVelocity < -_fallMinVelocityTolerance;
+        _isFalling = yVelocity < -_fallMinVelocityTolerance;
+
+        // If falling, save Y position
+        if (_isFalling && _fallStartingY == 0)  _fallStartingY = CharacterPosition.y;
+
+        // When falling ends, get distance with ending Y point
+        if (!_isFalling && _fallStartingY != 0)
+        {
+            _fallDistance = _fallStartingY - CharacterPosition.y;
+            _fallStartingY = 0;
+        }
+
+        // Check if fall damage applies
+        if (!_isFalling && _fallDistance > 0)
+        {
+            if (_fallDistance > _fallDamageMinDistance)
+            {
+                float extraDistance = _fallDistance - _fallDamageMinDistance;
+                float damage = _fallDamageMultiplier * extraDistance;
+
+                _audio.PlayOneShot(_fallDamageSound);
+                AnyDamage(damage);
+            }
+
+            //  Reset
+            _fallDistance = 0;
+        }
+    }
+
+    virtual public void LateUpdateFall()
+    {
+        if (!_isInAir || !_isFalling) return;
+
+        Vector3 velocity = _rBody.velocity;
+
+        // Add "gravity" when the character is not on ground.
+        if (_isInAir) velocity -= new Vector3(0, _fallSpeedModifier);
+
+        // If falling, add more "gravity" and start fall damage checks
+        if (_isFalling) velocity -= new Vector3(0, _fallSpeedModifier);
+
+        // Don't exceed this fall speed
+        if (velocity.y < -_fallMaxSpeed) velocity.y = -_fallMaxSpeed;
+
+        // Set final velocity
+        _rBody.velocity = velocity;
     }
 }
