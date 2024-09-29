@@ -1,12 +1,30 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Node : MonoBehaviour
 {
-    public List<Node> _neighbours = new List<Node>();
+    public List<Node> _neighbours = new();
+    public List<GameObject> _charactersInside = new();
     
     public Vector3 NodePosition => transform.position;
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (!other.CompareTag("Character")) return;
+        _charactersInside.Add(other.gameObject);
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!other.CompareTag("Character")) return;
+        _charactersInside.Remove(other.gameObject);
+    }
+
+    public Vector3 GetCharacterPosition(GameObject character)
+    {
+        if (_charactersInside.Contains(character)) return _charactersInside[_charactersInside.IndexOf(character)].transform.position;
+        else return Vector3.zero;
+    }
 
 #if UNITY_EDITOR
     public LayerMask _nodesMask;
@@ -41,8 +59,8 @@ public class Node : MonoBehaviour
         _neighbours.Clear();
         GetNeighbour(Vector3.right);
         GetNeighbour(Vector3.left);
-        GetNeighbour(Vector3.forward);
-        GetNeighbour(Vector3.back);
+        GetNeighbour(Vector3.up);
+        GetNeighbour(Vector3.down);
         Debug.Log($"{gameObject.name}: Clearing neighbours list - new count: {_neighbours.Count}");
     }
 
