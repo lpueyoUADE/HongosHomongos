@@ -5013,11 +5013,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8de3e83cbc0c0314388d097bacb1a88f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _nodeMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
   _nearNodeRadius: 3
   _targetNode: {fileID: 0}
+  _nodeMask:
+    serializedVersion: 2
+    m_Bits: 32768
   _refreshOnStartIfEditor: 1
 --- !u!1001 &1506836409
 PrefabInstance:
