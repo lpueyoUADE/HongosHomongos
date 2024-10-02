@@ -14,11 +14,6 @@ public class PathfindingEvents
         _gridManager = gridManager;
     }
 
-    public static List<Node> GetPath(Vector3 startingPoint, Node objective)
-    {
-        return _gridManager.RunAStarPlus(startingPoint, objective);
-    }
-
     public static List<Node> GetPath(Vector3 startingPoint, Transform objective)
     {
         return _gridManager.RunAStarPlus(startingPoint, objective);
@@ -27,5 +22,20 @@ public class PathfindingEvents
     public static List<Node> GetPath(Transform startingObject, Transform objective) 
     { 
         return _gridManager.RunAStarPlus(startingObject, objective);    
+    }
+
+    public static List<Node> GetRandomReachableNodes(GameObject startingObject)
+    {
+        return _gridManager.GetReachableNodes(startingObject);
+    }
+
+    public static List<Node> GetRandomReachableNodesAwayFrom(GameObject startingObject, GameObject evadeObject, float minDistance = 25)
+    {
+        return _gridManager.GetReachableNodesInEvadingDistance(startingObject, evadeObject, minDistance);
+    }
+
+    public static Node GetRandomNode()
+    {
+        return _gridManager.RandomNode;
     }
 }

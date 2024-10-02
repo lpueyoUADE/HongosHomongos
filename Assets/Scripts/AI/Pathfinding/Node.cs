@@ -14,7 +14,7 @@ public class Node : MonoBehaviour
     public Vector3 NodePosition => transform.position;
     public bool NodeJump => _isJumpNode;
     public bool NodeDrop => _isDropNode;
-
+    public List<Node> Neighbours => _neighbours;
 
     private void Awake() 
     {

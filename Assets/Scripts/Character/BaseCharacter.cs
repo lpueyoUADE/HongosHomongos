@@ -68,6 +68,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     public virtual void FixedUpdate()
     {
         LateUpdateFall();
+        LateUpdateRotation();
     }
 
     public void UpdateName(string newName)
@@ -237,5 +238,12 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 
         // Set final velocity
         _rBody.velocity = velocity;
+    }
+
+    virtual public void LateUpdateRotation()
+    {
+        if (_rBody.velocity.x < 0) transform.rotation = new Quaternion(0, 90, 0, 0);
+        else if (_rBody.velocity.x > 0) transform.rotation = new Quaternion(0, 0, 0, 0);
+
     }
 }

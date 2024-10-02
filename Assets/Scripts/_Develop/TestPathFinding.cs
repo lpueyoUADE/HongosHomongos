@@ -28,11 +28,6 @@ public class TestPathFinding : MonoBehaviour
     [Range(.01f, .5f)] public float _maxJumpDistance = 0.3f;
     [Range(0.1f, 4)] public float _nextFloorHeightMinDistance = 1;
 
-    /*
-    public float _floorDetectionMinDistanceDivider = 1.5f;
-    [Tooltip("How hight/low a platform/floor can be to be detected")] public float _floorDetectionHeightDistanceDivisor = 3;
-    [Tooltip("Divide jump force by this to get an estimate of how far the jump can reach in a straight line.")] public float _jumpDistanceDivider = 3.25f;
-    [Tooltip("How high a platform can be to this character to be able to jump to it.")] public float _platformHeightDivider = 12;*/
     public LayerMask _floorMask;
     public bool _fallDetected = false;
     public bool _floorToJumpDetected = false;
@@ -44,21 +39,35 @@ public class TestPathFinding : MonoBehaviour
         _aiValues = GetComponent<AICharacterValues>();
     }
 
-    public void MakeNewPath()
+    public void MakeNewPathTowards()
     {
+        _travelFinished = true;
         _path = PathfindingEvents.GetPath(_testingCharacter.transform, _target.transform);
+    }
+
+    public void MakeNewPathAway()
+    {
+        _travelFinished = true;
+        _path = PathfindingEvents.GetRandomReachableNodesAwayFrom(this.gameObject, _target.gameObject, _minAwayDistance);
     }
 
     public void Walk(bool towards)
     {
+        _travelFinished = true;
+
+        if (_path.Count == 0) return;
         if (towards)
         {
             Debug.Log("Walking towards...");
             SetWayPoints(_path);
-            if (_nodesToTravel.Count > 0) _travelFinished = false;
-            return;
+        }
+        else
+        {
+            Debug.Log("Walking away...");
+            SetWayPoints(_path);
         }
 
+        if (_nodesToTravel.Count > 0) _travelFinished = false;        
     }
 
     public void SetWayPoints(List<Node> newPoints)
@@ -84,15 +93,17 @@ public class TestPathFinding : MonoBehaviour
                 Debug.DrawLine(_path[i].NodePosition, _path[i + 1].NodePosition, Color.red);
             }
         }
+
+        if (_travelFinished || _path.Count == 0) return;
         
         if (!_travelFinished && _nodesToTravel.Count > 0)
         {
             if (_aiValues.OnNodeJump)
             {
                 Vector3 pos = _testingCharacter.CharacterPosition;
-                Vector3 forwardFallDetect = pos + Vector3.left * _fallDetectionOriginMinDistance;
+                Vector3 forwardFallDetect = pos + _testingCharacter.CharacterForward * _fallDetectionOriginMinDistance;
                 Vector3 fallDetect = forwardFallDetect + Vector3.down * _fallDetectionVerticalMinDistance;
-                Vector3 forwardJump = forwardFallDetect + _maxJumpDistance * _testingCharacter.CharacterData.JumpForce * Vector3.left;
+                Vector3 forwardJump = forwardFallDetect + _maxJumpDistance * _testingCharacter.CharacterData.JumpForce * _testingCharacter.CharacterForward;
 
                 Debug.DrawLine(pos, forwardFallDetect, Color.red);
                 Debug.DrawLine(forwardFallDetect, fallDetect, Color.yellow);
@@ -108,8 +119,6 @@ public class TestPathFinding : MonoBehaviour
                 if (_fallDetected && _floorToJumpDetected && !_travelFinished) _testingCharacter.Jump();
             }
         }
-
-        if (_travelFinished) return;
 
         var point = _nodesToTravel[_travelIndex];
         Vector3 direction = point.NodePosition - transform.position;

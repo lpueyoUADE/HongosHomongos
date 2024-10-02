@@ -7,13 +7,23 @@ public class TestPathFindingButtons : MonoBehaviour
 {    
     public TestPathFinding _aiController;
 
-    public void TestPath()
+    public void MakeTowardPath()
     {
-        _aiController.MakeNewPath();
+        _aiController.MakeNewPathTowards();
+    }
+
+    public void MakeAwayPath()
+    {
+        _aiController.MakeNewPathAway();
     }
 
     public void WalkTowards()
     {
         _aiController.Walk(true);
+    }
+
+        public void WalkAway()
+    {
+        _aiController.Walk(false);
     }
 }
