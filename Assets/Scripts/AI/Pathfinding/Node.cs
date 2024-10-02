@@ -4,25 +4,39 @@ using UnityEngine;
 public class Node : MonoBehaviour
 {
     [Header("Settings")]
-    public bool _isJumpNode = false;
-    public bool _isDropNode = false;
+    [SerializeField] private bool _isJumpNode = false;
+    [SerializeField] private bool _isDropNode = false;
 
     [Header("Status")]
     public List<Node> _neighbours = new();
     public List<GameObject> _charactersInside = new();
     
     public Vector3 NodePosition => transform.position;
+    public bool NodeJump => _isJumpNode;
+    public bool NodeDrop => _isDropNode;
+
+
+    private void Awake() 
+    {
+        if (_isJumpNode) _isDropNode = false;
+    }
 
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Character")) return;
         _charactersInside.Add(other.gameObject);
+
+        if (_isJumpNode) PathfindingEvents.OnNodeJumpUpdate?.Invoke(other.gameObject, true);
+        if (_isDropNode) PathfindingEvents.OnNodeDropUpdate?.Invoke(other.gameObject, true);
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Character")) return;
         _charactersInside.Remove(other.gameObject);
+
+        if (_isJumpNode) PathfindingEvents.OnNodeJumpUpdate?.Invoke(other.gameObject, false);
+        if (_isDropNode) PathfindingEvents.OnNodeDropUpdate?.Invoke(other.gameObject, false);
     }
 
     public Vector3 GetCharacterPosition(GameObject character)

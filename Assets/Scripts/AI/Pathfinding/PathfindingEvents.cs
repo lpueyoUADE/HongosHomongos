@@ -6,6 +6,8 @@ using UnityEngine;
 public class PathfindingEvents
 {
     private static NodeGridManager _gridManager;
+    public static Action<GameObject, bool> OnNodeJumpUpdate;
+    public static Action<GameObject, bool> OnNodeDropUpdate;
 
     public static void UpdateGridManager(NodeGridManager gridManager)
     {

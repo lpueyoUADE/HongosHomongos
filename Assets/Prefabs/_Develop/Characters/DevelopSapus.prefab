@@ -542,6 +542,7 @@ GameObject:
   - component: {fileID: 2978679801073472724}
   - component: {fileID: 7874213218477846514}
   - component: {fileID: 8640528283629015980}
+  - component: {fileID: 5462053752324798439}
   - component: {fileID: 1326555253612581497}
   - component: {fileID: 4017251833492468005}
   m_Layer: 3
@@ -695,6 +696,18 @@ MonoBehaviour:
   _isInAir: 0
   _isFalling: 0
   _lastFallDistanceWithDamage: 0
+--- !u!114 &5462053752324798439
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7729561722066762102}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f517551b4738f52458b411675a4a9f1c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1326555253612581497
 MonoBehaviour:
   m_ObjectHideFlags: 0

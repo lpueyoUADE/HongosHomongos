@@ -6,9 +6,7 @@ public class TestPathFinding : MonoBehaviour
     public BaseCharacter _target;
     private BaseCharacter _testingCharacter;
     private BaseAIControls _controlScript;
-
-    public BaseCharacter AICharacter => _testingCharacter;
-
+    private AICharacterValues _aiValues;
 
     public List<Node> _path = new();
     
@@ -20,15 +18,21 @@ public class TestPathFinding : MonoBehaviour
 
     [Header("Path results")]
     public Vector3 _currentDirection = Vector3.zero;
-    public List<Vector3> _positionsToTravel = new();
+    public List<Node> _nodesToTravel = new();
     public int _travelIndex = 0;
     public bool _travelFinished = true;
 
     [Header("Jump stuff")]
+    [Range(0.1f, 2)] public float _fallDetectionOriginMinDistance = 1;
+    [Range(0.1f, 5)] public float _fallDetectionVerticalMinDistance = 1;
+    [Range(.01f, .5f)] public float _maxJumpDistance = 0.3f;
+    [Range(0.1f, 4)] public float _nextFloorHeightMinDistance = 1;
+
+    /*
     public float _floorDetectionMinDistanceDivider = 1.5f;
     [Tooltip("How hight/low a platform/floor can be to be detected")] public float _floorDetectionHeightDistanceDivisor = 3;
     [Tooltip("Divide jump force by this to get an estimate of how far the jump can reach in a straight line.")] public float _jumpDistanceDivider = 3.25f;
-    [Tooltip("How high a platform can be to this character to be able to jump to it.")] public float _platformHeightDivider = 12;
+    [Tooltip("How high a platform can be to this character to be able to jump to it.")] public float _platformHeightDivider = 12;*/
     public LayerMask _floorMask;
     public bool _fallDetected = false;
     public bool _floorToJumpDetected = false;
@@ -37,6 +41,7 @@ public class TestPathFinding : MonoBehaviour
     {
         _testingCharacter = GetComponent<BaseCharacter>();
         _controlScript = GetComponent<BaseAIControls>();
+        _aiValues = GetComponent<AICharacterValues>();
     }
 
     public void MakeNewPath()
@@ -50,24 +55,10 @@ public class TestPathFinding : MonoBehaviour
         {
             Debug.Log("Walking towards...");
             SetWayPoints(_path);
+            if (_nodesToTravel.Count > 0) _travelFinished = false;
             return;
         }
 
-    }
-
-    public void SetWayPoints(List<Vector3> newPoints)
-    {
-        if (newPoints.Count == 0)
-        {
-            _travelFinished = true;
-            return;
-        }
-
-        _travelIndex = 0;
-        _positionsToTravel = newPoints;
-        // fix height required?
-
-        _travelFinished = false;
     }
 
     public void SetWayPoints(List<Node> newPoints)
@@ -78,11 +69,8 @@ public class TestPathFinding : MonoBehaviour
             return;
         }
 
-        var list = new List<Vector3>();
-
-        for (int i = 0; i < newPoints.Count; i++) list.Add(newPoints[i].NodePosition);
+        _nodesToTravel = newPoints;
         // add target location at the end ?
-        SetWayPoints(list);
     }
 
 
@@ -96,38 +84,41 @@ public class TestPathFinding : MonoBehaviour
                 Debug.DrawLine(_path[i].NodePosition, _path[i + 1].NodePosition, Color.red);
             }
         }
+        
+        if (!_travelFinished && _nodesToTravel.Count > 0)
+        {
+            if (_aiValues.OnNodeJump)
+            {
+                Vector3 pos = _testingCharacter.CharacterPosition;
+                Vector3 forwardFallDetect = pos + Vector3.left * _fallDetectionOriginMinDistance;
+                Vector3 fallDetect = forwardFallDetect + Vector3.down * _fallDetectionVerticalMinDistance;
+                Vector3 forwardJump = forwardFallDetect + _maxJumpDistance * _testingCharacter.CharacterData.JumpForce * Vector3.left;
 
+                Debug.DrawLine(pos, forwardFallDetect, Color.red);
+                Debug.DrawLine(forwardFallDetect, fallDetect, Color.yellow);
+                Debug.DrawLine(forwardFallDetect, forwardJump, Color.blue);
+                Debug.DrawLine(forwardJump, forwardJump + Vector3.down * _nextFloorHeightMinDistance, Color.green);
+                Debug.DrawLine(forwardJump, forwardJump + Vector3.up * _nextFloorHeightMinDistance, Color.green);
 
-        Vector3 charPos = _testingCharacter.CharacterPosition;
-        Vector3 charForward = _testingCharacter.CharacterForward / _floorDetectionMinDistanceDivider;
-        Vector3 charDown = -_testingCharacter.CharacterUp;
+                _fallDetected = !Physics.Raycast(forwardFallDetect, Vector3.down, _fallDetectionVerticalMinDistance, _floorMask);
+                _floorToJumpDetected =  Physics.Raycast(forwardJump, Vector3.down, _nextFloorHeightMinDistance, _floorMask) ||
+                                        Physics.Raycast(forwardJump + Vector3.up, Vector3.down, _nextFloorHeightMinDistance, _floorMask) ||
+                                        Physics.Raycast(forwardJump + Vector3.down, Vector3.up, _nextFloorHeightMinDistance, _floorMask);
 
-        float jumpDistace = _testingCharacter.CharacterData.JumpForce / _jumpDistanceDivider;
-        float jumpDistanceToAnotherPlatform = _testingCharacter.CharacterData.JumpForce / _platformHeightDivider;
-        float fallDistance = _testingCharacter.CharacterData.FallDamageMinDistance;        
+                if (_fallDetected && _floorToJumpDetected && !_travelFinished) _testingCharacter.Jump();
+            }
+        }
 
-        Vector3 originLine = _testingCharacter.CharacterPosition + -charForward;
-        Vector3 originLineJumpDistance = _testingCharacter.CharacterPosition + -(charForward * jumpDistace);
-
-        // Draw some lines...
-        Debug.DrawLine(originLine, originLine + charDown * 2, Color.blue);
-        Debug.DrawLine(originLineJumpDistance + _testingCharacter.CharacterUp * jumpDistanceToAnotherPlatform, originLineJumpDistance + charDown * 2, Color.yellow);
-
-        _fallDetected = !Physics.Raycast(originLine, charDown, _testingCharacter.CharacterData.FallDamageMinDistance, _floorMask);
-        _floorToJumpDetected = Physics.Raycast(originLineJumpDistance + _testingCharacter.CharacterUp * jumpDistanceToAnotherPlatform, charDown, _testingCharacter.CharacterData.FallDamageMinDistance / _floorDetectionHeightDistanceDivisor, _floorMask)
-        || Physics.Raycast(originLineJumpDistance - _testingCharacter.CharacterUp * jumpDistanceToAnotherPlatform, -charDown, _testingCharacter.CharacterData.FallDamageMinDistance / _floorDetectionHeightDistanceDivisor, _floorMask);
-
-        if (_fallDetected && _floorToJumpDetected && !_travelFinished) _testingCharacter.Jump();
         if (_travelFinished) return;
 
-        var point = _positionsToTravel[_travelIndex];
-        Vector3 direction = point - transform.position;
+        var point = _nodesToTravel[_travelIndex];
+        Vector3 direction = point.NodePosition - transform.position;
         direction.y = 0; // Remove height
         _currentDirection = direction;
 
         if (direction.magnitude < _travelPointDistanceTolerance)
         {
-            if (_travelIndex + 1 < _positionsToTravel.Count) _travelIndex++;
+            if (_travelIndex + 1 < _nodesToTravel.Count) _travelIndex++;
             else
             {
                 _travelFinished = true;
