@@ -3,6 +3,11 @@ using UnityEngine;
 
 public class Node : MonoBehaviour
 {
+    [Header("Settings")]
+    public bool _isJumpNode = false;
+    public bool _isDropNode = false;
+
+    [Header("Status")]
     public List<Node> _neighbours = new();
     public List<GameObject> _charactersInside = new();
     

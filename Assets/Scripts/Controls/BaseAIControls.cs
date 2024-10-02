@@ -14,14 +14,4 @@ public class BaseAIControls : BaseCharacterControl
     {
         AIManagerEvents.OnCharacterControlUpdate?.Invoke(this, false);
     }
-
-    private void Update()
-    {
-
-    }
-
-    private void FixedUpdate()
-    {
-
-    }
 }

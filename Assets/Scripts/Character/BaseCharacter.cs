@@ -6,6 +6,9 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 {
     [Header("Character data")]
     [SerializeField] private CharacterData _characterData;
+    [SerializeField] private LayerMask _floorMask;
+    [SerializeField, Range(0.01f, 0.25f)] private float _maxFloorDistance = 0.18f;
+    [SerializeField] private GameObject _feetsReference;
 
     [Header("Projectile settings")]
     [SerializeField] private GameObject _weaponReference;
@@ -32,9 +35,10 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     private bool _inControl = false;
     private float _fallStartingY;
     private float _fallDistance;
+    private bool _recentJump = false;
 
     virtual public bool IsDead => _currentLife <= 0;
-    public bool CanJump => !_isInAir && !_isFalling;
+    public bool CanJump => !_isInAir && !_isFalling && !_recentJump;
     public bool CharacterInControl => _inControl;
     public Vector3 CharacterForward => transform.right;
     public Vector3 CharacterUp => transform.up;
@@ -111,11 +115,13 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 
     virtual public void Move(Vector3 direction, float speed, ForceMode mode = ForceMode.Impulse)
     {
+        direction.y = 0;
         _rBody.AddForce(direction * speed, mode);
     }
 
     virtual public void Move(Vector3 direction, ForceMode mode = ForceMode.Impulse)
     {
+        direction.y = 0;
         _rBody.AddForce(direction * CharacterData.Speed / 2, mode);
     }
 
@@ -161,6 +167,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     {
         if (!CanJump) return;
 
+        _recentJump = true;
         _audio.PlayOneShot(CharacterData.JumpSound);
         _rBody.AddForce(transform.up * CharacterData.JumpForce, ForceMode.Impulse);
         _fallDistance = 0;
@@ -179,7 +186,9 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     {
         // Main CanJump conditions
         float yVelocity = _rBody.velocity.y;
-        _isInAir = yVelocity > CharacterData.FallMinVelocityTolerance || yVelocity < -CharacterData.FallMinVelocityTolerance;
+        bool floorDetected = Physics.Raycast(_feetsReference.transform.position, Vector3.down, _maxFloorDistance, _floorMask);
+
+        _isInAir = yVelocity > CharacterData.FallMinVelocityTolerance || yVelocity < -CharacterData.FallMinVelocityTolerance || !floorDetected;
         _isFalling = yVelocity < -CharacterData.FallMinVelocityTolerance;
 
         // If falling, save Y position
@@ -207,6 +216,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 
             //  Reset
             _fallDistance = 0;
+            if (_recentJump) _recentJump = false;
         }
     }
 

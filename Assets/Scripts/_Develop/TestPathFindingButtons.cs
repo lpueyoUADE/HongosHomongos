@@ -11,4 +11,9 @@ public class TestPathFindingButtons : MonoBehaviour
     {
         _aiController.MakeNewPath();
     }
+
+    public void WalkTowards()
+    {
+        _aiController.Walk(true);
+    }
 }
