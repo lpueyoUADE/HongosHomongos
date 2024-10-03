@@ -28,7 +28,7 @@ public class AICharacterValues : MonoBehaviour
         _isOnNodeJump = status;
     }
 
-        private void NodeJumpDrop(GameObject character, bool status)
+    private void NodeJumpDrop(GameObject character, bool status)
     {
         if (character != this.gameObject) return;
         _isOnNodeDrop = status;

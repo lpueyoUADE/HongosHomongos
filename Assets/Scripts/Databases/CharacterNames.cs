@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewCharacterNames", menuName = "Databases/CharacterNames")]
+[CreateAssetMenu(fileName = "NewCharacterNames", menuName = "Databases/Character/CharacterNames")]
 public class CharacterNames : ScriptableObject
 {
     [SerializeField] private string _hongoNames;

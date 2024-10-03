@@ -40,6 +40,7 @@ public class AIManager : MonoBehaviour
     public bool IsAITurn => _isAiTurn;
     public IControlleable CurrentIControlleable => _currentInControllCharacter;
     public BaseCharacter CurrentControlledCharacter => _currentInControllCharacter.Character;
+    public Transform TargetTransform => _selectedEnemy.transform;
     public Vector3 TargetPosition => _selectedEnemy.transform.position;
     public float TargetDirection => (CurrentControlledCharacter.CharacterPosition - TargetPosition).normalized.x;
 

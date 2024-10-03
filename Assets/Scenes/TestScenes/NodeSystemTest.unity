@@ -7844,10 +7844,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hongus
       objectReference: {fileID: 0}
-    - target: {fileID: 1417774646271874255, guid: c0ee92d7e6bbb6e4d8afa83e3fb2ba93, type: 3}
-      propertyPath: _maxFloorDistance
-      value: 0.18
-      objectReference: {fileID: 0}
     - target: {fileID: 2788748880824808315, guid: c0ee92d7e6bbb6e4d8afa83e3fb2ba93, type: 3}
       propertyPath: m_Camera
       value: 

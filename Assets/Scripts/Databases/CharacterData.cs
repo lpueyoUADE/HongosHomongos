@@ -2,13 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "NewCharacterData", menuName = "Databases/CharacterData")]
+[CreateAssetMenu(fileName = "NewCharacterData", menuName = "Databases/Character/CharacterData")]
 public class CharacterData : ScriptableObject
 {
     [Header("Character settings")]
     [SerializeField] private float _life = 10;
     [SerializeField, Range(0.1f, 2)] private float _speed = 0.45f;
     [SerializeField, Range(0, 20)] private float _jumpForce = 12;
+    [SerializeField] private LayerMask _floorMask;
 
     [Header("Falling settings")]
     [SerializeField, Range(0, 1)] private float _fallSpeedModifier = 0.45f;
@@ -29,6 +30,7 @@ public class CharacterData : ScriptableObject
     public float Life { get { return _life;} }
     public float Speed { get { return _speed;} }
     public float JumpForce { get { return _jumpForce;} }
+    public LayerMask FloorMask { get {return _floorMask;} }
 
     public float FallSpeedModifier { get { return _fallSpeedModifier; } }
     public float FallMaxSpeed { get { return _fallMaxSpeed; } }

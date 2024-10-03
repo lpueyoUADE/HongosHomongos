@@ -6,9 +6,9 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 {
     [Header("Character data")]
     [SerializeField] private CharacterData _characterData;
-    [SerializeField] private LayerMask _floorMask;
     [SerializeField, Range(0.01f, 0.25f)] private float _maxFloorDistance = 0.18f;
     [SerializeField] private GameObject _feetsReference;
+    [SerializeField] private GameObject _bodyMesh;
 
     [Header("Projectile settings")]
     [SerializeField] private GameObject _weaponReference;
@@ -40,7 +40,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     virtual public bool IsDead => _currentLife <= 0;
     public bool CanJump => !_isInAir && !_isFalling && !_recentJump;
     public bool CharacterInControl => _inControl;
-    public Vector3 CharacterForward => transform.right;
+    public Vector3 CharacterForward => _bodyMesh.transform.right;
     public Vector3 CharacterUp => transform.up;
     public Vector3 CharacterPosition => transform.position;
     public CharacterData CharacterData => _characterData;
@@ -187,7 +187,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     {
         // Main CanJump conditions
         float yVelocity = _rBody.velocity.y;
-        bool floorDetected = Physics.Raycast(_feetsReference.transform.position, Vector3.down, _maxFloorDistance, _floorMask);
+        bool floorDetected = Physics.Raycast(_feetsReference.transform.position, Vector3.down, _maxFloorDistance, CharacterData.FloorMask);
 
         _isInAir = yVelocity > CharacterData.FallMinVelocityTolerance || yVelocity < -CharacterData.FallMinVelocityTolerance || !floorDetected;
         _isFalling = yVelocity < -CharacterData.FallMinVelocityTolerance;
@@ -242,8 +242,8 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 
     virtual public void LateUpdateRotation()
     {
-        if (_rBody.velocity.x < 0) transform.rotation = new Quaternion(0, 90, 0, 0);
-        else if (_rBody.velocity.x > 0) transform.rotation = new Quaternion(0, 0, 0, 0);
+        if (_rBody.velocity.x < 0) _bodyMesh.transform.rotation = new Quaternion(0, 90, 0, 0);
+        else if (_rBody.velocity.x > 0) _bodyMesh.transform.rotation = new Quaternion(0, 0, 0, 0);
 
     }
 }

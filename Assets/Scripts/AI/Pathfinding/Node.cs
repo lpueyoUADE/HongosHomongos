@@ -46,6 +46,7 @@ public class Node : MonoBehaviour
     }
 
 #if UNITY_EDITOR
+    public bool _showDebugMessages = false;
     public LayerMask _nodesMask;
     public bool _showRays = false;
     public Color _rayColor = Color.red;
@@ -80,7 +81,7 @@ public class Node : MonoBehaviour
         GetNeighbour(Vector3.left);
         GetNeighbour(Vector3.up);
         GetNeighbour(Vector3.down);
-        Debug.Log($"{gameObject.name}: Clearing neighbours list - new count: {_neighbours.Count}");
+        if (_showDebugMessages) Debug.Log($"{gameObject.name}: Clearing neighbours list - new count: {_neighbours.Count}");
     }
 
 #endif

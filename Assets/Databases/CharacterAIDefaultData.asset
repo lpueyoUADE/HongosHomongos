@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea1f6aa93efffa34ca87392027e14c38, type: 3}
-  m_Name: CharacterDefaultData
+  m_Script: {fileID: 11500000, guid: 58f1050b7cffad6429559c2c239a61b4, type: 3}
+  m_Name: CharacterAIDefaultData
   m_EditorClassIdentifier: 
   _life: 10
   _speed: 0.45
@@ -28,3 +28,8 @@ MonoBehaviour:
   _deathSound: {fileID: 8300000, guid: dea7927385620b74d8e633ae608c7be6, type: 3}
   _fallDamageSound: {fileID: 8300000, guid: 6f6d26b7bf967ea438d9dccfd14820a0, type: 3}
   _jumpSound: {fileID: 8300000, guid: 7ff01ac866b70b74c92ab33896562d68, type: 3}
+  _fallDetectionOriginDistance: 0.5
+  _fallDetectionVerticalMinDistance: 3
+  _maxJumpDistanceMultiplier: 0.25
+  _closerFloorHeightMinDistance: 1.5
+  _minNodeDistance: 1
