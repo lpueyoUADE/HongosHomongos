@@ -13,12 +13,12 @@ MonoBehaviour:
   m_Name: CharacterDefaultData
   m_EditorClassIdentifier: 
   _life: 10
-  _speed: 0.45
-  _jumpForce: 13
+  _speed: 0.55
+  _jumpForce: 20
   _floorMask:
     serializedVersion: 2
     m_Bits: 1
-  _fallSpeedModifier: 0.35
+  _fallSpeedModifier: 0.38
   _fallMaxSpeed: 35
   _fallDamageMinDistance: 6.5
   _fallDamageMultiplier: 1

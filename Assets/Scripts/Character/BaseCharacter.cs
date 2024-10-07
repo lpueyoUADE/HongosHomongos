@@ -19,6 +19,9 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     [SerializeField] private TextMeshProUGUI _nameTextRef;
     [SerializeField] private Image _lifeBar;
 
+    [Header("Offsets")] 
+    [SerializeField, Range(0, 1)] private float _minVelocityToRotate = .15f;
+
     [Header("Status")]
     public bool _isInAir;
     public bool _isFalling;
@@ -90,7 +93,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 
     virtual public void OnDamage()
     {
-        _lifeBar.fillAmount = (_currentLife / _initialLife) * 1;
+        _lifeBar.fillAmount = _currentLife / _initialLife * 1;
         if (CharacterInControl) GameTurnEvents.OnTurnEnd?.Invoke(null);
 
         if (IsDead) OnDeath();
@@ -187,7 +190,10 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     {
         // Main CanJump conditions
         float yVelocity = _rBody.velocity.y;
-        bool floorDetected = Physics.Raycast(_feetsReference.transform.position, Vector3.down, _maxFloorDistance, CharacterData.FloorMask);
+        Vector3 feetsPos = _feetsReference.transform.position;
+        bool floorDetected =    Physics.Raycast(feetsPos, Vector3.down, _maxFloorDistance, CharacterData.FloorMask) ||
+                                Physics.Raycast(feetsPos + Vector3.left *.25f, Vector3.down, _maxFloorDistance, CharacterData.FloorMask) ||
+                                Physics.Raycast(feetsPos + Vector3.right *.25f, Vector3.down, _maxFloorDistance, CharacterData.FloorMask);
 
         _isInAir = yVelocity > CharacterData.FallMinVelocityTolerance || yVelocity < -CharacterData.FallMinVelocityTolerance || !floorDetected;
         _isFalling = yVelocity < -CharacterData.FallMinVelocityTolerance;
@@ -242,8 +248,11 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 
     virtual public void LateUpdateRotation()
     {
-        if (_rBody.velocity.x < 0) _bodyMesh.transform.rotation = new Quaternion(0, 90, 0, 0);
-        else if (_rBody.velocity.x > 0) _bodyMesh.transform.rotation = new Quaternion(0, 0, 0, 0);
+        if (!_inControl || _rBody.velocity.x == 0) return;
+
+        float xVel = _rBody.velocity.x;
+        if (xVel < _minVelocityToRotate && xVel < 0) _bodyMesh.transform.rotation = new Quaternion(0, 180, 0, 0);
+        if (xVel > -_minVelocityToRotate && xVel > 0)  _bodyMesh.transform.rotation = new Quaternion(0, 0, 0, 0);
 
     }
 }

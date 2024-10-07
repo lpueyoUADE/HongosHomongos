@@ -194,6 +194,7 @@ MonoBehaviour:
   _uiObjects: {fileID: 3154905522155154108}
   _nameTextRef: {fileID: 4637371315955111417}
   _lifeBar: {fileID: 2147716704200056727}
+  _minVelocityToRotate: 1
   _isInAir: 0
   _isFalling: 0
   _lastFallDistanceWithDamage: 0
@@ -504,7 +505,7 @@ CapsuleCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Radius: 0.21
-  m_Height: 2.25
+  m_Height: 1.98
   m_Direction: 0
   m_Center: {x: 0, y: -0.15, z: 0}
 --- !u!54 &8225310750951711701
@@ -926,7 +927,7 @@ MeshRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7845065352209363971}
-  m_Enabled: 1
+  m_Enabled: 0
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
