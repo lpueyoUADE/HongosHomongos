@@ -32,7 +32,7 @@ public class AIManager : MonoBehaviour
 
     // Values
     Coroutine _waitTimer;
-    Coroutine _movingForwardTimer;
+    Coroutine _movingForwardTimer; 
     Coroutine _movingAwayTimer;
     Coroutine _aimTimer;
     Coroutine _chargeTimer;
