@@ -5,9 +5,9 @@ using UnityEngine;
 public class GameTurnManager : MonoBehaviour
 {
     [Header("Status")]
-    private List<BaseCharacter> _characters = new List<BaseCharacter>();
+    private static List<BaseCharacter> _characters = new ();
     public int _roundedMaxTurnTime;
-    public BaseCharacter _currentCharacterTurn;
+    public static BaseCharacter _currentCharacterTurn;
     public Vector3 _cameraPositionResult;
     public bool _moveCamera = false;
 
@@ -172,5 +172,18 @@ public class GameTurnManager : MonoBehaviour
         yield return new WaitForSeconds(GameManagerEvents.ModeSettings.MaxDelayAfterProjectileDeath);
         _timerBeforeExitingProjectileDamage = null;
         GetNextTurn();
+    }
+
+    public static GameObject GetCurrentCharacterTurn()
+    {
+        return _currentCharacterTurn.gameObject;
+    }
+
+    public static GameObject GetCharacter(int index)
+    {
+        if (_characters.Count <= index) return null;
+
+        GameObject character = _characters[index].gameObject;
+        return character;
     }
 }

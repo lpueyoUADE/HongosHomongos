@@ -39,6 +39,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     private float _fallStartingY;
     private float _fallDistance;
     private bool _recentJump = false;
+    private bool _isAiming;
     private string _name;
 
     virtual public bool IsDead => _currentLife <= 0;
@@ -136,6 +137,28 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     virtual public void Aim(Vector3 direction)
     {
         WeaponReference.transform.Rotate(Vector3.forward, direction.y);
+    }
+
+    virtual public void Aim(Vector3 direction, float speed)
+    {
+        WeaponReference.transform.rotation = Quaternion.Euler(direction.x, direction.y, direction.y * speed);
+    }
+
+    virtual public void Aim(Camera cam)
+    {
+        // Get mouse position
+        Vector3 position = WeaponReference.transform.position;
+        Vector3 mousePosition = Input.mousePosition;
+        mousePosition.z = position.z - cam.transform.position.z;
+
+        // Set angle
+        Vector3 thisPosToWorld = Camera.main.WorldToScreenPoint(position);
+        mousePosition.x -= thisPosToWorld.x;
+        mousePosition.y -= thisPosToWorld.y;
+        float angle = Mathf.Atan2(mousePosition.y, mousePosition.x) * Mathf.Rad2Deg;
+
+        // Set rotation
+        WeaponReference.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
 
     virtual public void ChargeWeapon()

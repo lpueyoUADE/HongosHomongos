@@ -19,7 +19,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 1
   _isAIControlled: 1
-  _characterPortrait: {fileID: 362809195417557768, guid: 440f1402e6f2d9e478f3a1ae609a924d, type: 3}
+  _characterPortrait: {fileID: 2085282726554854922, guid: 440f1402e6f2d9e478f3a1ae609a924d, type: 3}
   _fallSpeedModifier: 0.35
   _fallMaxSpeed: 35
   _fallDamageMinDistance: 6.5

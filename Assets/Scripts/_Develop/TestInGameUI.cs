@@ -29,6 +29,10 @@ public class TestInGameUI : MonoBehaviour
     public HorizontalLayoutGroup _portraitsLayout;
     public int _portraitOffset = 55;
     public List<Image> _portraitsList = new();
+    public Dictionary<BaseCharacter, Image> _portraitsAndCharacters = new();
+
+    [Header("Others")]
+    public GameObject freeLookTextrObject;
 
     private void Awake()
     {
@@ -42,14 +46,14 @@ public class TestInGameUI : MonoBehaviour
         InGameUIEvents.OnPlayUISound += PlayUISound;
         InGameUIEvents.OnAddCharacterPortrait += OnAddCharacterPortrait;
         InGameUIEvents.OnPortraitUpdate += PortraitUpdateAnim;
-
+        InGameUIEvents.OnFreeLookMode += FreeLookModeText;
 
         GameTurnEvents.OnGameEnded += ShowResultText;
     }
 
     private void Start()
     {
-        _portraitsLayout.padding.left += _portraitOffset;
+        if (_portraitsLayout) _portraitsLayout.padding.left += _portraitOffset;
         _chargeWeaponBarStartTime = Time.time;
     }
 
@@ -61,6 +65,7 @@ public class TestInGameUI : MonoBehaviour
         InGameUIEvents.OnPlayUISound -= PlayUISound;
         InGameUIEvents.OnAddCharacterPortrait -= OnAddCharacterPortrait;
         InGameUIEvents.OnPortraitUpdate -= PortraitUpdateAnim;
+        InGameUIEvents.OnFreeLookMode -= FreeLookModeText;
 
         GameTurnEvents.OnGameEnded -= ShowResultText;
     }
@@ -133,12 +138,14 @@ public class TestInGameUI : MonoBehaviour
         _audio.PlayOneShot(clip);
     }
 
-    private void OnAddCharacterPortrait(GameObject newPortrait)
+    private void OnAddCharacterPortrait(BaseCharacter newPortrait)
     {
-        GameObject portrait = Instantiate(newPortrait);
+        GameObject portrait = Instantiate(newPortrait.CharacterData.Portrait);
         portrait.transform.SetParent(_portraitsLayout.transform);
         _portraitsLayout.padding.left -= _portraitOffset;
         _portraitsList.Add(portrait.GetComponent<Image>());
+
+        _portraitsAndCharacters.Add(newPortrait, portrait.GetComponent<Image>());
     }
 
     private void PortraitUpdateAnim(int index, PortraitStatus newStatus = PortraitStatus.Idle)
@@ -151,8 +158,14 @@ public class TestInGameUI : MonoBehaviour
             {
                 case PortraitStatus.Idle: portrait.SetTrigger("InIdle"); break;
                 case PortraitStatus.CurrentTurn: portrait.SetTrigger("InTurn"); break;
+                case PortraitStatus.LookAt: portrait.SetTrigger("InLookAt"); break;
                 case PortraitStatus.Dead: portrait.SetTrigger("InDead"); break;
             }
         }
+    }
+
+    private void FreeLookModeText(bool enabled)
+    {
+        freeLookTextrObject.SetActive(enabled);
     }
 }

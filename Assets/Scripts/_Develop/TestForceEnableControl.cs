@@ -5,6 +5,8 @@ using UnityEngine;
 public class TestForceEnableControl : MonoBehaviour
 {
     public BaseCharacter _chScript;
+    public BasePlayerControls _playerScript;
+    public Camera _camera;
 
     private void Awake()
     {
@@ -14,5 +16,6 @@ public class TestForceEnableControl : MonoBehaviour
     private void Start()
     {
         _chScript.InControl(true);
+        _playerScript._camera = _camera;
     }
 }

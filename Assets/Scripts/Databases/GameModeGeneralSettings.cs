@@ -6,9 +6,14 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewGameModeGeneralSettings", menuName = "Databases/GameModeGeneralSettings")]
 public class GameModeGeneralSettings : ScriptableObject 
 {
+    [Header("Databases")]
+    [SerializeField] private CharacterNames _characterNames;
+
     [Header("General sounds")]
     [SerializeField] private AudioClip _clockTickSound;
     [SerializeField] private AudioClip _clockEndTurnSound;
+    [SerializeField] private AudioClip _portraitLookStartSound;
+    [SerializeField] private AudioClip _portraitLookEndSound;
 
 
     [Header("Before fight introduction times")]
@@ -26,8 +31,12 @@ public class GameModeGeneralSettings : ScriptableObject
     [Header("InGame camera settings")]
     [SerializeField] private Vector3 _inGameCameraOffset = new Vector3(0, 0, -10);
 
+    public CharacterNames CharacterNamesDatabase { get { return _characterNames;} }
+
     public AudioClip ClockTickSound { get { return _clockTickSound;} }
     public AudioClip ClockEndTurnSound { get { return _clockEndTurnSound;} }
+    public AudioClip PortraitLookStartSound { get { return _portraitLookStartSound;} }
+    public AudioClip PortraitLookEndSound { get { return _portraitLookEndSound;} }
 
     public float DelayBetweenCharacters { get { return _delayBetweenCharacters;} }
     public float CameraTransitionTime { get { return _cameraTransitionTime;} }

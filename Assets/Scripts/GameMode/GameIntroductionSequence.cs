@@ -14,7 +14,6 @@ public class GameIntroductionSequence : MonoBehaviour
     private Coroutine _characterWaitTimer;
     private Coroutine _delayBeforeStartingGame;
 
-
     public static Action<Camera, List<BaseCharacter>> OnStartIntroductionSequence;
 
     private void Awake() 
@@ -31,10 +30,15 @@ public class GameIntroductionSequence : MonoBehaviour
     private void FixedUpdate() 
     {
         if (!_doTransition) return;
+        
         Vector3 camPos = _camera.transform.position;
-        Vector3 lerpedPos = Vector3.LerpUnclamped(camPos, _charactersList[_index].transform.position, Time.fixedDeltaTime * GameManagerEvents.ModeSettings.CameraTransitionTime);
-        lerpedPos.z = camPos.z;
+        Vector3 charPos = _charactersList[_index].transform.position;
+        charPos.z = camPos.z;
+
+        Vector3 lerpedPos = Vector3.LerpUnclamped(camPos, charPos, Time.fixedDeltaTime * GameManagerEvents.ModeSettings.CameraTransitionTime);
         _camera.transform.position = lerpedPos;
+
+        if (Vector3.Distance(camPos, charPos) <= 0.5f) _doTransition = false;
     }
 
     private void IntroductionSequence(Camera cameraObject, List<BaseCharacter> charactersList)
@@ -61,7 +65,6 @@ public class GameIntroductionSequence : MonoBehaviour
 
     IEnumerator StartCharacterTime(float time)
     {
-        _doTransition = false;
         yield return new WaitForSeconds(time);
 
         InGameUIEvents.OnPortraitUpdate(_index, PortraitStatus.Idle);
@@ -80,7 +83,6 @@ public class GameIntroductionSequence : MonoBehaviour
         InGameUIEvents.OnPlayUISound?.Invoke(GameManagerEvents.ModeSettings.CharacterIntroductionAudioClip);
         yield return new WaitForSeconds(time);
 
-        _doTransition = false;
         GameManagerEvents.OnIntroductionSequenceEnded?.Invoke();
     }
 }

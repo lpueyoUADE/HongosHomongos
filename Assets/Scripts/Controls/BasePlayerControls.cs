@@ -3,27 +3,34 @@ using UnityEngine;
 public class BasePlayerControls : BaseCharacterControl
 {
     private bool _isChargingWeapon = false;
-
+    public Camera _camera;
     public Vector3 InputDir => new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-    public bool InputChargeWeapon => Input.GetButton("Jump");
-    public bool InputJump => Input.GetKeyDown(KeyCode.LeftControl);
+    public bool InputChargeWeapon => Input.GetButton("Fire");
+    public bool InputJump => Input.GetButton("Jump");
+    public bool InputFreeLook => Input.GetButton("FreeLook");
+
+    private void Start() 
+    {
+        _camera = CameraEvents.Cam;
+    }
 
     private void OnDisable()
     {
+        if (_isChargingWeapon) InGameUIEvents.OnChargingWeaponBar?.Invoke(false);
         _isChargingWeapon = false;
+        CameraEvents.OnEndFreeLookMode?.Invoke();
     }
 
     private void Update()
-    {
+    {       
         if (!Character.CharacterInControl) return;
 
-        // Running out of time while aiming
-        if (!Character.CharacterInControl && _isChargingWeapon)
+        if (InputFreeLook && !_isChargingWeapon)
         {
-            _isChargingWeapon = false;
-            InGameUIEvents.OnChargingWeaponBar?.Invoke(false);
+            CameraEvents.OnStartFreeLookMode?.Invoke(InputDir);
             return;
         }
+        else if (!InputFreeLook) CameraEvents.OnEndFreeLookMode?.Invoke();
 
         if (InputChargeWeapon)
         {
@@ -37,8 +44,9 @@ public class BasePlayerControls : BaseCharacterControl
 
     private void FixedUpdate()
     {
-        if (!Character.CharacterInControl) return;
-        Character.Aim(InputDir * _aimSpeed);
-        Character.Move(new Vector3(InputDir.x, 0));
+        if (!Character.CharacterInControl || InputFreeLook) return;
+
+        if (!_isChargingWeapon) Character.Move(new Vector3(InputDir.x, 0));
+        if (_isChargingWeapon) Character.Aim(_camera);
     }
 }

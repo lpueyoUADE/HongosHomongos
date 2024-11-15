@@ -3,7 +3,7 @@ using UnityEngine;
 
 
 public enum PortraitStatus {
-    Idle, CurrentTurn, Dead
+    Idle, CurrentTurn, LookAt, Dead
 }
 public class InGameUIEvents
 {
@@ -13,8 +13,11 @@ public class InGameUIEvents
     public static Action<string, bool> OnUpdateTurnTime;
     public static Action<bool> OnChargingWeaponBar;
     public static Action<AudioClip> OnPlayUISound;
-    public static Action<GameObject> OnAddCharacterPortrait;
+    public static Action<BaseCharacter> OnAddCharacterPortrait;
     public static Action<int, PortraitStatus> OnPortraitUpdate;
+
+    public static Action<bool> OnFreeLookMode;
+
 
     public static void UpdateChargeBarIntensity(float newAmount = 0)
     {

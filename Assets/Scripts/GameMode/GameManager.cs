@@ -4,17 +4,21 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public UserConfigData userConfigs;
     [SerializeField] private GameModeGeneralSettings _modeSettings;
-    [SerializeField] private CharacterNames _namesDatabase;
-    [SerializeField] private List<BaseCharacter> _characters = new List<BaseCharacter>();
+    [SerializeField] private List<BaseCharacter> _characters = new();
 
     [Header("Session status")]
-    public static List<BaseCharacter> _playerAliveCharacters = new List<BaseCharacter>();
-    public List<BaseCharacter> _aiAliveCharacters = new List<BaseCharacter>();
+    public static List<BaseCharacter> _playerAliveCharacters = new();
+    public List<BaseCharacter> _aiAliveCharacters = new();
+
+    [Header("Other")]
+    public bool byPassIntroduction = false;
 
     private void Awake()
     {
         GameManagerEvents.UpdateModeSettings(_modeSettings);
+        GameManagerEvents.UpdateUserConfigs(userConfigs);
 
         _playerAliveCharacters.Clear();
         GameManagerEvents.OnCharacterDeath += OnCharacterDeath;
@@ -24,7 +28,8 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         GenerateNames();
-        GameIntroductionSequence.OnStartIntroductionSequence?.Invoke(CameraEvents.Cam, _characters); // Introduce characters
+        if (!byPassIntroduction) GameIntroductionSequence.OnStartIntroductionSequence?.Invoke(CameraEvents.Cam, _characters); // Introduce characters
+        else IntroductionSequenceFinished();
     }
 
     private void OnDestroy()
@@ -36,8 +41,8 @@ public class GameManager : MonoBehaviour
     private void GenerateNames()
     {
         int chCount = _characters.Count;
-        List<string> _hongoNames = _namesDatabase.GetRandomNames(true, chCount);
-        List<string> _sapoNames = _namesDatabase.GetRandomNames(false, chCount);
+        List<string> _hongoNames = _modeSettings.CharacterNamesDatabase.GetRandomNames(true, chCount);
+        List<string> _sapoNames = _modeSettings.CharacterNamesDatabase.GetRandomNames(false, chCount);
 
         foreach (BaseCharacter character in _characters)
         {
@@ -59,7 +64,7 @@ public class GameManager : MonoBehaviour
                 character.UpdateName(name);
             }
 
-            InGameUIEvents.OnAddCharacterPortrait?.Invoke(character.CharacterData.Portrait);
+            InGameUIEvents.OnAddCharacterPortrait?.Invoke(character);
         }
     }
 
@@ -87,7 +92,6 @@ public class GameManager : MonoBehaviour
 
             GameTurnEvents.OnGameEnded?.Invoke();
         }
-
     }
 
     public static BaseCharacter GetRandomPlayerCharacterAlive()
