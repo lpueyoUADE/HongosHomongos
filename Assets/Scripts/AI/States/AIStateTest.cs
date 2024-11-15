@@ -9,7 +9,7 @@ public class AIStateTest<T> : State<T>
     public override void Enter()
     {
 #if UNITY_EDITOR
-        TestAIStates.OnUpdateAIDebug?.Invoke($"Entering state: TEST - actions tree may have failed.");
+        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"Entering state: TEST - actions tree may have failed.");
 # endif
     }
 }

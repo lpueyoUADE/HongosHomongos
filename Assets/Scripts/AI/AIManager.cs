@@ -116,7 +116,7 @@ public class AIManager : MonoBehaviour
         _fsm.SetInit(idle);
 
 # if UNITY_EDITOR
-        TestAIStates.OnUpdateAIDebug?.Invoke($"Machine initialized.");
+        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"Machine initialized.");
 # endif
     }
 
@@ -164,7 +164,7 @@ public class AIManager : MonoBehaviour
         _root = qIsAITurn;
 
 # if UNITY_EDITOR
-        TestAIStates.OnUpdateAIDebug?.Invoke($"Tree initialized.");
+        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"Tree initialized.");
 # endif
     }
 
@@ -193,7 +193,7 @@ public class AIManager : MonoBehaviour
         _randNextAction.ResetWeights();
 
 # if UNITY_EDITOR
-        TestAIStates.OnUpdateAIDebug?.Invoke($"Reseting timers & values...");
+        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"Reseting timers & values...");
 # endif
     }
 
@@ -208,7 +208,7 @@ public class AIManager : MonoBehaviour
 
         _selectedEnemy = GameManager.GetRandomPlayerCharacterAlive();
 #if UNITY_EDITOR
-        TestAIStates.OnUpdateAIDebug?.Invoke($"Swapping enemy.");
+        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"Swapping enemy.");
 # endif
     }
 
@@ -249,7 +249,7 @@ public class AIManager : MonoBehaviour
         }
 
 #if UNITY_EDITOR
-        TestAIStates.OnUpdateAIDebug?.Invoke($"{type} for {newTime}s...");
+        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"{type} for {newTime}s...");
 # endif
     }
 
@@ -340,7 +340,7 @@ public class AIManager : MonoBehaviour
         _randNextAction.UpdateWeight(_randListedNodes[state], currentWeight / newWeightDivisor);
 
 #if UNITY_EDITOR
-        TestAIStates.OnUpdateAIDebug?.Invoke($"Action new weight: {state} = {currentWeight / newWeightDivisor}.");
+        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"Action new weight: {state} = {currentWeight / newWeightDivisor}.");
 # endif
     }
 }

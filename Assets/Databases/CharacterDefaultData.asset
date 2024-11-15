@@ -18,6 +18,8 @@ MonoBehaviour:
   _floorMask:
     serializedVersion: 2
     m_Bits: 1
+  _isAIControlled: 0
+  _characterPortrait: {fileID: 362809195417557768, guid: 05fdd7fe43a4ccc4fafcdc409f6739f8, type: 3}
   _fallSpeedModifier: 0.38
   _fallMaxSpeed: 35
   _fallDamageMinDistance: 6.5

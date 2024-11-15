@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private GameModeGeneralSettings _modeSettings;
     [SerializeField] private CharacterNames _namesDatabase;
     [SerializeField] private List<BaseCharacter> _characters = new List<BaseCharacter>();
 
@@ -13,20 +14,23 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        GameManagerEvents.UpdateModeSettings(_modeSettings);
+
         _playerAliveCharacters.Clear();
         GameManagerEvents.OnCharacterDeath += OnCharacterDeath;
+        GameManagerEvents.OnIntroductionSequenceEnded += IntroductionSequenceFinished;
     }
 
     private void Start()
     {
         GenerateNames();
-        GameTurnEvents.OnCharactersListUpdate(_characters);
-        AIManagerEvents.OnUpdateAICharacters(_aiAliveCharacters);
+        GameIntroductionSequence.OnStartIntroductionSequence?.Invoke(CameraEvents.Cam, _characters); // Introduce characters
     }
 
     private void OnDestroy()
     {
         GameManagerEvents.OnCharacterDeath -= OnCharacterDeath;
+        GameManagerEvents.OnIntroductionSequenceEnded -= IntroductionSequenceFinished;
     }
 
     private void GenerateNames()
@@ -54,7 +58,21 @@ public class GameManager : MonoBehaviour
                 _sapoNames.RemoveAt(0);
                 character.UpdateName(name);
             }
+
+            InGameUIEvents.OnAddCharacterPortrait?.Invoke(character.CharacterData.Portrait);
         }
+    }
+
+    private void IntroductionSequenceFinished()
+    {
+        GameManagerEvents.OnIntroductionSequenceEnded -= IntroductionSequenceFinished;
+
+# if UNITY_EDITOR
+        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"Introduction sequence finished.");
+# endif
+
+        GameTurnEvents.OnCharactersListUpdate(_characters);
+        AIManagerEvents.OnUpdateAICharacters(_aiAliveCharacters);
     }
 
     private void OnCharacterDeath(BaseCharacter character)

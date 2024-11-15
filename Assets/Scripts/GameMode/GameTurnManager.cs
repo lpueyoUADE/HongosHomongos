@@ -4,13 +4,6 @@ using UnityEngine;
 
 public class GameTurnManager : MonoBehaviour
 {
-    [Header("Settings")]
-    public float _maxTurnTime = 15;
-    public float _maxDelayBetweenTurns = 3;
-    public float _cameraTransitionTime = 3;
-    public float _maxDelayAfterProjectileDeath = 4;
-    public Vector3 _cameraOffset = Vector3.zero;
-
     [Header("Status")]
     private List<BaseCharacter> _characters = new List<BaseCharacter>();
     public int _roundedMaxTurnTime;
@@ -31,8 +24,11 @@ public class GameTurnManager : MonoBehaviour
         GameTurnEvents.OnProjectileDeath += OnProjectileDeath;
         GameTurnEvents.OnCharactersListUpdate += InitializeTurns;
         GameTurnEvents.OnGameEnded += GameEnded;
+    }
 
-        _roundedMaxTurnTime = (int)_maxTurnTime;
+    private void Start() 
+    {
+        _roundedMaxTurnTime = (int)GameManagerEvents.ModeSettings.MaxDelayBetweenTurns;
     }
 
     private void OnDestroy()
@@ -88,6 +84,7 @@ public class GameTurnManager : MonoBehaviour
         // Check if the character is dead
         if (_currentCharacterTurn.IsDead)
         {
+            InGameUIEvents.OnPortraitUpdate(_characters.IndexOf(_currentCharacterTurn), PortraitStatus.Dead);
             GetNextTurn();
             return;
         }
@@ -97,13 +94,14 @@ public class GameTurnManager : MonoBehaviour
         {
             // Give control auth to character
             _currentCharacterTurn.InControl(true);
+            InGameUIEvents.OnPortraitUpdate(_characters.IndexOf(_currentCharacterTurn), PortraitStatus.CurrentTurn);
 
             // Set camera offsets
-            _cameraPositionResult = _cameraOffset + _currentCharacterTurn.transform.position;
+            _cameraPositionResult = GameManagerEvents.ModeSettings.InGameCameraOffset + _currentCharacterTurn.transform.position;
             _moveCamera = true;
 
             // Start timers
-            _roundedMaxTurnTime = (int)_maxTurnTime;
+            _roundedMaxTurnTime = (int)GameManagerEvents.ModeSettings.MaxTurnTime;
             _turnTimer = StartCoroutine(TurnTime());
             _turnTimerShow = StartCoroutine(ShowTimer());
             CameraEvents.OnCameraUpdateObjectToFollow(_currentCharacterTurn.gameObject);
@@ -126,6 +124,7 @@ public class GameTurnManager : MonoBehaviour
 
         // Disable control auth
         _currentCharacterTurn.InControl();
+        InGameUIEvents.OnPortraitUpdate(_characters.IndexOf(_currentCharacterTurn), PortraitStatus.Idle);
     }
 
     // Timers
@@ -139,8 +138,8 @@ public class GameTurnManager : MonoBehaviour
 
     IEnumerator TurnTime()
     {
-        InGameUIEvents.OnUpdateTurnTime?.Invoke(_maxTurnTime.ToString());
-        yield return new WaitForSeconds(_maxTurnTime);
+        InGameUIEvents.OnUpdateTurnTime?.Invoke(GameManagerEvents.ModeSettings.MaxTurnTime.ToString(), true);
+        yield return new WaitForSeconds(GameManagerEvents.ModeSettings.MaxTurnTime);
 
         EndTurnTimeOut();
         _turnTimer = null;
@@ -155,7 +154,7 @@ public class GameTurnManager : MonoBehaviour
         {
             _roundedMaxTurnTime--;
             _turnTimerShow = StartCoroutine(ShowTimer());
-            InGameUIEvents.OnUpdateTurnTime?.Invoke(_roundedMaxTurnTime.ToString());
+            InGameUIEvents.OnUpdateTurnTime?.Invoke(_roundedMaxTurnTime.ToString(), true);
         }
 
         else yield return null;
@@ -163,14 +162,14 @@ public class GameTurnManager : MonoBehaviour
 
     IEnumerator NextTurnTimer()
     {
-        yield return new WaitForSeconds(_maxDelayBetweenTurns);
+        yield return new WaitForSeconds(GameManagerEvents.ModeSettings.MaxDelayBetweenTurns);
         _timerBeforeNextTurn = null;
         GetNextTurn();
     }
 
     IEnumerator ProjectileDamageTimer()
     {
-        yield return new WaitForSeconds(_maxDelayAfterProjectileDeath);
+        yield return new WaitForSeconds(GameManagerEvents.ModeSettings.MaxDelayAfterProjectileDeath);
         _timerBeforeExitingProjectileDamage = null;
         GetNextTurn();
     }

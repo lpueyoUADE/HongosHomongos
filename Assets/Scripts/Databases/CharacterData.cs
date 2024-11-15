@@ -10,6 +10,8 @@ public class CharacterData : ScriptableObject
     [SerializeField, Range(0.1f, 2)] private float _speed = 0.45f;
     [SerializeField, Range(0, 20)] private float _jumpForce = 12;
     [SerializeField] private LayerMask _floorMask;
+    [SerializeField] private bool _isAIControlled = false;
+    [SerializeField] private GameObject _characterPortrait;
 
     [Header("Falling settings")]
     [SerializeField, Range(0, 1)] private float _fallSpeedModifier = 0.45f;
@@ -31,6 +33,9 @@ public class CharacterData : ScriptableObject
     public float Speed { get { return _speed;} }
     public float JumpForce { get { return _jumpForce;} }
     public LayerMask FloorMask { get {return _floorMask;} }
+    public bool IsAIControlled { get { return _isAIControlled;} }
+    public GameObject Portrait { get { return _characterPortrait; } }
+
 
     public float FallSpeedModifier { get { return _fallSpeedModifier; } }
     public float FallMaxSpeed { get { return _fallMaxSpeed; } }

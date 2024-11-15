@@ -11,8 +11,6 @@ public class TestInGameUI : MonoBehaviour
     [Header("Timer")]
     public TextMeshProUGUI _turnTimeText;
     public Animator _turnTimeAnimation;
-    public AudioClip _timeClickSound;
-    public AudioClip _timeEndSound;
     public string _waitingText;
 
     [Header("Charging bar")]
@@ -25,25 +23,33 @@ public class TestInGameUI : MonoBehaviour
 
     [Header("Result")]
     public TextMeshProUGUI _resultText;
-
     public static float CurrentChargeBarPower => _chargingBarPower;
+
+    [Header("Portraits")]
+    public HorizontalLayoutGroup _portraitsLayout;
+    public int _portraitOffset = 55;
+    public List<Image> _portraitsList = new();
 
     private void Awake()
     {
         _audio = GetComponent<AudioSource>();
         _chargingBarPower = 0;
-
         _resultText.text = "";
 
         InGameUIEvents.OnUpdateTurnTime += UpdateTurnTime;
         InGameUIEvents.OnChargingWeaponBar += ChargingBar;
         InGameUIEvents.OnTimerWait += WaitTimer;
+        InGameUIEvents.OnPlayUISound += PlayUISound;
+        InGameUIEvents.OnAddCharacterPortrait += OnAddCharacterPortrait;
+        InGameUIEvents.OnPortraitUpdate += PortraitUpdateAnim;
+
 
         GameTurnEvents.OnGameEnded += ShowResultText;
     }
 
     private void Start()
     {
+        _portraitsLayout.padding.left += _portraitOffset;
         _chargeWeaponBarStartTime = Time.time;
     }
 
@@ -52,6 +58,9 @@ public class TestInGameUI : MonoBehaviour
         InGameUIEvents.OnUpdateTurnTime -= UpdateTurnTime;
         InGameUIEvents.OnChargingWeaponBar -= ChargingBar;
         InGameUIEvents.OnTimerWait -= WaitTimer;
+        InGameUIEvents.OnPlayUISound -= PlayUISound;
+        InGameUIEvents.OnAddCharacterPortrait -= OnAddCharacterPortrait;
+        InGameUIEvents.OnPortraitUpdate -= PortraitUpdateAnim;
 
         GameTurnEvents.OnGameEnded -= ShowResultText;
     }
@@ -88,20 +97,23 @@ public class TestInGameUI : MonoBehaviour
         _turnTimeAnimation.SetTrigger("TimeWait");
     }
 
-    private void UpdateTurnTime(string newTime)
+    private void UpdateTurnTime(string newTime, bool isNumeric = true)
     {
         _turnTimeText.text = newTime;
 
-        if (newTime == "0")
+        if (isNumeric)
         {
-            _audio.PlayOneShot(_timeEndSound);
-            _turnTimeAnimation.SetTrigger("TimeOut");
-        }
+            if (newTime == "0")
+            {
+                _audio.PlayOneShot(GameManagerEvents.ModeSettings.ClockEndTurnSound);
+                _turnTimeAnimation.SetTrigger("TimeOut");
+            }
 
-        else
-        {
-            _audio.PlayOneShot(_timeClickSound);
-            _turnTimeAnimation.SetTrigger("TimePassing");
+            else
+            {
+                _audio.PlayOneShot(GameManagerEvents.ModeSettings.ClockTickSound);
+                _turnTimeAnimation.SetTrigger("TimePassing");
+            }
         }
     }
 
@@ -113,6 +125,34 @@ public class TestInGameUI : MonoBehaviour
 
     private void ShowResultText()
     { 
-        _resultText.text = GameManager._playerAliveCharacters.Count == 0 ? "DERROTA" : "VICTORIA";
+        _resultText.text = GameManager._playerAliveCharacters.Count == 0 ? "YOU LOST!" : "YOU WIN!";
+    }
+
+    private void PlayUISound(AudioClip clip)
+    {
+        _audio.PlayOneShot(clip);
+    }
+
+    private void OnAddCharacterPortrait(GameObject newPortrait)
+    {
+        GameObject portrait = Instantiate(newPortrait);
+        portrait.transform.SetParent(_portraitsLayout.transform);
+        _portraitsLayout.padding.left -= _portraitOffset;
+        _portraitsList.Add(portrait.GetComponent<Image>());
+    }
+
+    private void PortraitUpdateAnim(int index, PortraitStatus newStatus = PortraitStatus.Idle)
+    {
+        Animator portrait = _portraitsList[index].GetComponent<Animator>();
+
+        if (portrait)
+        {
+            switch (newStatus)
+            {
+                case PortraitStatus.Idle: portrait.SetTrigger("InIdle"); break;
+                case PortraitStatus.CurrentTurn: portrait.SetTrigger("InTurn"); break;
+                case PortraitStatus.Dead: portrait.SetTrigger("InDead"); break;
+            }
+        }
     }
 }

@@ -39,6 +39,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     private float _fallStartingY;
     private float _fallDistance;
     private bool _recentJump = false;
+    private string _name;
 
     virtual public bool IsDead => _currentLife <= 0;
     public bool CanJump => !_isInAir && !_isFalling && !_recentJump;
@@ -51,6 +52,8 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     public GameObject WeaponReference => _weaponReference;
     public Vector3 AimingDirection => _projectileOutReference.transform.right;
     public Vector3 ProjectileOutPosition => _projectileOutReference.transform.position;
+
+    public string CharacterName => _name;
 
     private void Awake()
     {
@@ -76,7 +79,8 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 
     public void UpdateName(string newName)
     {
-        _nameTextRef.text = newName;
+        _name = newName;
+        _nameTextRef.text = _name;
     }
 
     virtual public void AnyDamage(float amount)

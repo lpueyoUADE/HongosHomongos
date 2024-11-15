@@ -5,23 +5,23 @@ using UnityEngine;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(ScrollRect))]
-public class TestAIStates : MonoBehaviour
+public class TestDebugBox : MonoBehaviour
 {
     [Header("References")]
     private ScrollRect _scroll;
     public TextMeshProUGUI _content;
 
-    public static Action<string> OnUpdateAIDebug;
+    public static Action<string> OnUpdateDebugBoxText;
 
     private void Awake()
     {
         _scroll = GetComponent<ScrollRect>();
-        OnUpdateAIDebug += AddAIStateDebugText;
+        OnUpdateDebugBoxText += AddDebugText;
     }
 
     private void OnDestroy()
     {
-        OnUpdateAIDebug -= AddAIStateDebugText;
+        OnUpdateDebugBoxText -= AddDebugText;
     }
 
     public void OnTextUpdate(Vector2 pos)
@@ -29,7 +29,7 @@ public class TestAIStates : MonoBehaviour
 
     }
 
-    private void AddAIStateDebugText(string newLine)
+    private void AddDebugText(string newLine)
     {
         _content.text += newLine + "\n";
         StartCoroutine(WaitToScroll());
