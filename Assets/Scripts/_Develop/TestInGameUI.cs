@@ -148,6 +148,11 @@ public class TestInGameUI : MonoBehaviour
         _portraitsAndCharacters.Add(newPortrait, portrait.GetComponent<Image>());
     }
 
+    private void PortraitUpdateAnim(BaseCharacter character, PortraitStatus newStatus = PortraitStatus.Idle)
+    {
+
+    }
+
     private void PortraitUpdateAnim(int index, PortraitStatus newStatus = PortraitStatus.Idle)
     {
         Animator portrait = _portraitsList[index].GetComponent<Animator>();

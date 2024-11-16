@@ -247,6 +247,8 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
                 AnyDamage(damage);
                 _lastFallDistanceWithDamage = _fallDistance;
             }
+            
+            else if (_fallDistance > 0.25f) _audio.PlayOneShot(CharacterData.GroundSound);
 
             //  Reset
             _fallDistance = 0;

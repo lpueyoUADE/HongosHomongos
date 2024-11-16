@@ -28,6 +28,7 @@ public class CharacterData : ScriptableObject
     [SerializeField] private AudioClip _deathSound;
     [SerializeField] private AudioClip _fallDamageSound;
     [SerializeField] private AudioClip _jumpSound;
+    [SerializeField] private AudioClip _groundSound;
 
     public float Life { get { return _life;} }
     public float Speed { get { return _speed;} }
@@ -49,4 +50,5 @@ public class CharacterData : ScriptableObject
     public AudioClip DeathSound { get { return _deathSound; } }
     public AudioClip FallDamageSound { get { return _fallDamageSound; } }
     public AudioClip JumpSound { get { return _jumpSound; } }
+    public AudioClip GroundSound { get { return _groundSound; } }
 }
