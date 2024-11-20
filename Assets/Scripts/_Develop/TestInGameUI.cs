@@ -46,6 +46,7 @@ public class TestInGameUI : MonoBehaviour
         InGameUIEvents.OnPlayUISound += PlayUISound;
         InGameUIEvents.OnAddCharacterPortrait += OnAddCharacterPortrait;
         InGameUIEvents.OnPortraitUpdate += PortraitUpdateAnim;
+        InGameUIEvents.OnPortraitCharacterUpdate += PortraitUpdateAnim;
         InGameUIEvents.OnFreeLookMode += FreeLookModeText;
 
         GameTurnEvents.OnGameEnded += ShowResultText;
@@ -65,6 +66,7 @@ public class TestInGameUI : MonoBehaviour
         InGameUIEvents.OnPlayUISound -= PlayUISound;
         InGameUIEvents.OnAddCharacterPortrait -= OnAddCharacterPortrait;
         InGameUIEvents.OnPortraitUpdate -= PortraitUpdateAnim;
+        InGameUIEvents.OnPortraitCharacterUpdate -= PortraitUpdateAnim;
         InGameUIEvents.OnFreeLookMode -= FreeLookModeText;
 
         GameTurnEvents.OnGameEnded -= ShowResultText;
@@ -150,7 +152,8 @@ public class TestInGameUI : MonoBehaviour
 
     private void PortraitUpdateAnim(BaseCharacter character, PortraitStatus newStatus = PortraitStatus.Idle)
     {
-
+        if (!_portraitsAndCharacters.ContainsKey(character)) return;
+        PortraitUpdateAnim(_portraitsList.IndexOf(_portraitsAndCharacters[character]), newStatus);
     }
 
     private void PortraitUpdateAnim(int index, PortraitStatus newStatus = PortraitStatus.Idle)
