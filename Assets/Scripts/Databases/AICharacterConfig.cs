@@ -31,10 +31,6 @@ public class AICharacterConfig : CharacterData
     public float TimeMinAim { get { return _minShootTimeWait; } }
     public float TimeMaxAim { get { return _maxShootTimeWait; } }
 
-# if UNITY_EDITOR
-    public TestAIStatsWidget developerStatsPrefab;
-# endif
-
     public Dictionary<StatesEnum, float> GetBehaviorValues()
     {
         return new Dictionary<StatesEnum, float>
