@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
         GameManagerEvents.OnIntroductionSequenceEnded -= IntroductionSequenceFinished;
 
 # if UNITY_EDITOR
-        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"Introduction sequence finished.");
+        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"GameManager Introduction sequence finished.");
 # endif
 
         GameTurnEvents.OnCharactersListUpdate(_characters);
@@ -87,8 +87,13 @@ public class GameManager : MonoBehaviour
 
         if (_playerAliveCharacters.Count == 0 || _aiAliveCharacters.Count == 0)
         {
-            if (_playerAliveCharacters.Count == 0) Debug.Log("Player Lost.");
-            else Debug.Log("Player Wins.");
+# if UNITY_EDITOR
+            string result = "GameManager ";
+            if (_playerAliveCharacters.Count == 0) result += "Player lost.";
+            else result += "Player wins.";
+            Debug.Log(result);
+            TestDebugBox.OnUpdateDebugBoxText?.Invoke(result);
+# endif
 
             GameTurnEvents.OnGameEnded?.Invoke();
         }

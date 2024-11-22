@@ -47,7 +47,7 @@ public class GameTurnManager : MonoBehaviour
     // Events
     private void OnProjectileDeath()
     {
-        CameraEvents.OnCameraUpdateObjectToFollow(null);
+        CameraEvents.OnCameraUpdateObjectToFollow(null, false);
         _timerBeforeExitingProjectileDamage = StartCoroutine(ProjectileDamageTimer());
     }
 
@@ -59,7 +59,12 @@ public class GameTurnManager : MonoBehaviour
 
     private void GameEnded()
     {
-        Debug.Log("GAME ENDED - TURN MANAGER STOPPING...");
+# if UNITY_EDITOR
+        string msg = "GAME ENDED - TURN MANAGER STOPPING...";
+        TestDebugBox.OnUpdateDebugBoxText?.Invoke(msg);
+        Debug.Log(msg);
+# endif
+
         StopTimers();
         UnsubscribeFromEvents();
     }
@@ -104,7 +109,7 @@ public class GameTurnManager : MonoBehaviour
             _roundedMaxTurnTime = (int)GameManagerEvents.ModeSettings.MaxTurnTime;
             _turnTimer = StartCoroutine(TurnTime());
             _turnTimerShow = StartCoroutine(ShowTimer());
-            CameraEvents.OnCameraUpdateObjectToFollow(_currentCharacterTurn.gameObject);
+            CameraEvents.OnCameraUpdateObjectToFollow(_currentCharacterTurn.gameObject, true);
         }
     }
 
@@ -114,7 +119,7 @@ public class GameTurnManager : MonoBehaviour
         StopTimers();
         EndTurnTimeOut();
 
-        if (spawnedProjectile != null) CameraEvents.OnCameraUpdateObjectToFollow(spawnedProjectile.Projectile);
+        if (spawnedProjectile != null) CameraEvents.OnCameraUpdateObjectToFollow(spawnedProjectile.Projectile, false);
         else _timerBeforeNextTurn = StartCoroutine(NextTurnTimer());
     }
 

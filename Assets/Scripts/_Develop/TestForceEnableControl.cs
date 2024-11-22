@@ -10,12 +10,12 @@ public class TestForceEnableControl : MonoBehaviour
 
     private void Awake()
     {
-        _chScript= GetComponent<BaseCharacter>();
+        _chScript = GetComponent<BaseCharacter>();
     }
 
     private void Start()
     {
-        _chScript.InControl(true);
-        _playerScript._camera = _camera;
+        _chScript?.InControl(true);
+        if (_playerScript) _playerScript._camera = _camera;
     }
 }

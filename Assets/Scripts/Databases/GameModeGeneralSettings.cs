@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -15,7 +13,6 @@ public class GameModeGeneralSettings : ScriptableObject
     [SerializeField] private AudioClip _portraitLookStartSound;
     [SerializeField] private AudioClip _portraitLookEndSound;
 
-
     [Header("Before fight introduction times")]
     [SerializeField, Range(1, 5)] private float _delayBetweenCharacters = 2;
     [SerializeField, Range(1, 5)] private float _cameraTransitionTime = 2;
@@ -23,13 +20,15 @@ public class GameModeGeneralSettings : ScriptableObject
     [SerializeField] private AudioClip _characterIntroductionClip;
 
     [Header("Turn System timers")]
-    [SerializeField] private float _maxTurnTime = 15;
-    [SerializeField] private float _maxDelayBetweenTurns = 3;
-    [SerializeField] private float _turnCameraTransitionTime = 3;
-    [SerializeField] private float _maxDelayAfterProjectileDeath = 4;
+    [SerializeField, Range(5, 25)] private float _maxTurnTime = 15;
+    [SerializeField, Range(1, 5)] private float _maxDelayBetweenTurns = 3;
+    [SerializeField, Range(1, 5)] private float _turnCameraTransitionTime = 3;
+    [SerializeField, Range(1, 5)] private float _maxDelayAfterProjectileDeath = 4;
+
+    [Header("AI General Chances")]
 
     [Header("InGame camera settings")]
-    [SerializeField] private Vector3 _inGameCameraOffset = new Vector3(0, 0, -10);
+    [SerializeField] private Vector3 _inGameCameraOffset = new(0, 0, -10);
 
     public CharacterNames CharacterNamesDatabase { get { return _characterNames;} }
 

@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7633839280310118159}
   m_Layer: 0
   m_Name: AIManager
-  m_TagString: Untagged
+  m_TagString: GameController
   m_Icon: {fileID: 2974397684917235467, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -44,15 +44,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8d3a46a6a0d7ca45a2018310da69c3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _minActionTime: 1
-  _maxActionTime: 2
-  _minShootTimeWait: 1
-  _maxShootTimeWait: 2
-  _intentionalIdleChances: 5
-  _swapTargetChances: 15
-  _moveTowardsChances: 12
-  _moveAwayChances: 10
-  _aimChances: 8
+  _managerData: {fileID: 11400000, guid: b84fd0246bcbd8b40a9b93759ddd9238, type: 2}
   _aiCharacters: []
   _selectedEnemy: {fileID: 0}
   _isAiTurn: 0

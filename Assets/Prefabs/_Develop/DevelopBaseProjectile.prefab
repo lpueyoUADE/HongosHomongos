@@ -146,6 +146,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6261829f18e2700488fe93d2d8a0db0b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _baseDamage: 2.2
   _baseSpeed: 22
-  _baseLife: 5
+  _baseLife: 10
   _destroyedSound: {fileID: 8300000, guid: 37013edb9262d134a98d035f672219f2, type: 3}

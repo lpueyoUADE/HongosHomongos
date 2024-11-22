@@ -16,15 +16,25 @@ public class CameraController : MonoBehaviour
     public Vector3 _lastTargetPos = Vector3.zero;
 
     [Header("Status")]
+    public Vector3 _ogCamPos;
+    public bool _updateHeight = true;
     public bool _cameraArrivedToPos;
     public bool _onFreeLookMode = false;
 
     private void Awake()
     {
+        _ogCamPos = transform.position;
         CameraEvents._camera = GetComponent<Camera>();
         CameraEvents.OnCameraUpdateObjectToFollow += UpdateObjectToFollow;
         CameraEvents.OnStartFreeLookMode += PortraitLookStart;
         CameraEvents.OnEndFreeLookMode += PortraitLookEnd;
+    }
+
+    private void OnDestroy()
+    {
+        CameraEvents.OnCameraUpdateObjectToFollow -= UpdateObjectToFollow;
+        CameraEvents.OnStartFreeLookMode -= PortraitLookStart;
+        CameraEvents.OnEndFreeLookMode -= PortraitLookEnd;
     }
     
     private void Start() 
@@ -46,7 +56,9 @@ public class CameraController : MonoBehaviour
 
             else positionResult = _lastTargetPos + _offset + _freeLookOffset;                
 
+            if (!_updateHeight) positionResult.y = _ogCamPos.y;
             _cameraArrivedToPos = Vector3.Distance(transform.position, positionResult) < _tolerance;
+
             if (!_cameraArrivedToPos) transform.position = Vector3.LerpUnclamped(transform.position, positionResult, _transitionSpeed * 0.05f);
         }
 
@@ -60,15 +72,11 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    private void OnDestroy()
-    {
-        CameraEvents.OnCameraUpdateObjectToFollow -= UpdateObjectToFollow;
-    }
-
-    private void UpdateObjectToFollow(GameObject newObject)
+    private void UpdateObjectToFollow(GameObject newObject, bool updateZ = true)
     {
         if (newObject == null) return;
         _currentTarget = newObject;
+        _updateHeight = updateZ;
     }
 
     private void PortraitLookStart(Vector3 offset)

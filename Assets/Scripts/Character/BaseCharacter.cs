@@ -39,7 +39,6 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     private float _fallStartingY;
     private float _fallDistance;
     private bool _recentJump = false;
-    private bool _isAiming;
     private string _name;
 
     virtual public bool IsDead => _currentLife <= 0;
@@ -181,9 +180,10 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
             SphereCollider collider = spawnedProjectile.GetComponent<SphereCollider>();
             Physics.IgnoreCollision(_baseCollider, collider, true);
 
+            // Get projectile data and set stuff
             IProjectile proData = spawnedProjectile.GetComponent<IProjectile>();
             proData?.UpdateDirection(_projectileOutReference.transform.right);
-            proData?.UpdateSpeedMultiplier(force);
+            proData?.UpdateSpeedMultiplier(force * CharacterData.ProjectilePowerMultiplier);
 
             _audio.PlayOneShot(CharacterData.ProjectileSound);
             GameTurnEvents.OnTurnEnd?.Invoke(proData);
@@ -249,6 +249,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
                 _lastFallDistanceWithDamage = _fallDistance;
             }
             
+            // Play step sound if not damaged
             else if (_fallDistance > 0.25f) _audio.PlayOneShot(CharacterData.GroundSound);
 
             //  Reset

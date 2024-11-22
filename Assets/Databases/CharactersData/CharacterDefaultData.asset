@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea1f6aa93efffa34ca87392027e14c38, type: 3}
+  m_Name: CharacterDefaultData
+  m_EditorClassIdentifier: 
+  _life: 10
+  _speed: 0.55
+  _jumpForce: 15
+  _floorMask:
+    serializedVersion: 2
+    m_Bits: 17
+  _isAIControlled: 0
+  _characterPortrait: {fileID: 362809195417557768, guid: 05fdd7fe43a4ccc4fafcdc409f6739f8, type: 3}
+  _fallSpeedModifier: 0.38
+  _fallMaxSpeed: 35
+  _fallDamageMinDistance: 6.5
+  _fallDamageMultiplier: 1
+  _fallMinVelocityTolerance: 0.25
+  _spawnedProjectile: {fileID: 4453694735902730189, guid: 99fd2558c783fdb4a8530b86f3701b28, type: 3}
+  _projectileSound: {fileID: 8300000, guid: 54526597f69b0a841a8c12399e0df529, type: 3}
+  _projectilePowerMultiplier: 0.75
+  _deathSound: {fileID: 8300000, guid: dea7927385620b74d8e633ae608c7be6, type: 3}
+  _fallDamageSound: {fileID: 8300000, guid: 6f6d26b7bf967ea438d9dccfd14820a0, type: 3}
+  _jumpSound: {fileID: 8300000, guid: 7ff01ac866b70b74c92ab33896562d68, type: 3}
+  _groundSound: {fileID: 8300000, guid: 0fd2841ffd666d9429bb840210146967, type: 3}

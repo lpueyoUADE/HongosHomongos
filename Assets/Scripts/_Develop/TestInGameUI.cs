@@ -15,6 +15,7 @@ public class TestInGameUI : MonoBehaviour
 
     [Header("Charging bar")]
     public Image _chargingWeaponBar;
+    [Range(1, 3)] public float _chargingSpeed = 1;
     public float _chargeWeaponBarValue;     // Sets charging bar fill amount
     public bool _chargeWeaponBar;           // Show/Hide charging bar
     public float _chargeWeaponBarStartTime; // Makes charging bar reset when ping poing
@@ -79,7 +80,7 @@ public class TestInGameUI : MonoBehaviour
             if (!_lockWeaponChargeBar) _chargeWeaponBarStartTime = Time.time;
 
             _lockWeaponChargeBar = true;
-            _chargeWeaponBarValue = (Time.time - _chargeWeaponBarStartTime) * 2;
+            _chargeWeaponBarValue = (Time.time - _chargeWeaponBarStartTime) * _chargingSpeed;
             _chargingWeaponBar.fillAmount = Mathf.PingPong(_chargeWeaponBarValue, 1);
 
             float power = _chargingWeaponBar.fillAmount;

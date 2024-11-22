@@ -8,10 +8,10 @@ public enum StatesEnum
 
     MoveTowards,
     MoveAway,
+    Move,
     Jump,
     Drop,
 
     Aim,
     Fire,
-
 }

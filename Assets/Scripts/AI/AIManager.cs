@@ -5,21 +5,10 @@ using UnityEngine;
 
 public class AIManager : MonoBehaviour
 {
-    [Header("Time settings")]
-    [Range(0.5f, 3)] public float _minActionTime = 0.5f;
-    [Range(0.5f, 3)] public float _maxActionTime = 1;
-    [Range(0.1f, 3)] public float _minShootTimeWait = 1;
-    [Range(0.9f, 3)] public float _maxShootTimeWait = 1;
-
-    [Header("Decision making")]
-    [Range(1, 20)] public float _intentionalIdleChances = 2;
-    [Range(1, 20)] public float _swapTargetChances = 5;
-    [Range(1, 20)] public float _moveTowardsChances = 10;
-    [Range(1, 20)] public float _moveAwayChances = 10;
-    [Range(1, 20)] public float _aimChances = 8;
+    [SerializeField] private AIManagerTimersAndChances _managerData; 
 
     [Header("Status")]
-    public List<BaseCharacter> _aiCharacters = new List<BaseCharacter>();
+    public List<BaseCharacter> _aiCharacters = new();
     public BaseCharacter _selectedEnemy;
     public IControlleable _currentInControllCharacter;
     public bool _isAiTurn = false;
@@ -28,18 +17,18 @@ public class AIManager : MonoBehaviour
     private AIManagerFSM<StatesEnum> _fsm;
     private ITreeNode _root;
     private RandomNode _randNextAction;
-    private Dictionary<StatesEnum, ITreeNode> _randListedNodes = new Dictionary<StatesEnum, ITreeNode>();
+    private Dictionary<StatesEnum, ITreeNode> _randListedNodes = new();
 
     // Values
     Coroutine _waitTimer;
-    Coroutine _movingForwardTimer; 
-    Coroutine _movingAwayTimer;
+    Coroutine _moveTimer;
     Coroutine _aimTimer;
     Coroutine _chargeTimer;
 
     public bool IsAITurn => _isAiTurn;
     public IControlleable CurrentIControlleable => _currentInControllCharacter;
     public BaseCharacter CurrentControlledCharacter => _currentInControllCharacter.Character;
+    public AICharacterConfig CurrentControlledCharacterData => (AICharacterConfig)_currentInControllCharacter.Character.CharacterData;
     public Transform TargetTransform => _selectedEnemy.transform;
     public Vector3 TargetPosition => _selectedEnemy.transform.position;
     public float TargetDirection => (CurrentControlledCharacter.CharacterPosition - TargetPosition).normalized.x;
@@ -75,12 +64,14 @@ public class AIManager : MonoBehaviour
     {
         AIManagerEvents.OnUpdateAICharacters += OnCharactersListUpdate;
         AIManagerEvents.OnCharacterControlUpdate += OnControlledCharacterUpdated;
+        AIManagerEvents.OnActionFinished += OnActionFinished;
     }
 
     private void UnsubFromEvents()
     {
         AIManagerEvents.OnUpdateAICharacters -= OnCharactersListUpdate;
         AIManagerEvents.OnCharacterControlUpdate -= OnControlledCharacterUpdated;
+        AIManagerEvents.OnActionFinished -= OnActionFinished;
     }
 
     private void InitializeMachine()
@@ -90,8 +81,7 @@ public class AIManager : MonoBehaviour
         var idle = new AIStateIdle<StatesEnum>(this);
         var intentionalidle = new AIStateIntentionalIdle<StatesEnum>(this);
         var swaptarget = new AIStateSwapTarget<StatesEnum>(this);
-        var movetowards = new AIStateMoveTowards<StatesEnum>(this);
-        var moveaway = new AIStateMoveAway<StatesEnum>(this);
+        var move = new AIStateMove<StatesEnum>(this);
         var aim = new AIStateAim<StatesEnum>(this);
         var shoot = new AIStateFire<StatesEnum>(this);
 
@@ -101,8 +91,7 @@ public class AIManager : MonoBehaviour
             { StatesEnum.Idle,                  idle                },
             { StatesEnum.IntentionalIdle,       intentionalidle     },
             { StatesEnum.SwapTarget,            swaptarget          },
-            { StatesEnum.MoveTowards,           movetowards         },
-            { StatesEnum.MoveAway,              moveaway            },
+            { StatesEnum.Move,                  move                },
             { StatesEnum.Aim,                   aim                 },
             { StatesEnum.Fire,                  shoot               },
         };
@@ -116,7 +105,7 @@ public class AIManager : MonoBehaviour
         _fsm.SetInit(idle);
 
 # if UNITY_EDITOR
-        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"Machine initialized.");
+        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"AI FSMachine started.");
 # endif
     }
 
@@ -126,19 +115,17 @@ public class AIManager : MonoBehaviour
         var idle = new ActionNode(() => _fsm.Transition(StatesEnum.Idle));
         var intentionalidle = new ActionNode(() => _fsm.Transition(StatesEnum.IntentionalIdle));
         var swaptarget = new ActionNode(() => _fsm.Transition(StatesEnum.SwapTarget));
-        var movetowards = new ActionNode(() => _fsm.Transition(StatesEnum.MoveTowards));
-        var moveaway = new ActionNode(() => _fsm.Transition(StatesEnum.MoveAway));
+        var move = new ActionNode(() => _fsm.Transition(StatesEnum.Move));
         var aim = new ActionNode(() => _fsm.Transition(StatesEnum.Aim));
         var shoot = new ActionNode(() => _fsm.Transition(StatesEnum.Fire));
 
         // Randomizable actions - characters may have their own modifier values
         var randNextAction = new Dictionary<ITreeNode, float>
         {
-            [intentionalidle] = _intentionalIdleChances,
-            [swaptarget] =      _swapTargetChances,
-            [movetowards] =     _moveTowardsChances,
-            [moveaway] =        _moveAwayChances,
-            [aim] =             _aimChances,
+            [intentionalidle] = _managerData.ChancesIdle,
+            [swaptarget] =      _managerData.ChancesSwapTarget,
+            [move] =            _managerData.ChancesMove,
+            [aim] =             _managerData.ChancesAim,
         };
         _randNextAction = new RandomNode(randNextAction);
 
@@ -146,25 +133,24 @@ public class AIManager : MonoBehaviour
         {
             [StatesEnum.IntentionalIdle] =  intentionalidle,
             [StatesEnum.SwapTarget] =       swaptarget,
-            [StatesEnum.MoveTowards] =      movetowards,
-            [StatesEnum.MoveAway] =         moveaway,
+            [StatesEnum.Move] =             move,
             [StatesEnum.Aim] =              aim,
         };
         _randListedNodes = randListedNodes;
 
         // Tree of decisions
-        var qIsIdling = new QuestionNode(QuestionIsIntentionallyIdling, intentionalidle, _randNextAction);
+        var qCanDoAction = new QuestionNode(QuestionCanDoAction, _randNextAction, idle);
+        var qIsIdling = new QuestionNode(QuestionIsIntentionallyIdling, intentionalidle, qCanDoAction);
         var qIsChargingShot = new QuestionNode(QuestionIsChargingShot, shoot, qIsIdling);
         var qIsAiming = new QuestionNode(QuestionIsAiming, aim, qIsChargingShot);
-        var qIsMovingAway = new QuestionNode(QuestionMovingAway, moveaway, qIsAiming);
-        var qIsMovingTowards = new QuestionNode(QuestionMovingTowards, movetowards, qIsMovingAway);
-        var qIsTargetValid = new QuestionNode(QuestionValidTarget, qIsMovingTowards, swaptarget);
+        var qIsMoving = new QuestionNode(QuestionMoving, move, qIsAiming);
+        var qIsTargetValid = new QuestionNode(QuestionValidTarget, qIsMoving, swaptarget);
         var qIsAITurn = new QuestionNode(() => IsAITurn, qIsTargetValid, idle);
 
         _root = qIsAITurn;
 
 # if UNITY_EDITOR
-        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"Tree initialized.");
+        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"AI FSMachine Tree started.");
 # endif
     }
 
@@ -178,22 +164,57 @@ public class AIManager : MonoBehaviour
     {
         if (inControl) _currentInControllCharacter = newControlleable;
         IdleReset();
+
+        // Get controlled character actions weight
+        if (inControl)
+        {
+            _randNextAction.UpdateWeight(_randListedNodes[StatesEnum.IntentionalIdle], _randNextAction.GetWeight(_randListedNodes[StatesEnum.IntentionalIdle]) + CurrentControlledCharacterData.ChancesIdle);
+            _randNextAction.UpdateWeight(_randListedNodes[StatesEnum.SwapTarget], _randNextAction.GetWeight(_randListedNodes[StatesEnum.SwapTarget]) + CurrentControlledCharacterData.ChancesSwapTarget);
+            _randNextAction.UpdateWeight(_randListedNodes[StatesEnum.Move], _randNextAction.GetWeight(_randListedNodes[StatesEnum.Move]) + CurrentControlledCharacterData.ChancesMove);
+            _randNextAction.UpdateWeight(_randListedNodes[StatesEnum.Aim], _randNextAction.GetWeight(_randListedNodes[StatesEnum.Aim]) + CurrentControlledCharacterData.ChancesAim);
+
+# if UNITY_EDITOR
+            TestDebugBox.OnUpdateDebugBoxText?.Invoke($"AI Updating new actions weight:");
+            TestDebugBox.OnUpdateDebugBoxText?.Invoke($"{StatesEnum.IntentionalIdle} = {_randNextAction.GetWeight(_randListedNodes[StatesEnum.IntentionalIdle])}");
+            TestDebugBox.OnUpdateDebugBoxText?.Invoke($"{StatesEnum.SwapTarget} = {_randNextAction.GetWeight(_randListedNodes[StatesEnum.SwapTarget])}");
+            TestDebugBox.OnUpdateDebugBoxText?.Invoke($"{StatesEnum.Move} = {_randNextAction.GetWeight(_randListedNodes[StatesEnum.Move])}");
+            TestDebugBox.OnUpdateDebugBoxText?.Invoke($"{StatesEnum.Aim} = {_randNextAction.GetWeight(_randListedNodes[StatesEnum.Aim])}");
+# endif
+        }
+
         _isAiTurn = inControl;
+    }
+
+    private void OnActionFinished(StatesEnum type)
+    {
+        if (!IsAITurn || !AnyTimerRunning()) return;
+
+        switch (type)
+        {
+            case StatesEnum.Move:
+                if (_moveTimer != null) _moveTimer = null;
+                ActionWeightDivide(StatesEnum.Move, 3); // Lower even more the chances of moving if we already moved.
+                break;
+        }
+
+# if UNITY_EDITOR
+        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"AI stopping {type} timer.");
+# endif
     }
 
     // FSM Events
     public void IdleReset()
     {
         if (_waitTimer != null) _waitTimer = null;
-        if (_movingForwardTimer != null) _movingForwardTimer = null;
-        if (_movingAwayTimer != null) _movingAwayTimer = null;
+
+
         if (_aimTimer != null) _aimTimer = null;
         if (_chargeTimer != null) _chargeTimer = null;
 
         _randNextAction.ResetWeights();
 
 # if UNITY_EDITOR
-        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"Reseting timers & values...");
+        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"AI Reseting timers & values...");
 # endif
     }
 
@@ -208,48 +229,43 @@ public class AIManager : MonoBehaviour
 
         _selectedEnemy = GameManager.GetRandomPlayerCharacterAlive();
 #if UNITY_EDITOR
-        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"Swapping enemy.");
+        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"AI Swapping enemy.");
 # endif
     }
 
     public void StartTimer(StatesEnum type)
     {
         if (!IsAITurn || AnyTimerRunning()) return;
-        float newTime = Random.Range(_minActionTime, _minActionTime + _maxActionTime);
+        float newTime = Random.Range(_managerData.TimeMinAction, _managerData.TimeMinAction + _managerData.TimeMaxAction);
 
         switch (type)
         {
             case StatesEnum.IntentionalIdle:
+                newTime += Random.Range(CurrentControlledCharacterData.TimeMinAction, CurrentControlledCharacterData.TimeMaxAction);
                 _waitTimer = StartCoroutine(TimerIdle(newTime));
                 break;
 
-            case StatesEnum.MoveTowards:
-                _movingForwardTimer = StartCoroutine(TimerMoveTowards(newTime));
-                break;
-
-            case StatesEnum.MoveAway:
-                _movingAwayTimer = StartCoroutine(TimerMoveAway(newTime));
-                break;
-
-            case StatesEnum.Jump:
-                break;
-
-            case StatesEnum.Drop:
+            case StatesEnum.Move:
+                newTime += Random.Range(CurrentControlledCharacterData.TimeMinMove, CurrentControlledCharacterData.TimeMinMove + CurrentControlledCharacterData.TimeMaxMove);
+                _moveTimer = StartCoroutine(TimerMove(newTime));
                 break;
 
             case StatesEnum.Aim:
-                newTime = Random.Range(_minShootTimeWait, _minShootTimeWait + _maxShootTimeWait);
+                newTime = Random.Range(_managerData.TimeMinAim, _managerData.TimeMinAim + _managerData.TimeMaxAim);
+                newTime += Random.Range(CurrentControlledCharacterData.TimeMinAim, CurrentControlledCharacterData.TimeMaxAim);
                 _aimTimer = StartCoroutine(TimerAim(newTime));
                 break;
 
             case StatesEnum.Fire:
-                newTime = Random.Range(_minShootTimeWait, _minShootTimeWait + _maxShootTimeWait);
+                newTime = Random.Range(_managerData.TimeMinAim, _managerData.TimeMinAim + _managerData.TimeMaxAim);
+                newTime += Random.Range(CurrentControlledCharacterData.TimeMinAim, CurrentControlledCharacterData.TimeMaxAim);
+                newTime /= 2;
                 _chargeTimer = StartCoroutine(TimerChargedShot(newTime));
                 break;
         }
 
 #if UNITY_EDITOR
-        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"{type} for {newTime}s...");
+        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"AI {type} for {newTime}s...");
 # endif
     }
 
@@ -258,8 +274,7 @@ public class AIManager : MonoBehaviour
         bool result = false;
 
         if (_waitTimer != null) result = true;
-        if (_movingForwardTimer != null) result = true;
-        if (_movingAwayTimer != null) result = true;
+        if (_moveTimer != null) result = true;
         if (_aimTimer != null) result = true;
         if (_chargeTimer != null) result = true;
 
@@ -269,32 +284,32 @@ public class AIManager : MonoBehaviour
     // FSM Conditions
     private bool QuestionValidTarget()
     {
-        return _selectedEnemy != null;
+        return _selectedEnemy != null && IsAITurn;
     }
 
     private bool QuestionIsIntentionallyIdling()
     {
-        return _waitTimer != null;
+        return _waitTimer != null && IsAITurn;
     }
 
-    private bool QuestionMovingTowards()
+    private bool QuestionMoving()
     {
-        return _movingForwardTimer != null;
-    }
-
-    private bool QuestionMovingAway()
-    {
-        return _movingAwayTimer != null;
+        return _moveTimer != null && IsAITurn;
     }
 
     private bool QuestionIsAiming()
     {
-        return _aimTimer != null;
+        return _aimTimer != null && IsAITurn;
     }
 
     private bool QuestionIsChargingShot()
     {
-        return _chargeTimer != null;
+        return _chargeTimer != null && IsAITurn;
+    }
+
+    private bool QuestionCanDoAction()
+    {
+        return IsAITurn;
     }
 
     // Timers
@@ -305,18 +320,11 @@ public class AIManager : MonoBehaviour
         _waitTimer = null;
     }
 
-    IEnumerator TimerMoveTowards(float time)
+    IEnumerator TimerMove(float time)
     {
         yield return new WaitForSeconds(time);
-        ActionWeightDivide(StatesEnum.MoveTowards, 2);
-        _movingForwardTimer = null;
-    }
-
-    IEnumerator TimerMoveAway(float time)
-    {
-        yield return new WaitForSeconds(time);
-        ActionWeightDivide(StatesEnum.MoveAway, 2);
-        _movingAwayTimer = null;
+        ActionWeightDivide(StatesEnum.Move, 2);
+        _moveTimer = null;
     }
 
     IEnumerator TimerAim(float time)
@@ -340,7 +348,7 @@ public class AIManager : MonoBehaviour
         _randNextAction.UpdateWeight(_randListedNodes[state], currentWeight / newWeightDivisor);
 
 #if UNITY_EDITOR
-        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"Action new weight: {state} = {currentWeight / newWeightDivisor}.");
+        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"AI Action new weight: {state} = {currentWeight / newWeightDivisor}.");
 # endif
     }
 }

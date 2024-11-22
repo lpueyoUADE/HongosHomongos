@@ -6,7 +6,6 @@ public class TestPathFinding : MonoBehaviour
     public BaseCharacter _target;
     private BaseCharacter _testingCharacter;
     private BaseAIControls _controlScript;
-    private AICharacterValues _aiValues;
 
     public List<Node> _path = new();
     
@@ -36,7 +35,6 @@ public class TestPathFinding : MonoBehaviour
     {
         _testingCharacter = GetComponent<BaseCharacter>();
         _controlScript = GetComponent<BaseAIControls>();
-        _aiValues = GetComponent<AICharacterValues>();
     }
 
     public void MakeNewPathTowards()
@@ -98,6 +96,8 @@ public class TestPathFinding : MonoBehaviour
         
         if (!_travelFinished && _nodesToTravel.Count > 0)
         {
+            return;
+            /*
             if (_aiValues.OnNodeJump)
             {
                 Vector3 pos = _testingCharacter.CharacterPosition;
@@ -117,7 +117,7 @@ public class TestPathFinding : MonoBehaviour
                                         Physics.Raycast(forwardJump + Vector3.down, Vector3.up, _nextFloorHeightMinDistance, _floorMask);
 
                 if (_fallDetected && _floorToJumpDetected && !_travelFinished) _testingCharacter.Jump();
-            }
+            }*/
         }
 
         var point = _nodesToTravel[_travelIndex];

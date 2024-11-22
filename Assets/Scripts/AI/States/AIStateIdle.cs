@@ -14,7 +14,7 @@ public class AIStateIdle<T> : State<T>
     public override void Enter()
     {
 #if UNITY_EDITOR
-        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"Idle - waiting for turn.");
+        TestDebugBox.OnUpdateDebugBoxText?.Invoke($"AI State: Idle.");
 # endif
     }
 }

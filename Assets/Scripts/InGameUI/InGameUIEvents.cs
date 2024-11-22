@@ -27,6 +27,6 @@ public class InGameUIEvents
 
     public static float GetChargerBarIntensity()
     {
-        return _chargeBarIntensity;
+        return _chargeBarIntensity + 1;
     }
 }

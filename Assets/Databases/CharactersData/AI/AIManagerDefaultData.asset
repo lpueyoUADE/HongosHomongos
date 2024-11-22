@@ -1,0 +1,23 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afbd43bd5f3b64f4096ef79d5e155918, type: 3}
+  m_Name: AIManagerDefaultData
+  m_EditorClassIdentifier: 
+  _intentionalIdleChances: 1
+  _swapTargetChances: 2
+  _moveTowardsChances: 1.5
+  _moveAwayChances: 1
+  _aimChances: 2.5
+  _minActionTime: 0.15
+  _maxActionTime: 0.35
+  _minShootTimeWait: 0.25
+  _maxShootTimeWait: 0.25

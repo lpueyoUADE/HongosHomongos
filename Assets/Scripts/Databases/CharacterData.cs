@@ -23,6 +23,7 @@ public class CharacterData : ScriptableObject
     [Header("Projectile settings")]
     [SerializeField] private BaseProjectile _spawnedProjectile;
     [SerializeField] private AudioClip _projectileSound;
+    [SerializeField, Range(.1f, 2)] private float _projectilePowerMultiplier = .75f;
 
     [Header("Sounds")]
     [SerializeField] private AudioClip _deathSound;
@@ -46,6 +47,8 @@ public class CharacterData : ScriptableObject
 
     public BaseProjectile Projectile { get { return _spawnedProjectile; } }
     public AudioClip ProjectileSound { get { return _projectileSound; } }
+    public float ProjectilePowerMultiplier { get { return _projectilePowerMultiplier; } }
+
 
     public AudioClip DeathSound { get { return _deathSound; } }
     public AudioClip FallDamageSound { get { return _fallDamageSound; } }
