@@ -7,6 +7,7 @@ public class MainMenu : MonoBehaviour
     [Header("UI Elements")]
     [SerializeField] private GameObject allButtons;
     [SerializeField] private GameObject panelSettings;
+    public string gameplayScene = "UpToDateTest";
 
     private AudioSource actionSound;
 
@@ -27,7 +28,7 @@ public class MainMenu : MonoBehaviour
 
     public void PlayButton()
     {
-        StartCoroutine(PlayClickSoundAndChangeScene("TurnSystemTest"));
+        StartCoroutine(PlayClickSoundAndChangeScene(gameplayScene));
     }
 
     public void SettingsButton()
