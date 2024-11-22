@@ -27,6 +27,7 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
+        Cursor.visible = true;
         GenerateNames();
         if (!byPassIntroduction) GameIntroductionSequence.OnStartIntroductionSequence?.Invoke(CameraEvents.Cam, _characters); // Introduce characters
         else IntroductionSequenceFinished();

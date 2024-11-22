@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class Wireframe : MonoBehaviour
 {
     [SerializeField] private GameObject[] panels;
+    public string sceneName = "UpToDateTest";
 
     private AudioSource soundOption;
 
@@ -162,7 +163,7 @@ public class Wireframe : MonoBehaviour
     public void StartBattle()
     {
         soundOption.Play();
-        StartCoroutine(PlayClickSoundAndLoadScene("TurnSystemTest"));
+        StartCoroutine(PlayClickSoundAndLoadScene(sceneName));
     }
 
     public void BuyWarrior()
