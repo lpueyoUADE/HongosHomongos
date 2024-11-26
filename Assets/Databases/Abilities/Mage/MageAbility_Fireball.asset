@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13ca3ef1db6d0f14099da4766c55c5c5, type: 3}
+  m_Name: MageAbility_Fireball
+  m_EditorClassIdentifier: 
+  _abilityName: Fireball
+  _prefab: {fileID: 998030844451132421, guid: 3d521bb03cfedd24e993f5a3602ed833, type: 3}
+  _portraitSprite: {fileID: 21300000, guid: b7b9d0ab4a3f59c4f807fc6c31307c93, type: 3}
+  _chargeSpeed: 1.5
+  _levelRequiredForUnlock: 0
+  _baseDamage: 4
+  _baseSpeed: 20
+  _baseLife: 25
+  _residualObjectAtDeath: {fileID: 0}
+  _shootAudioClips:
+  - {fileID: 8300000, guid: 5adc40988345ca24083e2ff285d79446, type: 3}
+  _destroyedSounds:
+  - {fileID: 8300000, guid: 04a85876175b1644f9618a58508a9b82, type: 3}
+  - {fileID: 8300000, guid: f569a8139af20674e98b43cede234c5e, type: 3}
+  - {fileID: 8300000, guid: a8eed2c2903907e4680c49a151cf4cc5, type: 3}
+  - {fileID: 8300000, guid: 006b7183a40f33c448dc0b164de3ccc4, type: 3}
+  _maxRadius: 5
+  _damageDecaysOnDistance: 1

@@ -1,8 +1,11 @@
+using System;
+using System.Collections;
 using TMPro;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
-public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
+public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
 {
     [Header("Character data")]
     [SerializeField] private CharacterData _characterData;
@@ -19,12 +22,14 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     [SerializeField] private TextMeshProUGUI _nameTextRef;
     [SerializeField] private Image _lifeBar;
 
-    [Header("Offsets")] 
+    [Header("Others")] 
     [SerializeField, Range(0, 1)] private float _minVelocityToRotate = .15f;
+    [SerializeField, Range(.25f, 1)] private float _abilityChangeCooldown = .35f;
 
     [Header("Status")]
     public bool _isInAir;
     public bool _isFalling;
+    public float _currentAbilityChangeCooldown = 0;
     [Tooltip("Not used - only for show.")] public float _lastFallDistanceWithDamage;
 
     // Values
@@ -40,6 +45,11 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     private float _fallDistance;
     private bool _recentJump = false;
     private string _name;
+    private int _selectedAbility = 0;
+    private int _currentDamageTimerTimesLeft = 0;
+    private float _currentDamageTimerDamageAmount = 0;
+    private int _shieldTurnTimesLeft = 0;
+    public AbilityShield_InCharacterRotation _shieldScriptRef;
 
     virtual public bool IsDead => _currentLife <= 0;
     public bool CanJump => !_isInAir && !_isFalling && !_recentJump;
@@ -52,6 +62,9 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     public GameObject WeaponReference => _weaponReference;
     public Vector3 AimingDirection => _projectileOutReference.transform.right;
     public Vector3 ProjectileOutPosition => _projectileOutReference.transform.position;
+    public int SelectedAbility => _selectedAbility;
+    public bool CanChangeAbility => _currentAbilityChangeCooldown <= 0;
+    public bool IsShielding => _shieldScriptRef != null;
 
     public string CharacterName => _name;
 
@@ -64,17 +77,25 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 
         _currentLife = CharacterData.Life;
         _initialLife = _currentLife;
+
+        GameTurnEvents.OnTurnStart += OnAbilityShieldCheck;
     }
 
-    public virtual void Update()
+    private void Update()
     {
         UpdateFall();
     }
 
-    public virtual void FixedUpdate()
+    private void FixedUpdate()
     {
+        if (!CanChangeAbility) _currentAbilityChangeCooldown -= Time.fixedDeltaTime;
         LateUpdateFall();
         LateUpdateRotation();
+    }
+
+    private void OnDestroy() 
+    {
+        GameTurnEvents.OnTurnStart -= OnAbilityShieldCheck;
     }
 
     public void UpdateName(string newName)
@@ -85,12 +106,15 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
 
     virtual public void AnyDamage(float amount)
     {
+        if (IsShielding) amount -= amount %= _shieldScriptRef.damageReduction;
+
         _currentLife -= amount;
         OnDamage();
     }
 
     virtual public void AnyDamage(int amount)
     {
+        if (IsShielding) amount -= amount %= _shieldScriptRef.damageReduction;
         _currentLife -= amount;
         OnDamage();
     }
@@ -98,8 +122,16 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
     virtual public void OnDamage()
     {
         _lifeBar.fillAmount = _currentLife / _initialLife * 1;
-        if (CharacterInControl) GameTurnEvents.OnTurnEnd?.Invoke(null);
 
+        if (CharacterInControl) GameTurnEvents.OnTurnEnd?.Invoke(null);
+        if (IsShielding) _shieldScriptRef.PlayAnim(ShieldAnim.Hit);
+        if (IsDead) OnDeath();
+    }
+
+    virtual public void OnTimedDamage(float amount)
+    {
+        _currentLife -= amount;
+        _lifeBar.fillAmount = _currentLife / _initialLife * 1;
         if (IsDead) OnDeath();
     }
 
@@ -111,7 +143,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
         _uiObjects.SetActive(false);
         _audio.PlayOneShot(CharacterData.DeathSound);
         GameManagerEvents.OnCharacterDeath?.Invoke(this);
-        InGameUIEvents.OnPortraitCharacterUpdate?.Invoke(this, PortraitStatus.Dead);
+        InGameUIEvents.OnCharacterPortraitUpdate?.Invoke(this, PortraitStatus.Dead);
     }
 
     virtual public void InControl(bool isInControl = false)
@@ -119,7 +151,17 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
         _inControl = isInControl;
         _controlsScript.enabled = isInControl;
 
-        if (!isInControl) InGameUIEvents.OnChargingWeaponBar?.Invoke(false);
+        if (!isInControl)
+        {
+            InGameUIEvents.OnChargingWeaponBar?.Invoke(false);
+            InGameUIEvents.OnUpdateAbilityPortrait?.Invoke(4, true); // Clear ability portraits - will also reset ability portraits animations
+            _currentAbilityChangeCooldown = 0;
+        }
+        else 
+        {
+            InGameUIEvents.OnAbilityPortrait?.Invoke(CharacterData.AbilitiesList); // Fill ability portraits
+            InGameUIEvents.OnAbilityPortraitSelected?.Invoke(_selectedAbility); // Return to previosly selected ability
+        }
     }
 
     virtual public void Move(Vector3 direction, float speed, ForceMode mode = ForceMode.Impulse)
@@ -161,31 +203,38 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
         WeaponReference.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
     }
 
-    virtual public void ChargeWeapon()
+    virtual public void ChangeAbility(int selection)
+    {
+        if (!CanChangeAbility || selection == _selectedAbility) return;
+
+        _currentAbilityChangeCooldown = _abilityChangeCooldown;
+        _selectedAbility = selection;
+        InGameUIEvents.OnAbilityPortraitSelected?.Invoke(selection);
+        InGameUIEvents.OnPlayUISound?.Invoke(GameManagerEvents.ModeSettings.AbilityChangeSound);
+    }
+
+    virtual public void Chargebility()
     {
         InGameUIEvents.OnChargingWeaponBar?.Invoke(true);
     }
 
-    virtual public void ChargeWeaponStop()
+    virtual public void ChargeAbilityStop()
     {
         float force = InGameUIEvents.GetChargerBarIntensity();
 
         // If we are in control then OnTurnEnd True will make camera follow the spawned projectile.
         if (CharacterInControl)
         {
-            Vector3 fixedProjectilePos = new Vector3(ProjectileOutPosition.x, ProjectileOutPosition.y, CharacterPosition.z);
+            Vector3 fixedProjectilePos = new(ProjectileOutPosition.x, ProjectileOutPosition.y, CharacterPosition.z);
 
             // WIP - needs to modify to make self-damage possible
-            var spawnedProjectile = Instantiate(CharacterData.Projectile, fixedProjectilePos, new Quaternion());
-            SphereCollider collider = spawnedProjectile.GetComponent<SphereCollider>();
-            Physics.IgnoreCollision(_baseCollider, collider, true);
+            var spawnedProjectile = Instantiate(CharacterData.AbilitiesList[_selectedAbility].AbilitProjectilePrefab, fixedProjectilePos, new Quaternion());
 
             // Get projectile data and set stuff
             IProjectile proData = spawnedProjectile.GetComponent<IProjectile>();
-            proData?.UpdateDirection(_projectileOutReference.transform.right);
-            proData?.UpdateSpeedMultiplier(force * CharacterData.ProjectilePowerMultiplier);
+            proData.UpdateData(CharacterData.AbilitiesList[_selectedAbility], _projectileOutReference.transform.right, force * CharacterData.ProjectilePowerMultiplier, _baseCollider);
 
-            _audio.PlayOneShot(CharacterData.ProjectileSound);
+            _audio.PlayOneShot(CharacterData.AbilitiesList[_selectedAbility].AbilitFireSound);
             GameTurnEvents.OnTurnEnd?.Invoke(proData);
         }
 
@@ -285,5 +334,68 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable
         if (xVel < _minVelocityToRotate && xVel < 0) _bodyMesh.transform.rotation = new Quaternion(0, 180, 0, 0);
         if (xVel > -_minVelocityToRotate && xVel > 0)  _bodyMesh.transform.rotation = new Quaternion(0, 0, 0, 0);
 
+    }
+
+    virtual public void OnAbilityHeal(float amount)
+    {
+        if (IsDead) return;
+
+        _currentLife += amount;
+        if (_currentLife > _characterData.Life) _currentLife = _characterData.Life;
+    }
+
+    virtual public void OnAbilityTimedDamage(float amount, int duration)
+    {
+        _currentDamageTimerDamageAmount = amount;
+        _currentDamageTimerTimesLeft = duration;
+        StartCoroutine(TimedDamage());
+    }
+
+    virtual public void OnAbilityShield(int duration, GameObject shieldPrefab, int damageReductionPercet)
+    {
+        _shieldTurnTimesLeft += duration;
+
+        GameObject shieldObj = Instantiate(shieldPrefab, transform);
+        _shieldScriptRef = shieldObj.GetComponent<AbilityShield_InCharacterRotation>();
+        _shieldScriptRef.damageReduction = damageReductionPercet;
+    }
+
+    virtual public void OnAbilityShieldCheck()
+    {
+        if (!IsShielding) return;
+
+        if (_shieldTurnTimesLeft <= 0 )
+        {
+            _shieldScriptRef.PlayAnim(ShieldAnim.End);
+            _shieldScriptRef = null;
+            return;
+        }
+
+        _shieldTurnTimesLeft--;
+        _shieldScriptRef.PlayAnim(ShieldAnim.Hit);
+    }
+
+    public void OnWeakened(int turnDurations, int extraDamageReceived)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void OnStrengthened(int turnDurations, int extraDamageResistance)
+    {
+        throw new NotImplementedException();
+    }
+
+    IEnumerator TimedDamage()
+    {
+        yield return new WaitForSeconds(1);
+
+        if (!IsDead || _currentDamageTimerTimesLeft > 0) 
+        {
+            _currentDamageTimerTimesLeft--;
+            OnTimedDamage(_currentDamageTimerDamageAmount);
+            StartCoroutine(TimedDamage());
+        }
+
+        else if (IsDead || _currentDamageTimerTimesLeft <= 0) _currentDamageTimerDamageAmount = 0;
     }
 }

@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5335bde98ef60944ab13a2a6a726534, type: 3}
+  m_Name: AbilityWarrior_SpearThrow
+  m_EditorClassIdentifier: 
+  _abilityName: Spear
+  _prefab: {fileID: 4453694735902730189, guid: 6f0870164e80adf4f858b4bbaf75dd1b, type: 3}
+  _portraitSprite: {fileID: 21300000, guid: 897ee89b6031d1f44bbc62001161a5b8, type: 3}
+  _chargeSpeed: 1
+  _levelRequiredForUnlock: 0
+  _baseDamage: 3.5
+  _baseSpeed: 23
+  _baseLife: 15
+  _residualObjectAtDeath: {fileID: 6765357232671632441, guid: 77a8d2cefdc689848b5bef4f9446fa73, type: 3}
+  _shootAudioClips:
+  - {fileID: 8300000, guid: 40bab89b32bfb62498ade1bc01214f92, type: 3}
+  _destroyedSounds:
+  - {fileID: 8300000, guid: 041e9c3b7610af243aa519dc089f86a8, type: 3}
+  - {fileID: 8300000, guid: cc3d42fd0f62f86458fda352cf33dd4c, type: 3}
+  - {fileID: 8300000, guid: 8dfd566d06887224cb696222f77a1e8b, type: 3}
+  - {fileID: 8300000, guid: d4317b0bd34f7ff4d9f973109eda7df8, type: 3}

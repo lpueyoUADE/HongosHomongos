@@ -5,6 +5,7 @@ public interface IControlleable
 {
     void InputMove(Vector3 dir);
     void InputAim(Vector3 dir);
+    void InputSelectAbility(int selection);
     void NavAgentSetDestination(Vector3 newPath);
     void NavAgentForceStop();
     BaseCharacter Character { get; }

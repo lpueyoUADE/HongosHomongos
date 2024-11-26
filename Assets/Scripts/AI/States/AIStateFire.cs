@@ -13,12 +13,12 @@ public class AIStateFire<T> : State<T>
 
     public override void Enter()
     {
-        _controller.CurrentControlledCharacter.ChargeWeapon();
+        _controller.CurrentControlledCharacter.Chargebility();
     }
 
     public override void Sleep()
     {
         _controller.ForceStopTurn();
-        _controller.CurrentControlledCharacter.ChargeWeaponStop();
+        _controller.CurrentControlledCharacter.ChargeAbilityStop();
     }
 }

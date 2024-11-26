@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TestAimingRays : MonoBehaviour
@@ -30,8 +29,8 @@ public class TestAimingRays : MonoBehaviour
     {
         var spawnedProjectile = Instantiate(_projectile, transform.position, new Quaternion());
         IProjectile proData = spawnedProjectile.GetComponent<IProjectile>();
-        proData?.UpdateDirection(transform.right);
-        proData?.UpdateSpeedMultiplier(_power);
+        //proData?.UpdateDirection(transform.right);
+        //proData?.UpdateSpeedMultiplier(_power);
         _audio.PlayOneShot(_clip);
 
         timer = StartCoroutine(Timer());

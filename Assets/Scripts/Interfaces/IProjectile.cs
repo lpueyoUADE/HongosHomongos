@@ -4,9 +4,12 @@ using UnityEngine;
 
 public interface IProjectile
 {
-    void UpdateDirection(Vector3 direction);
-    void UpdateSpeedMultiplier(float speedMultiplier);
+    void UpdateData(CharacterAbilityData abilityData, Vector3 direction, float speedMultiplier, CapsuleCollider ownerCollider);
     void OnDeath();
+    void OnCharacterHit(Collision character);
+    void DamageCharacter(IDamageable objetive);
+    void OnWorldHit();
+
 
     public GameObject Projectile { get; }
 }

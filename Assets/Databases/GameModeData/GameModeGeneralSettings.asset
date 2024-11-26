@@ -17,6 +17,7 @@ MonoBehaviour:
   _clockEndTurnSound: {fileID: 8300000, guid: 85a9ce9a86d8dab46bdc23826ef13384, type: 3}
   _portraitLookStartSound: {fileID: 8300000, guid: 72ecfd25d70fce448987965ca9df8b27, type: 3}
   _portraitLookEndSound: {fileID: 8300000, guid: 89a02f720087dd844825c24b81d56550, type: 3}
+  _abilityChangeSound: {fileID: 8300000, guid: 7653e01edb2723643aae39a371762a86, type: 3}
   _delayBetweenCharacters: 2
   _cameraTransitionTime: 2.5
   _delayBeforeStartingGame: 5

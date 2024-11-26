@@ -46,7 +46,7 @@ Shader "S_Water"
 }
 /*ASEBEGIN
 Version=18900
-834;192;1626;1059;1434.862;483.7115;1;True;False
+131;264;1770;797;2441.911;611.962;2.456463;True;False
 Node;AmplifyShaderEditor.Vector2Node;19;-989.2948,0.4874897;Inherit;False;Constant;_Vector0;Vector 0;2;0;Create;True;0;0;0;False;0;False;1,1;0,0;0;3;FLOAT2;0;FLOAT;1;FLOAT;2
 Node;AmplifyShaderEditor.TextureCoordinatesNode;17;-1019.791,-133.8398;Inherit;False;0;-1;2;3;2;SAMPLER2D;;False;0;FLOAT2;1,1;False;1;FLOAT2;0,0;False;5;FLOAT2;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;20;-734.2948,-43.51251;Inherit;False;2;2;0;FLOAT2;0,0;False;1;FLOAT2;0,0;False;1;FLOAT2;0
@@ -74,4 +74,4 @@ WireConnection;21;1;30;0
 WireConnection;21;2;29;0
 WireConnection;0;0;21;0
 ASEEND*/
-//CHKSM=C0C0C5B252BC2EDBFF87958322498267BC899282
+//CHKSM=EDF2FFB1805E3F299DA1A0023AB631AB97E6B7CB

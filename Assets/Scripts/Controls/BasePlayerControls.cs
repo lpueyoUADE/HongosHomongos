@@ -7,6 +7,9 @@ public class BasePlayerControls : BaseCharacterControl
     public Vector3 InputDir => new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
     public bool InputChargeWeapon => Input.GetButton("Fire");
     public bool InputJump => Input.GetButton("Jump");
+    public bool InputAbility1 => Input.GetButtonDown("Ability1");
+    public bool InputAbility2 => Input.GetButtonDown("Ability2");
+    public bool InputAbility3 => Input.GetButtonDown("Ability3");
     public bool InputFreeLook => Input.GetButton("FreeLook");
 
     private void Start() 
@@ -35,11 +38,28 @@ public class BasePlayerControls : BaseCharacterControl
         if (InputChargeWeapon)
         {
             _isChargingWeapon = true;
-            Character.ChargeWeapon();
+            Character.Chargebility();
         }
 
-        if (_isChargingWeapon && !InputChargeWeapon) Character.ChargeWeaponStop();
+        if (_isChargingWeapon && !InputChargeWeapon) Character.ChargeAbilityStop();
         if (InputJump) Character.Jump();
+
+        if (InputFreeLook || _isChargingWeapon) return;
+
+        if (InputAbility1 || InputAbility2 || InputAbility3)
+        {
+            if (InputAbility1)
+            {
+                Character.ChangeAbility(0);
+                return;
+            }
+            if (InputAbility2)
+            {
+                Character.ChangeAbility(1);
+                return;
+            }
+            if (InputAbility3) Character.ChangeAbility(2);
+        }
     }
 
     private void FixedUpdate()

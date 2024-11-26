@@ -1,0 +1,36 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea1f6aa93efffa34ca87392027e14c38, type: 3}
+  m_Name: CharacterHongusWarrior
+  m_EditorClassIdentifier: 
+  _life: 10
+  _speed: 0.55
+  _jumpForce: 15
+  _floorMask:
+    serializedVersion: 2
+    m_Bits: 17
+  _isAIControlled: 0
+  _characterPortrait: {fileID: 21300000, guid: 2f84e68506c36404e80074fd9e7d7822, type: 3}
+  _fallSpeedModifier: 0.38
+  _fallMaxSpeed: 35
+  _fallDamageMinDistance: 6.5
+  _fallDamageMultiplier: 1
+  _fallMinVelocityTolerance: 0.25
+  _projectilePowerMultiplier: 0.75
+  _abilitiesList:
+  - {fileID: 11400000, guid: 5d6950c903d175749a9a323c31861305, type: 2}
+  - {fileID: 11400000, guid: 907f9ea42560d184bac9e64efa59dc5e, type: 2}
+  - {fileID: 11400000, guid: a816e4dd74e500947bb578761837559f, type: 2}
+  _deathSound: {fileID: 8300000, guid: dea7927385620b74d8e633ae608c7be6, type: 3}
+  _fallDamageSound: {fileID: 8300000, guid: 6f6d26b7bf967ea438d9dccfd14820a0, type: 3}
+  _jumpSound: {fileID: 8300000, guid: 7ff01ac866b70b74c92ab33896562d68, type: 3}
+  _groundSound: {fileID: 8300000, guid: 0fd2841ffd666d9429bb840210146967, type: 3}

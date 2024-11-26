@@ -12,6 +12,7 @@ public class GameModeGeneralSettings : ScriptableObject
     [SerializeField] private AudioClip _clockEndTurnSound;
     [SerializeField] private AudioClip _portraitLookStartSound;
     [SerializeField] private AudioClip _portraitLookEndSound;
+    [SerializeField] private AudioClip _abilityChangeSound;
 
     [Header("Before fight introduction times")]
     [SerializeField, Range(1, 5)] private float _delayBetweenCharacters = 2;
@@ -36,6 +37,7 @@ public class GameModeGeneralSettings : ScriptableObject
     public AudioClip ClockEndTurnSound { get { return _clockEndTurnSound;} }
     public AudioClip PortraitLookStartSound { get { return _portraitLookStartSound;} }
     public AudioClip PortraitLookEndSound { get { return _portraitLookEndSound;} }
+    public AudioClip AbilityChangeSound { get { return _abilityChangeSound;} }
 
     public float DelayBetweenCharacters { get { return _delayBetweenCharacters;} }
     public float CameraTransitionTime { get { return _cameraTransitionTime;} }

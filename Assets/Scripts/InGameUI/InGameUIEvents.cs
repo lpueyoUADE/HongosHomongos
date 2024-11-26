@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 
@@ -15,7 +16,10 @@ public class InGameUIEvents
     public static Action<AudioClip> OnPlayUISound;
     public static Action<BaseCharacter> OnAddCharacterPortrait;
     public static Action<int, PortraitStatus> OnPortraitUpdate;
-    public static Action<BaseCharacter, PortraitStatus> OnPortraitCharacterUpdate;
+    public static Action<BaseCharacter, PortraitStatus> OnCharacterPortraitUpdate;
+    public static Action<List<CharacterAbilityData>> OnAbilityPortrait;
+    public static Action<int, bool> OnUpdateAbilityPortrait;
+    public static Action<int> OnAbilityPortraitSelected;
 
     public static Action<bool> OnFreeLookMode;
 

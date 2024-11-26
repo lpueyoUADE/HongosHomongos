@@ -110,6 +110,8 @@ public class GameTurnManager : MonoBehaviour
             _turnTimer = StartCoroutine(TurnTime());
             _turnTimerShow = StartCoroutine(ShowTimer());
             CameraEvents.OnCameraUpdateObjectToFollow(_currentCharacterTurn.gameObject, true);
+
+            GameTurnEvents.OnTurnStart?.Invoke();
         }
     }
 

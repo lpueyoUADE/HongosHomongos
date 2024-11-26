@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5335bde98ef60944ab13a2a6a726534, type: 3}
+  m_Name: ArcherAbility_BowAndArrow
+  m_EditorClassIdentifier: 
+  _abilityName: Bow
+  _prefab: {fileID: 4453694735902730189, guid: 04bb5c75a6eec7e459d82ba4a4b6accb, type: 3}
+  _portraitSprite: {fileID: 21300000, guid: 3de527e0576c2e24e9506f573e1f568e, type: 3}
+  _chargeSpeed: 1
+  _levelRequiredForUnlock: 0
+  _baseDamage: 2.2
+  _baseSpeed: 25
+  _baseLife: 10
+  _residualObjectAtDeath: {fileID: 6765357232671632441, guid: 3b003c0d7658893459da6a303d47e8ab, type: 3}
+  _shootAudioClips:
+  - {fileID: 8300000, guid: 40bab89b32bfb62498ade1bc01214f92, type: 3}
+  _destroyedSounds:
+  - {fileID: 8300000, guid: 041e9c3b7610af243aa519dc089f86a8, type: 3}
+  - {fileID: 8300000, guid: cc3d42fd0f62f86458fda352cf33dd4c, type: 3}
+  - {fileID: 8300000, guid: 8dfd566d06887224cb696222f77a1e8b, type: 3}
+  - {fileID: 8300000, guid: d4317b0bd34f7ff4d9f973109eda7df8, type: 3}

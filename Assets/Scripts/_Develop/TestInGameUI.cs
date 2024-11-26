@@ -1,12 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class TestInGameUI : MonoBehaviour
 {
-    private AudioSource _audio;
+    [Header("Utils")]
+    public Sprite _deniedSprite;
 
     [Header("Timer")]
     public TextMeshProUGUI _turnTimeText;
@@ -15,7 +17,7 @@ public class TestInGameUI : MonoBehaviour
 
     [Header("Charging bar")]
     public Image _chargingWeaponBar;
-    [Range(1, 3)] public float _chargingSpeed = 1;
+    public float _chargingSpeed = 1;
     public float _chargeWeaponBarValue;     // Sets charging bar fill amount
     public bool _chargeWeaponBar;           // Show/Hide charging bar
     public float _chargeWeaponBarStartTime; // Makes charging bar reset when ping poing
@@ -27,13 +29,23 @@ public class TestInGameUI : MonoBehaviour
     public static float CurrentChargeBarPower => _chargingBarPower;
 
     [Header("Portraits")]
+
+    [Header("Abilities portraits")]
+    public HorizontalLayoutGroup _abilitiesPortraitsLayout;
+    public List<InGameUIAbilityPortrait> _abilityPortraitsList = new();
+    public List<float> _abilityChargingSpeeds = new();
+
+    [Header("Characters Portraits")]
+    public InGameUICharacterPortrait _portraitPrefab;
     public HorizontalLayoutGroup _portraitsLayout;
     public int _portraitOffset = 55;
-    public List<Image> _portraitsList = new();
-    public Dictionary<BaseCharacter, Image> _portraitsAndCharacters = new();
+    public List<InGameUICharacterPortrait> _portraitsList = new();
+    public Dictionary<BaseCharacter, InGameUICharacterPortrait> _portraitsAndCharacters = new();
 
     [Header("Others")]
     public GameObject freeLookTextrObject;
+    public int _latestSelectedAbility = 0;
+    private AudioSource _audio;
 
     private void Awake()
     {
@@ -47,8 +59,11 @@ public class TestInGameUI : MonoBehaviour
         InGameUIEvents.OnPlayUISound += PlayUISound;
         InGameUIEvents.OnAddCharacterPortrait += OnAddCharacterPortrait;
         InGameUIEvents.OnPortraitUpdate += PortraitUpdateAnim;
-        InGameUIEvents.OnPortraitCharacterUpdate += PortraitUpdateAnim;
+        InGameUIEvents.OnCharacterPortraitUpdate += PortraitUpdateAnim;
         InGameUIEvents.OnFreeLookMode += FreeLookModeText;
+        InGameUIEvents.OnAbilityPortrait += AbilityPortraitUpdateList;
+        InGameUIEvents.OnUpdateAbilityPortrait += AbilityPortraitClear;
+        InGameUIEvents.OnAbilityPortraitSelected += AbilityPortraitSelected;
 
         GameTurnEvents.OnGameEnded += ShowResultText;
     }
@@ -67,8 +82,11 @@ public class TestInGameUI : MonoBehaviour
         InGameUIEvents.OnPlayUISound -= PlayUISound;
         InGameUIEvents.OnAddCharacterPortrait -= OnAddCharacterPortrait;
         InGameUIEvents.OnPortraitUpdate -= PortraitUpdateAnim;
-        InGameUIEvents.OnPortraitCharacterUpdate -= PortraitUpdateAnim;
+        InGameUIEvents.OnCharacterPortraitUpdate -= PortraitUpdateAnim;
         InGameUIEvents.OnFreeLookMode -= FreeLookModeText;
+        InGameUIEvents.OnAbilityPortrait -= AbilityPortraitUpdateList;
+        InGameUIEvents.OnUpdateAbilityPortrait -= AbilityPortraitClear;
+        InGameUIEvents.OnAbilityPortraitSelected -= AbilityPortraitSelected;
 
         GameTurnEvents.OnGameEnded -= ShowResultText;
     }
@@ -141,14 +159,78 @@ public class TestInGameUI : MonoBehaviour
         _audio.PlayOneShot(clip);
     }
 
-    private void OnAddCharacterPortrait(BaseCharacter newPortrait)
+    private void AbilityPortraitUpdateList(List<CharacterAbilityData> newList)
     {
-        GameObject portrait = Instantiate(newPortrait.CharacterData.Portrait);
+        _abilityChargingSpeeds.Clear();
+        int index = 1;
+        foreach (CharacterAbilityData item in newList)
+        {
+            _abilityPortraitsList[index - 1].UpdatePortrait(item.AbilityPortraitSprite, index, item.AbilityName);
+            _abilityChargingSpeeds.Add(item.AbilitProjectileChargingSpeed);
+            index++;
+        }
+    }
+
+    private void AbilityPortraitClear(int index, bool clearAll = false)
+    {
+        if (clearAll || index >= 3)
+        {
+            foreach (InGameUIAbilityPortrait item in _abilityPortraitsList) item.UpdatePortrait(_deniedSprite);
+            AbilityPortraitSelected(index);
+        }
+        else _abilityPortraitsList[index].UpdatePortrait(_deniedSprite);
+    }
+
+    private void AbilityPortraitSelected(int newSelection)
+    {
+        _latestSelectedAbility = newSelection;
+        if (newSelection <= 2) _chargingSpeed = _abilityChargingSpeeds[newSelection];
+        else _chargingSpeed = 0;
+
+        switch (newSelection)
+        {
+            case 0:
+                _abilityPortraitsList[1].UpdateAnim(AbilityStatus.Idle);
+                _abilityPortraitsList[2].UpdateAnim(AbilityStatus.Idle);
+                _abilityPortraitsList[0].UpdateAnim(AbilityStatus.Selected);
+            break;
+
+            case 1:
+                _abilityPortraitsList[0].UpdateAnim(AbilityStatus.Idle);
+                _abilityPortraitsList[2].UpdateAnim(AbilityStatus.Idle);
+                _abilityPortraitsList[1].UpdateAnim(AbilityStatus.Selected);
+            break;
+
+            case 2:
+                _abilityPortraitsList[0].UpdateAnim(AbilityStatus.Idle);
+                _abilityPortraitsList[1].UpdateAnim(AbilityStatus.Idle);
+                _abilityPortraitsList[2].UpdateAnim(AbilityStatus.Selected);
+            break;
+
+            case 3: // Reset all to idle
+                _abilityPortraitsList[0].UpdateAnim(AbilityStatus.Idle);
+                _abilityPortraitsList[1].UpdateAnim(AbilityStatus.Idle);
+                _abilityPortraitsList[2].UpdateAnim(AbilityStatus.Idle);
+            break;
+
+            case 4: // Reset all to idle
+                _abilityPortraitsList[0].UpdateAnim(AbilityStatus.Disabled);
+                _abilityPortraitsList[1].UpdateAnim(AbilityStatus.Disabled);
+                _abilityPortraitsList[2].UpdateAnim(AbilityStatus.Disabled);
+            break;
+        }
+    }
+
+    private void OnAddCharacterPortrait(BaseCharacter characterReference)
+    {
+        InGameUICharacterPortrait portrait = Instantiate(_portraitPrefab);
+        portrait.UpdateCharacterPortrait(characterReference.CharacterData.Portrait);
+
         portrait.transform.SetParent(_portraitsLayout.transform);
         _portraitsLayout.padding.left -= _portraitOffset;
-        _portraitsList.Add(portrait.GetComponent<Image>());
+        _portraitsList.Add(portrait);
 
-        _portraitsAndCharacters.Add(newPortrait, portrait.GetComponent<Image>());
+        _portraitsAndCharacters.Add(characterReference, portrait);
     }
 
     private void PortraitUpdateAnim(BaseCharacter character, PortraitStatus newStatus = PortraitStatus.Idle)
@@ -159,18 +241,7 @@ public class TestInGameUI : MonoBehaviour
 
     private void PortraitUpdateAnim(int index, PortraitStatus newStatus = PortraitStatus.Idle)
     {
-        Animator portrait = _portraitsList[index].GetComponent<Animator>();
-
-        if (portrait)
-        {
-            switch (newStatus)
-            {
-                case PortraitStatus.Idle: portrait.SetTrigger("InIdle"); break;
-                case PortraitStatus.CurrentTurn: portrait.SetTrigger("InTurn"); break;
-                case PortraitStatus.LookAt: portrait.SetTrigger("InLookAt"); break;
-                case PortraitStatus.Dead: portrait.SetTrigger("InDead"); break;
-            }
-        }
+        _portraitsList[index].UpdatePortraitAnimation(newStatus);
     }
 
     private void FreeLookModeText(bool enabled)

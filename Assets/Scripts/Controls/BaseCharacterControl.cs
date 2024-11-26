@@ -37,6 +37,11 @@ public class BaseCharacterControl : MonoBehaviour, IControlleable
         Character.Move(dir);
     }
 
+    public virtual void InputSelectAbility(int selection)
+    {
+        Character.ChangeAbility(selection);
+    }
+
     public void NavAgentSetDestination(Vector3 newPath)
     {
         _navAgent.isStopped = false;

@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 13ca3ef1db6d0f14099da4766c55c5c5, type: 3}
+  m_Name: MageAbility_Heal
+  m_EditorClassIdentifier: 
+  _abilityName: Heal
+  _prefab: {fileID: -3465245023404119719, guid: 29a6c167d39255547a7967a35ddf784b, type: 3}
+  _portraitSprite: {fileID: 21300000, guid: ee59dff192dec2745b455d07da7b327e, type: 3}
+  _chargeSpeed: 1
+  _levelRequiredForUnlock: 0
+  _baseDamage: 2.2
+  _baseSpeed: 15
+  _baseLife: 13
+  _residualObjectAtDeath: {fileID: 0}
+  _shootAudioClips:
+  - {fileID: 8300000, guid: 4cb54dd0b42524342ba94641a63900c4, type: 3}
+  _destroyedSounds:
+  - {fileID: 8300000, guid: 59b606be67f14854abfd27f499562e61, type: 3}
+  _maxRadius: 5
+  _damageDecaysOnDistance: 1
