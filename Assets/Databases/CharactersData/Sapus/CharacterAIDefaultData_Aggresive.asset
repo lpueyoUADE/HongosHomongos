@@ -25,9 +25,7 @@ MonoBehaviour:
   _fallDamageMinDistance: 6.5
   _fallDamageMultiplier: 1
   _fallMinVelocityTolerance: 0.25
-  _spawnedProjectile: {fileID: 4453694735902730189, guid: 99fd2558c783fdb4a8530b86f3701b28, type: 3}
-  _projectileSound: {fileID: 8300000, guid: 54526597f69b0a841a8c12399e0df529, type: 3}
-  _projectilePowerMultiplier: 1
+  _projectilePowerMultiplier: 0.5
   _abilitiesList:
   - {fileID: 11400000, guid: 88b1b37fecb55da4682fcc589365eb5b, type: 2}
   - {fileID: 11400000, guid: 0eca1a0a59470bd47a9d643e5b52b5db, type: 2}

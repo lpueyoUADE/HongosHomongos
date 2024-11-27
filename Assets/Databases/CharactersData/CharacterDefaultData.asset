@@ -25,13 +25,11 @@ MonoBehaviour:
   _fallDamageMinDistance: 6.5
   _fallDamageMultiplier: 1
   _fallMinVelocityTolerance: 0.25
-  _spawnedProjectile: {fileID: 4453694735902730189, guid: 99fd2558c783fdb4a8530b86f3701b28, type: 3}
-  _projectileSound: {fileID: 8300000, guid: 54526597f69b0a841a8c12399e0df529, type: 3}
   _projectilePowerMultiplier: 0.75
   _abilitiesList:
-  - {fileID: 11400000, guid: 0eca1a0a59470bd47a9d643e5b52b5db, type: 2}
-  - {fileID: 11400000, guid: ea3513993e0beb3428f0e495c4f98c6a, type: 2}
-  - {fileID: 11400000, guid: d591d56d32349fc40a40183b0a257c78, type: 2}
+  - {fileID: 11400000, guid: 6252785648db5c04e9b29ce1cc7e76ef, type: 2}
+  - {fileID: 11400000, guid: 0bf17a601858e1744b78ae4a96874c54, type: 2}
+  - {fileID: 11400000, guid: a816e4dd74e500947bb578761837559f, type: 2}
   _deathSound: {fileID: 8300000, guid: dea7927385620b74d8e633ae608c7be6, type: 3}
   _fallDamageSound: {fileID: 8300000, guid: 6f6d26b7bf967ea438d9dccfd14820a0, type: 3}
   _jumpSound: {fileID: 8300000, guid: 7ff01ac866b70b74c92ab33896562d68, type: 3}

@@ -226,13 +226,11 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
         if (CharacterInControl)
         {
             Vector3 fixedProjectilePos = new(ProjectileOutPosition.x, ProjectileOutPosition.y, CharacterPosition.z);
-
-            // WIP - needs to modify to make self-damage possible
             var spawnedProjectile = Instantiate(CharacterData.AbilitiesList[_selectedAbility].AbilitProjectilePrefab, fixedProjectilePos, new Quaternion());
 
             // Get projectile data and set stuff
             IProjectile proData = spawnedProjectile.GetComponent<IProjectile>();
-            proData.UpdateData(CharacterData.AbilitiesList[_selectedAbility], _projectileOutReference.transform.right, force * CharacterData.ProjectilePowerMultiplier, _baseCollider);
+            proData.UpdateData(CharacterData.AbilitiesList[_selectedAbility], _projectileOutReference.transform.right, force * CharacterData.ProjectilePowerMultiplier, gameObject, _baseCollider);
 
             _audio.PlayOneShot(CharacterData.AbilitiesList[_selectedAbility].AbilitFireSound);
             GameTurnEvents.OnTurnEnd?.Invoke(proData);
