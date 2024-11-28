@@ -129,6 +129,7 @@ public class GameTurnManager : MonoBehaviour
     {
         if (_currentCharacterTurn == null) return;
 
+        GameTurnEvents.OnTurnEndManager?.Invoke();
         // Disable control auth
         _currentCharacterTurn.InControl();
         InGameUIEvents.OnPortraitUpdate(_characters.IndexOf(_currentCharacterTurn), PortraitStatus.Idle);

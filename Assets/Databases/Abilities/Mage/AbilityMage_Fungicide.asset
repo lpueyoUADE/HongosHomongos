@@ -10,16 +10,16 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5335bde98ef60944ab13a2a6a726534, type: 3}
-  m_Name: ArcherAbility_SpineField
+  m_Name: AbilityMage_Fungicide
   m_EditorClassIdentifier: 
-  _abilityName: Spine
+  _abilityName: Fungicide
   _prefab: {fileID: 4453694735902730189, guid: 99fd2558c783fdb4a8530b86f3701b28, type: 3}
-  _portraitSprite: {fileID: 21300000, guid: f7cd5f5cdc905fe47a2f29f5986dca08, type: 3}
-  _chargeSpeed: 1
+  _portraitSprite: {fileID: 21300000, guid: 903315785b300544fa9056822fa124b2, type: 3}
+  _chargeSpeed: 1.75
   _levelRequiredForUnlock: 0
-  _baseDamage: 2.2
-  _baseSpeed: 22
-  _baseLife: 10
+  _baseDamage: 1.5
+  _baseSpeed: 23
+  _baseLife: 20
   _residualObjectAtDeath: {fileID: 0}
   _shootAudioClips: []
   _destroyedSounds: []

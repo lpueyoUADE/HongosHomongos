@@ -77,8 +77,8 @@ public class GameManager : MonoBehaviour
         TestDebugBox.OnUpdateDebugBoxText?.Invoke($"GameManager Introduction sequence finished.");
 # endif
 
-        GameTurnEvents.OnCharactersListUpdate(_characters);
-        AIManagerEvents.OnUpdateAICharacters(_aiAliveCharacters);
+        GameTurnEvents.OnCharactersListUpdate?.Invoke(_characters);
+        AIManagerEvents.OnUpdateAICharacters?.Invoke(_aiAliveCharacters);
     }
 
     private void OnCharacterDeath(BaseCharacter character)
@@ -102,7 +102,7 @@ public class GameManager : MonoBehaviour
 
     public static BaseCharacter GetRandomPlayerCharacterAlive()
     {
-        List<BaseCharacter> aliveCharacters = new List<BaseCharacter>();
+        List<BaseCharacter> aliveCharacters = new();
 
         foreach (BaseCharacter item in _playerAliveCharacters)
         {

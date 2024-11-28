@@ -5,6 +5,8 @@ using UnityEngine;
 public class GameTurnEvents : MonoBehaviour
 {
     public static Action OnTurnStart;
+    public static Action OnTurnEndManager;
+    public static Action<bool> OnPauseTime;
     public static Action<IProjectile> OnTurnEnd;
     public static Action OnProjectileDeath;
     public static Action<List<BaseCharacter>> OnCharactersListUpdate;

@@ -13,7 +13,7 @@ public class AIStateFire<T> : State<T>
 
     public override void Enter()
     {
-        _controller.CurrentControlledCharacter.Chargebility();
+        _controller.CurrentControlledCharacter.ChargeAbility();
     }
 
     public override void Sleep()

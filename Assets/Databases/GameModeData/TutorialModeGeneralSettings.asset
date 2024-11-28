@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2fe3b0006a37c2f4f9b2ea3de21a806b, type: 3}
+  m_Name: TutorialModeGeneralSettings
+  m_EditorClassIdentifier: 
+  _characterNames: {fileID: 11400000, guid: ae93258f116e2f24195f4efa2d2f8dc9, type: 2}
+  _clockTickSound: {fileID: 8300000, guid: ba6114f48112a634598beee52a28b875, type: 3}
+  _clockEndTurnSound: {fileID: 8300000, guid: 85a9ce9a86d8dab46bdc23826ef13384, type: 3}
+  _portraitLookStartSound: {fileID: 8300000, guid: 72ecfd25d70fce448987965ca9df8b27, type: 3}
+  _portraitLookEndSound: {fileID: 8300000, guid: 89a02f720087dd844825c24b81d56550, type: 3}
+  _abilityChangeSound: {fileID: 8300000, guid: 7653e01edb2723643aae39a371762a86, type: 3}
+  _delayBetweenCharacters: 2
+  _cameraTransitionTime: 2.5
+  _delayBeforeStartingGame: 5
+  _characterIntroductionClip: {fileID: 8300000, guid: 80a289ad5422b634b9087841ed775d2a, type: 3}
+  _maxTurnTime: 10
+  _maxDelayBetweenTurns: 3
+  _turnCameraTransitionTime: 1
+  _maxDelayAfterProjectileDeath: 4
+  _inGameCameraOffset: {x: 0, y: 0, z: -10}

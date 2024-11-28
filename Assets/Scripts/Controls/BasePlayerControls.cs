@@ -4,7 +4,7 @@ public class BasePlayerControls : BaseCharacterControl
 {
     private bool _isChargingWeapon = false;
     public Camera _camera;
-    public Vector3 InputDir => new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+    public Vector3 InputDir => new(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
     public bool InputChargeWeapon => Input.GetButton("Fire");
     public bool InputJump => Input.GetButton("Jump");
     public bool InputAbility1 => Input.GetButtonDown("Ability1");
@@ -38,7 +38,7 @@ public class BasePlayerControls : BaseCharacterControl
         if (InputChargeWeapon)
         {
             _isChargingWeapon = true;
-            Character.Chargebility();
+            Character.ChargeAbility();
         }
 
         if (_isChargingWeapon && !InputChargeWeapon) Character.ChargeAbilityStop();

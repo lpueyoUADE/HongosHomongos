@@ -169,6 +169,17 @@ public class TestInGameUI : MonoBehaviour
             _abilityChargingSpeeds.Add(item.AbilitProjectileChargingSpeed);
             index++;
         }
+
+        switch (index)
+        {
+            case 2:
+                _abilityPortraitsList[1].UpdatePortrait(_deniedSprite, 2, "");
+                _abilityPortraitsList[2].UpdatePortrait(_deniedSprite, 3, "");
+                break;
+            case 3:
+                _abilityPortraitsList[2].UpdatePortrait(_deniedSprite, 3, "");
+                break;
+        }
     }
 
     private void AbilityPortraitClear(int index, bool clearAll = false)

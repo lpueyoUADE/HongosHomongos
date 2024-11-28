@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using TMPro;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 using UnityEngine.UI;
 
 public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
@@ -205,7 +204,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
 
     virtual public void ChangeAbility(int selection)
     {
-        if (!CanChangeAbility || selection == _selectedAbility) return;
+        if (!CanChangeAbility || selection == _selectedAbility || _characterData.AbilitiesList.Count <= selection) return;
 
         _currentAbilityChangeCooldown = _abilityChangeCooldown;
         _selectedAbility = selection;
@@ -213,7 +212,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
         InGameUIEvents.OnPlayUISound?.Invoke(GameManagerEvents.ModeSettings.AbilityChangeSound);
     }
 
-    virtual public void Chargebility()
+    virtual public void ChargeAbility()
     {
         InGameUIEvents.OnChargingWeaponBar?.Invoke(true);
     }

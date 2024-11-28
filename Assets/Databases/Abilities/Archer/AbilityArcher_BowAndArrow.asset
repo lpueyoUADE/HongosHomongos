@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d5335bde98ef60944ab13a2a6a726534, type: 3}
-  m_Name: ArcherAbility_BowAndArrow
+  m_Name: AbilityArcher_BowAndArrow
   m_EditorClassIdentifier: 
   _abilityName: Bow
   _prefab: {fileID: 4453694735902730189, guid: 04bb5c75a6eec7e459d82ba4a4b6accb, type: 3}

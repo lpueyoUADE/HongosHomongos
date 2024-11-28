@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 13ca3ef1db6d0f14099da4766c55c5c5, type: 3}
-  m_Name: MageAbility_Heal
+  m_Name: AbilityMage_Heal
   m_EditorClassIdentifier: 
   _abilityName: Heal
   _prefab: {fileID: -3465245023404119719, guid: 29a6c167d39255547a7967a35ddf784b, type: 3}

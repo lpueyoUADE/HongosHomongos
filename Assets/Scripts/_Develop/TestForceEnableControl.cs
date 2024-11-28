@@ -6,6 +6,7 @@ public class TestForceEnableControl : MonoBehaviour
 {
     public BaseCharacter _chScript;
     public BasePlayerControls _playerScript;
+    public TutorialPlayerControls _tutScript;
     public Camera _camera;
 
     private void Awake()
@@ -17,5 +18,6 @@ public class TestForceEnableControl : MonoBehaviour
     {
         _chScript?.InControl(true);
         if (_playerScript) _playerScript._camera = _camera;
+        if (_tutScript) _tutScript._camera = _camera;
     }
 }
