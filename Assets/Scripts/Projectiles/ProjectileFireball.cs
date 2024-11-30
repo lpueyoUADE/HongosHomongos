@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class ProjectileFireball : BaseProjectile
 {
+    public GameObject victimsParticles;
     public LayerMask _affectedLayer;
 
     protected override void OnCollisionEnter(Collision collision)
@@ -21,12 +22,19 @@ public class ProjectileFireball : BaseProjectile
                 float distance = (transform.position - item.transform.position).magnitude;
                 float ratio = 1 - (distance / AreaAbilityData.AbilityAreaRadius);
                 damageable.AnyDamage(AbilityData.AbilityProjectileBaseDamage * ratio);
+
+                Instantiate(victimsParticles, item.transform);
             }
 
-            else damageable.AnyDamage(AbilityData.AbilityProjectileBaseDamage);
+            else 
+            {
+                Instantiate(AbilityData.AbilityResidualPrefab, item.transform);
+                damageable.AnyDamage(AbilityData.AbilityProjectileBaseDamage);
+            }
         }
 
         OnDeath();
+        OnWorldHit();
         Destroy(gameObject);
     }
 }

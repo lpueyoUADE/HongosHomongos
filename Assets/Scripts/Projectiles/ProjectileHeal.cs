@@ -2,6 +2,7 @@ using UnityEngine;
 
 public class ProjectileHeal : BaseProjectile
 {
+    public GameObject victimsParticles;
     public LayerMask _affectedLayer;
 
     protected override void OnCollisionEnter(Collision collision)
@@ -11,11 +12,27 @@ public class ProjectileHeal : BaseProjectile
 
         foreach (Collider item in victims)
         {
+             if (item == null) continue;
+
             item.TryGetComponent(out IAbilities ability);
             if (ability == null) continue;
 
-            if (AreaAbilityData.AbilityAreaDecayDamageByDistance) ability.OnAbilityHeal(AbilityData.AbilityProjectileBaseDamage * (1 - Vector3.Distance(transform.position, item.transform.position)));
-            else ability.OnAbilityHeal(AbilityData.AbilityProjectileBaseDamage);
+            if (AreaAbilityData.AbilityAreaDecayDamageByDistance) 
+            {
+                float distance = (transform.position - item.transform.position).magnitude;
+                float ratio = 1 - (distance / AreaAbilityData.AbilityAreaRadius);
+                ability.OnAbilityHeal(AbilityData.AbilityProjectileBaseDamage * ratio);
+            }
+
+            else 
+            {
+                Instantiate(AbilityData.AbilityResidualPrefab, item.transform);
+                ability.OnAbilityHeal(AbilityData.AbilityProjectileBaseDamage);
+            }
         }
+
+        OnDeath();
+        OnWorldHit();
+        Destroy(gameObject);
     }
 }
