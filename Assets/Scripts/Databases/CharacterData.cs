@@ -31,6 +31,10 @@ public class CharacterData : ScriptableObject
     [SerializeField] private AudioClip _fallDamageSound;
     [SerializeField] private AudioClip _jumpSound;
     [SerializeField] private AudioClip _groundSound;
+    [SerializeField] private List<AudioClip> _anyDamageSound;
+
+    [Header("Other")]
+    [SerializeField] private GameObject _onHitParticles;
 
     public float Life { get { return _life;} }
     public float Speed { get { return _speed;} }
@@ -54,4 +58,7 @@ public class CharacterData : ScriptableObject
     public AudioClip FallDamageSound { get { return _fallDamageSound; } }
     public AudioClip JumpSound { get { return _jumpSound; } }
     public AudioClip GroundSound { get { return _groundSound; } }
+    public AudioClip AnyDamageSound { get { return _anyDamageSound[Random.Range(0, _anyDamageSound.Count)]; } }
+    public GameObject OnDamageBloodParticles { get { return _onHitParticles; } }
+
 }

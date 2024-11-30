@@ -22,6 +22,8 @@ public class ProjectileHeal : BaseProjectile
                 float distance = (transform.position - item.transform.position).magnitude;
                 float ratio = 1 - (distance / AreaAbilityData.AbilityAreaRadius);
                 ability.OnAbilityHeal(AbilityData.AbilityProjectileBaseDamage * ratio);
+
+                Instantiate(victimsParticles, item.transform);
             }
 
             else 
@@ -35,4 +37,12 @@ public class ProjectileHeal : BaseProjectile
         OnWorldHit();
         Destroy(gameObject);
     }
+
+# if UNITY_EDITOR
+    private void OnDrawGizmos() 
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawWireSphere(transform.position, AreaAbilityData.AbilityAreaRadius);
+    }
+# endif
 }

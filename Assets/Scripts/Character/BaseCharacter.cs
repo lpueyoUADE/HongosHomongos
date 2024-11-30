@@ -48,7 +48,11 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
     private int _currentDamageTimerTimesLeft = 0;
     private float _currentDamageTimerDamageAmount = 0;
     private int _shieldTurnTimesLeft = 0;
-    public AbilityShield_InCharacterRotation _shieldScriptRef;
+    private bool _isWeakened = false;
+    private int _weakenedTurnTimesLeft = 0;
+    private float _extraDmgWeakened = 0;
+    private AbilityShield_InCharacterRotation _shieldScriptRef;
+    private GameObject _weakenedParticles;
 
     virtual public bool IsDead => _currentLife <= 0;
     public bool CanJump => !_isInAir && !_isFalling && !_recentJump;
@@ -64,7 +68,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
     public int SelectedAbility => _selectedAbility;
     public bool CanChangeAbility => _currentAbilityChangeCooldown <= 0;
     public bool IsShielding => _shieldScriptRef != null;
-
+    public bool IsWeakened => _isWeakened;
     public string CharacterName => _name;
 
     private void Awake()
@@ -77,7 +81,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
         _currentLife = CharacterData.Life;
         _initialLife = _currentLife;
 
-        GameTurnEvents.OnTurnStart += OnAbilityShieldCheck;
+        GameTurnEvents.OnTurnStart += OnAbilityTurnCheck;
     }
 
     private void Update()
@@ -94,7 +98,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
 
     private void OnDestroy() 
     {
-        GameTurnEvents.OnTurnStart -= OnAbilityShieldCheck;
+        GameTurnEvents.OnTurnStart -= OnAbilityTurnCheck;
     }
 
     public void UpdateName(string newName)
@@ -106,6 +110,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
     virtual public void AnyDamage(float amount)
     {
         if (IsShielding) amount -= amount %= _shieldScriptRef.damageReduction;
+        if (_isWeakened) amount += amount * _extraDmgWeakened;
 
         _currentLife -= amount;
         OnDamage();
@@ -113,8 +118,10 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
 
     virtual public void AnyDamage(int amount)
     {
-        if (IsShielding) amount -= amount %= _shieldScriptRef.damageReduction;
-        _currentLife -= amount;
+        float newAmount = amount;
+        if (IsShielding) newAmount -= newAmount %= _shieldScriptRef.damageReduction;
+        if (_isWeakened) newAmount += newAmount * _extraDmgWeakened;
+        _currentLife -= newAmount;
         OnDamage();
     }
 
@@ -123,8 +130,10 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
         _lifeBar.fillAmount = _currentLife / _initialLife * 1;
 
         if (CharacterInControl) GameTurnEvents.OnTurnEnd?.Invoke(null);
-        if (IsShielding) _shieldScriptRef.PlayAnim(ShieldAnim.Hit);
+        if (IsShielding) _shieldScriptRef.PlayAnim(ShieldAnim.Hit);        
         if (IsDead) OnDeath();
+        else _audio.PlayOneShot(CharacterData.AnyDamageSound);
+        if (CharacterData.OnDamageBloodParticles) Instantiate(CharacterData.OnDamageBloodParticles, transform);
     }
 
     virtual public void OnTimedDamage(float amount)
@@ -339,6 +348,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
 
         _currentLife += amount;
         if (_currentLife > _characterData.Life) _currentLife = _characterData.Life;
+        _lifeBar.fillAmount = _currentLife / _initialLife * 1;
     }
 
     virtual public void OnAbilityTimedDamage(float amount, int duration)
@@ -352,32 +362,56 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
     {
         _shieldTurnTimesLeft += duration;
 
-        GameObject shieldObj = Instantiate(shieldPrefab, transform);
-        _shieldScriptRef = shieldObj.GetComponent<AbilityShield_InCharacterRotation>();
+        if (!IsShielding)
+        {
+            GameObject shieldObj = Instantiate(shieldPrefab, transform);
+            _shieldScriptRef = shieldObj.GetComponent<AbilityShield_InCharacterRotation>();
+        }
+        else _shieldScriptRef.PlayAnim(ShieldAnim.Hit);
+
         _shieldScriptRef.damageReduction = damageReductionPercet;
     }
 
-    virtual public void OnAbilityShieldCheck()
+    virtual public void OnAbilityTurnCheck()
     {
-        if (!IsShielding) return;
-
-        if (_shieldTurnTimesLeft <= 0 )
+        if (IsShielding)
         {
-            _shieldScriptRef.PlayAnim(ShieldAnim.End);
-            _shieldScriptRef = null;
-            return;
+            if (_shieldTurnTimesLeft <= 0 )
+            {
+                _shieldScriptRef.PlayAnim(ShieldAnim.End);
+                _shieldScriptRef = null;
+                return;
+            }
+
+            _shieldTurnTimesLeft--;
+            _shieldScriptRef.PlayAnim(ShieldAnim.Hit);
         }
 
-        _shieldTurnTimesLeft--;
-        _shieldScriptRef.PlayAnim(ShieldAnim.Hit);
+
+
+        if (IsWeakened)
+        {
+            _weakenedTurnTimesLeft--;
+            if (_weakenedTurnTimesLeft <= 0) 
+            {
+                _isWeakened = false;
+
+                if (_weakenedParticles != null) _weakenedParticles.SetActive(false);
+            }
+        }
     }
 
-    public void OnWeakened(int turnDurations, int extraDamageReceived)
+    public void OnWeakened(int turnDurations, float extraDamageReceived, GameObject particles = null)
     {
-        throw new NotImplementedException();
+        _weakenedTurnTimesLeft = turnDurations;
+        _extraDmgWeakened = extraDamageReceived;
+        _isWeakened = true;
+
+        if (particles && _weakenedParticles == null) _weakenedParticles = Instantiate(particles, transform);
+        if (_weakenedParticles) _weakenedParticles.SetActive(true);
     }
 
-    public void OnStrengthened(int turnDurations, int extraDamageResistance)
+    public void OnStrengthened(int turnDurations, float extraDamageResistance)
     {
         throw new NotImplementedException();
     }

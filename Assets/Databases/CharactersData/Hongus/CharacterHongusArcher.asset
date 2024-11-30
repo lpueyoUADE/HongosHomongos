@@ -28,9 +28,14 @@ MonoBehaviour:
   _projectilePowerMultiplier: 0.75
   _abilitiesList:
   - {fileID: 11400000, guid: 6252785648db5c04e9b29ce1cc7e76ef, type: 2}
-  - {fileID: 11400000, guid: 62ca36a0134367f4cab80382b6054114, type: 2}
-  - {fileID: 11400000, guid: 075e612fd135bff4ab5095dfff4dcc6c, type: 2}
+  - {fileID: 11400000, guid: 9dc72359e8ad26a47a220c3ef42df404, type: 2}
+  - {fileID: 11400000, guid: c69812b06905c654e9fdd13a3c9d423d, type: 2}
   _deathSound: {fileID: 8300000, guid: dea7927385620b74d8e633ae608c7be6, type: 3}
   _fallDamageSound: {fileID: 8300000, guid: 6f6d26b7bf967ea438d9dccfd14820a0, type: 3}
   _jumpSound: {fileID: 8300000, guid: 7ff01ac866b70b74c92ab33896562d68, type: 3}
   _groundSound: {fileID: 8300000, guid: 0fd2841ffd666d9429bb840210146967, type: 3}
+  _anyDamageSound:
+  - {fileID: 8300000, guid: 047f18bb99dc2ae459653384ff3288cf, type: 3}
+  - {fileID: 8300000, guid: ee0963cc5d4845b4d9ba66bf184b7ec9, type: 3}
+  - {fileID: 8300000, guid: c7255cbebd4559a42a26de4aa34f4b8d, type: 3}
+  _onHitParticles: {fileID: 4344084656301871635, guid: ba6dfbd94025aae40bf74fe86aac80d8, type: 3}

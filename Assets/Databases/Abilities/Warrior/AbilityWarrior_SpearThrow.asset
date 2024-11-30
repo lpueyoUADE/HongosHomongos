@@ -17,9 +17,9 @@ MonoBehaviour:
   _portraitSprite: {fileID: 21300000, guid: 897ee89b6031d1f44bbc62001161a5b8, type: 3}
   _chargeSpeed: 1
   _levelRequiredForUnlock: 0
-  _baseDamage: 3.5
-  _baseSpeed: 23
-  _baseLife: 15
+  _baseDamage: 4
+  _baseSpeed: 30
+  _baseLife: 20
   _residualObjectAtDeath: {fileID: 6765357232671632441, guid: 77a8d2cefdc689848b5bef4f9446fa73, type: 3}
   _shootAudioClips:
   - {fileID: 8300000, guid: 40bab89b32bfb62498ade1bc01214f92, type: 3}

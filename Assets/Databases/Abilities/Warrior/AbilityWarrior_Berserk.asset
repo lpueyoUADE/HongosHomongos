@@ -13,13 +13,18 @@ MonoBehaviour:
   m_Name: AbilityWarrior_Berserk
   m_EditorClassIdentifier: 
   _abilityName: Berserk
-  _prefab: {fileID: 4453694735902730189, guid: 99fd2558c783fdb4a8530b86f3701b28, type: 3}
+  _prefab: {fileID: -5215654455091728374, guid: 92b849fd4134d5d4cad86573b6bc1b99, type: 3}
   _portraitSprite: {fileID: 21300000, guid: dc6c8b7e4185a7d429c4882ed94ef7c2, type: 3}
-  _chargeSpeed: 1
+  _chargeSpeed: 2
   _levelRequiredForUnlock: 0
-  _baseDamage: 2.2
+  _baseDamage: 7
   _baseSpeed: 25
-  _baseLife: 10
-  _residualObjectAtDeath: {fileID: 0}
-  _shootAudioClips: []
-  _destroyedSounds: []
+  _baseLife: 20
+  _residualObjectAtDeath: {fileID: 6765357232671632441, guid: 3244bca546faf0640ac883d16a217e15, type: 3}
+  _shootAudioClips:
+  - {fileID: 8300000, guid: 40bab89b32bfb62498ade1bc01214f92, type: 3}
+  _destroyedSounds:
+  - {fileID: 8300000, guid: 041e9c3b7610af243aa519dc089f86a8, type: 3}
+  - {fileID: 8300000, guid: cc3d42fd0f62f86458fda352cf33dd4c, type: 3}
+  - {fileID: 8300000, guid: 8dfd566d06887224cb696222f77a1e8b, type: 3}
+  - {fileID: 8300000, guid: d4317b0bd34f7ff4d9f973109eda7df8, type: 3}

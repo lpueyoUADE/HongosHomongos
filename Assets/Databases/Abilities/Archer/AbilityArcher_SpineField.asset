@@ -9,17 +9,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5335bde98ef60944ab13a2a6a726534, type: 3}
+  m_Script: {fileID: 11500000, guid: 13ca3ef1db6d0f14099da4766c55c5c5, type: 3}
   m_Name: AbilityArcher_SpineField
   m_EditorClassIdentifier: 
-  _abilityName: Spine
-  _prefab: {fileID: 4453694735902730189, guid: 99fd2558c783fdb4a8530b86f3701b28, type: 3}
-  _portraitSprite: {fileID: 21300000, guid: f7cd5f5cdc905fe47a2f29f5986dca08, type: 3}
-  _chargeSpeed: 1
+  _abilityName: Spine field
+  _prefab: {fileID: -8706358383677063285, guid: 47a542a0a37fd6b4e952a7337d44fc8e, type: 3}
+  _portraitSprite: {fileID: 21300000, guid: c5ec4f6d0999d864694506c94ae3460a, type: 3}
+  _chargeSpeed: 1.3
   _levelRequiredForUnlock: 0
-  _baseDamage: 2.2
-  _baseSpeed: 22
-  _baseLife: 10
-  _residualObjectAtDeath: {fileID: 0}
-  _shootAudioClips: []
-  _destroyedSounds: []
+  _baseDamage: 2.8
+  _baseSpeed: 18
+  _baseLife: 20
+  _residualObjectAtDeath: {fileID: 6765357232671632441, guid: ae8bfce4035ca9d44bda462b6081e97f, type: 3}
+  _shootAudioClips:
+  - {fileID: 8300000, guid: 54526597f69b0a841a8c12399e0df529, type: 3}
+  _destroyedSounds:
+  - {fileID: 8300000, guid: 21f2f0387abe1b04d8ab180aa70d3bf1, type: 3}
+  _maxRadius: 7.5
+  _damageDecaysOnDistance: 1

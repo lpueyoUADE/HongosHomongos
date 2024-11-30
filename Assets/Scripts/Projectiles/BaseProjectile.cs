@@ -14,6 +14,7 @@ public class BaseProjectile : MonoBehaviour, IProjectile
     public bool _alreadyDead;
     public bool _resSpawned = false;
     public GameObject Projectile => gameObject;
+    public CapsuleCollider OwnerCollider => _ownerCollider;
     public CharacterAbilityData AbilityData => _abilityData;
     public ShieldAbilityData ShieldAbilityData => (ShieldAbilityData)_abilityData;
     public AreaAbilityData AreaAbilityData => (AreaAbilityData)_abilityData;

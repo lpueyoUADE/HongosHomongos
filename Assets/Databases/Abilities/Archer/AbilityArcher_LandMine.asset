@@ -9,17 +9,21 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5335bde98ef60944ab13a2a6a726534, type: 3}
+  m_Script: {fileID: 11500000, guid: 13ca3ef1db6d0f14099da4766c55c5c5, type: 3}
   m_Name: AbilityArcher_LandMine
   m_EditorClassIdentifier: 
   _abilityName: Mine
-  _prefab: {fileID: 4453694735902730189, guid: 99fd2558c783fdb4a8530b86f3701b28, type: 3}
+  _prefab: {fileID: -8706358383677063285, guid: 6adfe7487abc0a34cb8e9fcd03b3f701, type: 3}
   _portraitSprite: {fileID: 21300000, guid: c5ec4f6d0999d864694506c94ae3460a, type: 3}
-  _chargeSpeed: 1
+  _chargeSpeed: 1.5
   _levelRequiredForUnlock: 0
-  _baseDamage: 2.2
-  _baseSpeed: 20
-  _baseLife: 10
-  _residualObjectAtDeath: {fileID: 0}
-  _shootAudioClips: []
-  _destroyedSounds: []
+  _baseDamage: 4.35
+  _baseSpeed: 16
+  _baseLife: 20
+  _residualObjectAtDeath: {fileID: 6765357232671632441, guid: 7a6ebfda1cb8a31489f457f440905d52, type: 3}
+  _shootAudioClips:
+  - {fileID: 8300000, guid: 54526597f69b0a841a8c12399e0df529, type: 3}
+  _destroyedSounds:
+  - {fileID: 8300000, guid: 21f2f0387abe1b04d8ab180aa70d3bf1, type: 3}
+  _maxRadius: 4.5
+  _damageDecaysOnDistance: 1

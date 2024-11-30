@@ -32,6 +32,8 @@ MonoBehaviour:
   _fallDamageSound: {fileID: 8300000, guid: 6f6d26b7bf967ea438d9dccfd14820a0, type: 3}
   _jumpSound: {fileID: 8300000, guid: 7ff01ac866b70b74c92ab33896562d68, type: 3}
   _groundSound: {fileID: 8300000, guid: 0fd2841ffd666d9429bb840210146967, type: 3}
+  _anyDamageSound: []
+  _onHitParticles: {fileID: 4344084656301871635, guid: 8ed2bcafd438edc458aa4fa7557d2a0a, type: 3}
   _intentionalIdleChances: 8
   _swapTargetChances: 12
   _moveChances: 15

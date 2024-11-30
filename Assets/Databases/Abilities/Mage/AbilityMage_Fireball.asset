@@ -17,7 +17,7 @@ MonoBehaviour:
   _portraitSprite: {fileID: 21300000, guid: b7b9d0ab4a3f59c4f807fc6c31307c93, type: 3}
   _chargeSpeed: 1.5
   _levelRequiredForUnlock: 0
-  _baseDamage: 4
+  _baseDamage: 3
   _baseSpeed: 20
   _baseLife: 25
   _residualObjectAtDeath: {fileID: 6765357232671632441, guid: f645766e67f0e854087f13fd4a5ccdaa, type: 3}

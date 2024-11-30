@@ -37,4 +37,12 @@ public class ProjectileFireball : BaseProjectile
         OnWorldHit();
         Destroy(gameObject);
     }
+
+# if UNITY_EDITOR
+    private void OnDrawGizmos() 
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, AreaAbilityData.AbilityAreaRadius);
+    }
+# endif
 }

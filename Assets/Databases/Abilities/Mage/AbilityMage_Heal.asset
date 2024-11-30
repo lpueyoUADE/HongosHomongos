@@ -17,13 +17,13 @@ MonoBehaviour:
   _portraitSprite: {fileID: 21300000, guid: ee59dff192dec2745b455d07da7b327e, type: 3}
   _chargeSpeed: 1
   _levelRequiredForUnlock: 0
-  _baseDamage: 2.2
+  _baseDamage: 5
   _baseSpeed: 15
-  _baseLife: 13
-  _residualObjectAtDeath: {fileID: 0}
+  _baseLife: 20
+  _residualObjectAtDeath: {fileID: 6765357232671632441, guid: ce16948c36b8fa8489e584fd995df7d1, type: 3}
   _shootAudioClips:
-  - {fileID: 8300000, guid: 4cb54dd0b42524342ba94641a63900c4, type: 3}
-  _destroyedSounds:
   - {fileID: 8300000, guid: 59b606be67f14854abfd27f499562e61, type: 3}
-  _maxRadius: 5
+  _destroyedSounds:
+  - {fileID: 8300000, guid: 4cb54dd0b42524342ba94641a63900c4, type: 3}
+  _maxRadius: 3
   _damageDecaysOnDistance: 1
