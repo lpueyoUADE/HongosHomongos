@@ -4,13 +4,13 @@ using UnityEngine.UI;
 public class MainMenuController : MenuesControllerBase
 {
     public SceneData demoScene;
+    public SceneData tutorialScene;
 
     [Header("Other menues")]
     public GameObject playObject;
     public GameObject settingsObject;
     public GameObject creditsObject;
-    public GameObject demoSceneBattlePreparations;
-
+    public GameObject battlePreparationsObject;
 
     [Header("This menu buttons")]
     public Button mainMenuPlay;
@@ -18,6 +18,7 @@ public class MainMenuController : MenuesControllerBase
     public Button mainMenuCredits;
     public Button mainMenuExit;
     public Button mainMenuDemoScene;
+    public Button tutorialDemoScene;
     
     public override void ListenToEvents()
     {
@@ -27,7 +28,7 @@ public class MainMenuController : MenuesControllerBase
         mainMenuExit.onClick.AddListener(OnMainMenuExitButton);
         
         mainMenuDemoScene.onClick.AddListener(OnMainMenuDemoSceneButton);
-
+        tutorialDemoScene.onClick.AddListener(OnHowToPlayDemoSceneButton);
     }
 
     public override void StopListenToEvents()
@@ -38,6 +39,7 @@ public class MainMenuController : MenuesControllerBase
         mainMenuExit.onClick.RemoveListener(OnMainMenuExitButton);
 
         mainMenuDemoScene.onClick.RemoveListener(OnMainMenuDemoSceneButton);
+        tutorialDemoScene.onClick.RemoveListener(OnHowToPlayDemoSceneButton);
     }
 
     private void OnMainMenuPlayButton()
@@ -69,10 +71,18 @@ public class MainMenuController : MenuesControllerBase
 
     private void OnMainMenuDemoSceneButton()
     {
-        demoSceneBattlePreparations.SetActive(true);
+        battlePreparationsObject.SetActive(true);
         BattlePreparationsController.OnUpdateScenarioSelected?.Invoke(demoScene);
         gameObject.SetActive(false);
         MainMenuEvents.OnPlayButtonSound?.Invoke();
         
+    }
+
+    private void OnHowToPlayDemoSceneButton()
+    {
+        battlePreparationsObject.SetActive(true);
+        BattlePreparationsController.OnUpdateScenarioSelected?.Invoke(tutorialScene);
+        gameObject.SetActive(false);
+        MainMenuEvents.OnPlayButtonSound?.Invoke();
     }
 }

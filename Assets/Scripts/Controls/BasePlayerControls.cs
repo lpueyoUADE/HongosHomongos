@@ -25,7 +25,9 @@ public class BasePlayerControls : BaseCharacterControl
     }
 
     private void Update()
-    {       
+    {
+        if (GameTurnEvents.IsGamePaused) return;
+
         if (!Character.CharacterInControl) return;
 
         if (InputFreeLook && !_isChargingWeapon)
@@ -64,6 +66,7 @@ public class BasePlayerControls : BaseCharacterControl
 
     private void FixedUpdate()
     {
+        if (GameTurnEvents.IsGamePaused) return;
         if (!Character.CharacterInControl || InputFreeLook) return;
 
         if (!_isChargingWeapon) Character.Move(new Vector3(InputDir.x, 0));
