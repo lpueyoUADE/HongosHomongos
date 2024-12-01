@@ -11,6 +11,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
     [SerializeField, Range(0.01f, 0.25f)] private float _maxFloorDistance = 0.18f;
     [SerializeField] private GameObject _feetsReference;
     [SerializeField] private GameObject _bodyMesh;
+    [SerializeField] private Animator _meshAnimation;
 
     [Header("Projectile settings")]
     [SerializeField] private GameObject _weaponReference;
@@ -61,6 +62,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
     public Vector3 CharacterUp => transform.up;
     public Vector3 CharacterPosition => transform.position;
     public CharacterData CharacterData => _characterData;
+    public Animator CharacterAnimation => _meshAnimation;
 
     public GameObject WeaponReference => _weaponReference;
     public Vector3 AimingDirection => _projectileOutReference.transform.right;
@@ -87,6 +89,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
     private void Update()
     {
         UpdateFall();
+        if (!IsDead) _meshAnimation.SetBool("IsFalling", _isInAir);
     }
 
     private void FixedUpdate()
@@ -94,6 +97,12 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
         if (!CanChangeAbility) _currentAbilityChangeCooldown -= Time.fixedDeltaTime;
         LateUpdateFall();
         LateUpdateRotation();
+
+        if (!IsDead)
+        {
+            if (_rBody.velocity.x > .65f || _rBody.velocity.x < -.65f) _meshAnimation.SetBool("IsMoving", true);
+            else _meshAnimation.SetBool("IsMoving", false);
+        }
     }
 
     private void OnDestroy() 
@@ -156,6 +165,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
 
         if (_shieldScriptRef) Destroy(_shieldScriptRef.gameObject);
         if (_weakenedParticles) Destroy(_weakenedParticles);
+        _meshAnimation.SetBool("IsDead", true);
     }
 
     virtual public void InControl(bool isInControl = false)
@@ -213,6 +223,8 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
 
         // Set rotation
         WeaponReference.transform.rotation = Quaternion.Euler(new Vector3(0, 0, angle));
+
+        _meshAnimation.SetBool("IsAiming", true);
     }
 
     virtual public void ChangeAbility(int selection)
@@ -232,6 +244,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
 
     virtual public void ChargeAbilityStop()
     {
+        _meshAnimation.SetBool("IsAiming", false);
         float force = InGameUIEvents.GetChargerBarIntensity();
 
         // If we are in control then OnTurnEnd True will make camera follow the spawned projectile.
@@ -320,7 +333,6 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
     virtual public void LateUpdateFall()
     {
         if (!_isInAir || !_isFalling) return;
-
         Vector3 velocity = _rBody.velocity;
 
         // Add "gravity" when the character is not on ground.
