@@ -25657,7 +25657,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6086972715800887768, guid: 3db82427798cfdf429839e8db3a3327b, type: 3}
       propertyPath: byPassIntroduction
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6086972715800887768, guid: 3db82427798cfdf429839e8db3a3327b, type: 3}
       propertyPath: _characters.Array.data[0]

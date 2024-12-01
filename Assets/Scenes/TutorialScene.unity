@@ -3378,7 +3378,6 @@ MonoBehaviour:
   _isFalling: 0
   _currentAbilityChangeCooldown: 0
   _lastFallDistanceWithDamage: 0
-  _shieldScriptRef: {fileID: 0}
   canDie: 0
   neededDmg: 7
   damageReceived: 0
@@ -6915,6 +6914,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1856681417937485733, guid: 0da7cca1dc3c53145b1136b9138c0418, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 2058865058536985329, guid: 0da7cca1dc3c53145b1136b9138c0418, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -6967,6 +6970,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DevelopInGameUI
       objectReference: {fileID: 0}
+    - target: {fileID: 7288047502381847248, guid: 0da7cca1dc3c53145b1136b9138c0418, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7857241906203888791, guid: 0da7cca1dc3c53145b1136b9138c0418, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -6983,8 +6990,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    - target: {fileID: 8499253885329323590, guid: 0da7cca1dc3c53145b1136b9138c0418, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 0}
+    m_RemovedComponents:
+    - {fileID: 4851954367101303259, guid: 0da7cca1dc3c53145b1136b9138c0418, type: 3}
+    m_RemovedGameObjects:
+    - {fileID: 7078038119046304092, guid: 0da7cca1dc3c53145b1136b9138c0418, type: 3}
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 1753184454160545135, guid: 0da7cca1dc3c53145b1136b9138c0418, type: 3}
       insertIndex: 0
