@@ -8,6 +8,7 @@ public class GameManagerEvents : MonoBehaviour
 
     public static Action<BaseCharacter> OnCharacterDeath;
     public static Action OnIntroductionSequenceEnded;
+    public static Action<bool> OnGamePaused;
 
 
     public static UserConfigData UserConfig;

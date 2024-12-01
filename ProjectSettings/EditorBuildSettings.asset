@@ -11,4 +11,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/TestScenes/UpToDateTest.unity
     guid: 7f6939d0d40204947b8d14230c58515c
+  - enabled: 1
+    path: Assets/Scenes/TutorialScene.unity
+    guid: 497142857c6a8cd4ab9f5b1677c62527
   m_configObjects: {}

@@ -59,6 +59,8 @@ public class GameTurnManager : MonoBehaviour
 
     private void GameEnded()
     {
+        GameTurnEvents.UpdateGameFinished(true);
+
 # if UNITY_EDITOR
         string msg = "GAME ENDED - TURN MANAGER STOPPING...";
         TestDebugBox.OnUpdateDebugBoxText?.Invoke(msg);

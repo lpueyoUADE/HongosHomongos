@@ -1,10 +1,24 @@
+using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class TestInGameUI : MonoBehaviour
 {
+    public AudioMixer audioMixer;
+
+    [Header("Pause menu stuff")]
+    public GameObject pauseObject;
+    public Button resumeGameButton;
+    public Button exitGameButton;
+    public Slider soundsSlider;
+    public Slider uiSlider;
+    public Slider musicSlider;
+    public AudioClip pauseSound;
+
     [Header("Utils")]
     public Sprite _deniedSprite;
 
@@ -87,10 +101,21 @@ public class TestInGameUI : MonoBehaviour
         InGameUIEvents.OnAbilityPortraitSelected -= AbilityPortraitSelected;
 
         GameTurnEvents.OnGameEnded -= ShowResultText;
+
+        resumeGameButton.onClick.RemoveListener(ResumeGameButton);
+        soundsSlider.onValueChanged.RemoveListener(delegate{SliderSounds();});
+        uiSlider.onValueChanged.RemoveListener(delegate{SliderUI();});
+        musicSlider.onValueChanged.RemoveListener(delegate{SliderMusic();});
     }
 
     private void Update()
     {
+        if (Input.GetButtonDown("Cancel") && !GameTurnEvents.IsGameFinished)
+        {
+            if (pauseObject.activeSelf) GamePause(false);
+            else GamePause(true);
+        }
+
         if (_chargeWeaponBar)
         {
             if (!_lockWeaponChargeBar) _chargeWeaponBarStartTime = Time.time;
@@ -112,6 +137,38 @@ public class TestInGameUI : MonoBehaviour
 
             _chargingBarPower = 0;
             InGameUIEvents.UpdateChargeBarIntensity();
+        }
+    }
+
+    private void GamePause(bool isPaused)
+    {
+        InGameUIEvents.OnPlayUISound(pauseSound);
+
+        if (isPaused)
+        {
+            GameTurnEvents.UpdateGamePaused(true);
+            pauseObject.SetActive(true);
+
+            resumeGameButton.onClick.AddListener(ResumeGameButton);
+            exitGameButton.onClick.AddListener(ExitGameButton);
+            soundsSlider.onValueChanged.AddListener(delegate{SliderSounds();});
+            uiSlider.onValueChanged.AddListener(delegate{SliderUI();});
+            musicSlider.onValueChanged.AddListener(delegate{SliderMusic();});
+
+            Time.timeScale = 0;
+        }
+
+        else
+        {
+            resumeGameButton.onClick.RemoveListener(ResumeGameButton);
+            exitGameButton.onClick.RemoveListener(ExitGameButton);
+            soundsSlider.onValueChanged.RemoveListener(delegate{SliderSounds();});
+            uiSlider.onValueChanged.RemoveListener(delegate{SliderUI();});
+            musicSlider.onValueChanged.RemoveListener(delegate{SliderMusic();});
+
+            pauseObject.SetActive(false);
+            Time.timeScale = 1;
+            GameTurnEvents.UpdateGamePaused(false);
         }
     }
 
@@ -159,6 +216,7 @@ public class TestInGameUI : MonoBehaviour
 
     private void AbilityPortraitUpdateList(List<CharacterAbilityData> newList)
     {
+        _abilitiesPortraitsLayout.gameObject.SetActive(true);
         _abilityChargingSpeeds.Clear();
         int index = 1;
         foreach (CharacterAbilityData item in newList)
@@ -186,6 +244,7 @@ public class TestInGameUI : MonoBehaviour
         {
             foreach (InGameUIAbilityPortrait item in _abilityPortraitsList) item.UpdatePortrait(_deniedSprite);
             AbilityPortraitSelected(index);
+            _abilitiesPortraitsLayout.gameObject.SetActive(false);
         }
         else _abilityPortraitsList[index].UpdatePortrait(_deniedSprite);
     }
@@ -256,5 +315,48 @@ public class TestInGameUI : MonoBehaviour
     private void FreeLookModeText(bool enabled)
     {
         freeLookTextrObject.SetActive(enabled);
+    }
+
+    // Settings
+    private void SliderSounds()
+    {
+        audioMixer.SetFloat("Effects", Mathf.Log10(soundsSlider.value) * 20); 
+    }
+
+    private void SliderUI()
+    {
+        audioMixer.SetFloat("UI", Mathf.Log10(uiSlider.value) * 20); 
+    }
+
+    private void SliderMusic()
+    {
+        audioMixer.SetFloat("Music", Mathf.Log10(musicSlider.value) * 20); 
+    }
+
+    private void ResumeGameButton()
+    {
+        GamePause(false);
+    }
+
+    private void ExitGameButton()
+    {
+        GamePause(false);
+        StartCoroutine(GotoLevel("MainMenu"));
+    }
+
+    IEnumerator GotoLevel(string scene)
+    {
+        // The Application loads the Scene in the background as the current Scene runs.
+        // This is particularly good for creating loading screens.
+        // You could also load the Scene by using sceneBuildIndex. In this case Scene2 has
+        // a sceneBuildIndex of 1 as shown in Build Settings.
+
+        AsyncOperation asyncLoad = SceneManager.LoadSceneAsync(scene);
+
+        // Wait until the asynchronous scene fully loads
+        while (!asyncLoad.isDone)
+        {
+            yield return null;
+        }
     }
 }

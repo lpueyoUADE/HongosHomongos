@@ -5234,7 +5234,7 @@ GameObject:
   - component: {fileID: 646370499}
   - component: {fileID: 646370498}
   m_Layer: 0
-  m_Name: smb3level1
+  m_Name: music
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5250,7 +5250,7 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: -2832140719353619269, guid: f600b800c7ebfa041a28f231ac71f7cd, type: 2}
-  m_audioClip: {fileID: 8300000, guid: 028ff8b88e85ec744960a8b739fe35d5, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 8c1e0b09cdd1c174bae38cf2df00387a, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 0.25
   m_Pitch: 1

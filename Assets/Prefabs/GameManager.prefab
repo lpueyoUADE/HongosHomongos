@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 119a78002b8dafc4796bcb8a52d9023d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  debugBox: {fileID: 0}
   userConfigs: {fileID: 11400000, guid: f415b663722195e4b86a36cfd4ab279f, type: 2}
   _modeSettings: {fileID: 11400000, guid: 67a622240b5257a4fb4f29a30a414f7f, type: 2}
   _characters:

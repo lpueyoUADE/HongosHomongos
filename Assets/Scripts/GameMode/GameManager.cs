@@ -1,9 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
+    public GameObject debugBox;
     public UserConfigData userConfigs;
     [SerializeField] private GameModeGeneralSettings _modeSettings;
     [SerializeField] private List<BaseCharacter> _characters = new();
@@ -17,6 +17,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+        GameTurnEvents.UpdateGameFinished(false);
         GameManagerEvents.UpdateModeSettings(_modeSettings);
         GameManagerEvents.UpdateUserConfigs(userConfigs);
 
@@ -31,6 +32,12 @@ public class GameManager : MonoBehaviour
         GenerateNames();
         if (!byPassIntroduction) GameIntroductionSequence.OnStartIntroductionSequence?.Invoke(CameraEvents.Cam, _characters); // Introduce characters
         else IntroductionSequenceFinished();
+
+# if UNITY_EDITOR
+
+# else
+    Destroy(debugBox);
+# endif
     }
 
     private void OnDestroy()
