@@ -6950,6 +6950,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3860323470410514197, guid: 0da7cca1dc3c53145b1136b9138c0418, type: 3}
+      propertyPath: musicSource
+      value: 
+      objectReference: {fileID: 646370498}
     - target: {fileID: 4094552516496898617, guid: 0da7cca1dc3c53145b1136b9138c0418, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0

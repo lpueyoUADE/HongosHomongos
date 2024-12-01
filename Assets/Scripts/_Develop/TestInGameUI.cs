@@ -9,11 +9,14 @@ using UnityEngine.UI;
 public class TestInGameUI : MonoBehaviour
 {
     public AudioMixer audioMixer;
+    public AudioClip endGameMusic;
+    public AudioSource musicSource;
 
     [Header("Pause menu stuff")]
     public GameObject pauseObject;
     public Button resumeGameButton;
     public Button exitGameButton;
+    public Button resultsExitButton;
     public Slider soundsSlider;
     public Slider uiSlider;
     public Slider musicSlider;
@@ -35,13 +38,13 @@ public class TestInGameUI : MonoBehaviour
     public float _chargeWeaponBarStartTime; // Makes charging bar reset when ping poing
     public bool _lockWeaponChargeBar;       // Makes ping pong work
     private static float _chargingBarPower; // Used for AI
-
-    [Header("Result")]
-    public TextMeshProUGUI _resultText;
     public static float CurrentChargeBarPower => _chargingBarPower;
 
-    [Header("Portraits")]
+    [Header("Result")]
+    public GameObject _resultsObject;
+    public TextMeshProUGUI _resultsText;
 
+    [Header("Portraits")]
     [Header("Abilities portraits")]
     public HorizontalLayoutGroup _abilitiesPortraitsLayout;
     public List<InGameUIAbilityPortrait> _abilityPortraitsList = new();
@@ -63,7 +66,6 @@ public class TestInGameUI : MonoBehaviour
     {
         _audio = GetComponent<AudioSource>();
         _chargingBarPower = 0;
-        _resultText.text = "";
 
         InGameUIEvents.OnUpdateTurnTime += UpdateTurnTime;
         InGameUIEvents.OnChargingWeaponBar += ChargingBar;
@@ -103,6 +105,7 @@ public class TestInGameUI : MonoBehaviour
         GameTurnEvents.OnGameEnded -= ShowResultText;
 
         resumeGameButton.onClick.RemoveListener(ResumeGameButton);
+        resultsExitButton.onClick.RemoveListener(ExitResultsButton);
         soundsSlider.onValueChanged.RemoveListener(delegate{SliderSounds();});
         uiSlider.onValueChanged.RemoveListener(delegate{SliderUI();});
         musicSlider.onValueChanged.RemoveListener(delegate{SliderMusic();});
@@ -205,8 +208,19 @@ public class TestInGameUI : MonoBehaviour
     }
 
     private void ShowResultText()
-    { 
-        _resultText.text = GameManager._playerAliveCharacters.Count == 0 ? "YOU LOST!" : "YOU WIN!";
+    {
+        resultsExitButton.onClick.AddListener(ExitResultsButton);
+        musicSource.Stop();
+        musicSource.clip = endGameMusic;
+        musicSource.Play();
+
+        _chargingWeaponBar.gameObject.SetActive(false);
+        _turnTimeText.gameObject.SetActive(false);
+        _abilitiesPortraitsLayout.gameObject.SetActive(false);
+        _portraitsLayout.gameObject.SetActive(false);
+
+        _resultsObject.SetActive(true);
+        _resultsText.text = GameManager._playerAliveCharacters.Count == 0 ? "YOU LOST!" : "YOU WIN!";
     }
 
     private void PlayUISound(AudioClip clip)
@@ -317,7 +331,7 @@ public class TestInGameUI : MonoBehaviour
         freeLookTextrObject.SetActive(enabled);
     }
 
-    // Settings
+    // Settings & Buttons
     private void SliderSounds()
     {
         audioMixer.SetFloat("Effects", Mathf.Log10(soundsSlider.value) * 20); 
@@ -341,6 +355,12 @@ public class TestInGameUI : MonoBehaviour
     private void ExitGameButton()
     {
         GamePause(false);
+        StartCoroutine(GotoLevel("MainMenu"));
+    }
+
+    private void ExitResultsButton()
+    {
+        resultsExitButton.onClick.RemoveListener(ExitResultsButton);
         StartCoroutine(GotoLevel("MainMenu"));
     }
 

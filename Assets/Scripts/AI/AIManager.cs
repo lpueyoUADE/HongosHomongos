@@ -51,12 +51,32 @@ public class AIManager : MonoBehaviour
 
     private void Update()
     {
+        if (GameTurnEvents.IsGameFinished)
+        {
+            if (_isAiTurn)
+            {
+                StopAllCoroutines();
+                ForceStopTurn();
+            }
+            return;
+        }
+
         _fsm?.OnUpdate();
         _root?.Execute();
     }
 
     private void FixedUpdate()
     {
+        if (GameTurnEvents.IsGameFinished)
+        {
+            if (_isAiTurn)
+            {
+                StopAllCoroutines();
+                ForceStopTurn();
+            }
+            return;
+        }
+
         _fsm?.OnLateUpdate();
     }
 
