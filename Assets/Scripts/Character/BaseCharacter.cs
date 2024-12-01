@@ -146,12 +146,16 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
     virtual public void OnDeath()
     {
         if (_alreadyDead) return;
+        GameTurnEvents.OnTurnStart -= OnAbilityTurnCheck;
         _alreadyDead = true;
 
         _uiObjects.SetActive(false);
         _audio.PlayOneShot(CharacterData.DeathSound);
         GameManagerEvents.OnCharacterDeath?.Invoke(this);
         InGameUIEvents.OnCharacterPortraitUpdate?.Invoke(this, PortraitStatus.Dead);
+
+        if (_shieldScriptRef) Destroy(_shieldScriptRef.gameObject);
+        if (_weakenedParticles) Destroy(_weakenedParticles);
     }
 
     virtual public void InControl(bool isInControl = false)

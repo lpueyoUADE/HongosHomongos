@@ -18,7 +18,6 @@ public class Residual_Landmine : MonoBehaviour
 
     public virtual void OnTriggerEnter(Collider other) 
     {
-        Debug.Log(other.name);
         Collider[] victims = new Collider[20];
         Physics.OverlapSphereNonAlloc(transform.position, _explosionRadius, victims, affectedLayer);
 

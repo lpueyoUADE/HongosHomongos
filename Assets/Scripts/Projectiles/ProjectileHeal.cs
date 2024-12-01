@@ -7,6 +7,8 @@ public class ProjectileHeal : BaseProjectile
 
     protected override void OnCollisionEnter(Collision collision)
     {
+        if (collision.gameObject == OwnerObject && IgnoreOwner) return;
+        
         Collider[] victims = new Collider[20];
         Physics.OverlapSphereNonAlloc(transform.position, AreaAbilityData.AbilityAreaRadius, victims, _affectedLayer);
 

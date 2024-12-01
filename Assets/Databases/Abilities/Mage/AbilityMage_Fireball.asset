@@ -21,6 +21,7 @@ MonoBehaviour:
   _baseSpeed: 20
   _baseLife: 25
   _residualObjectAtDeath: {fileID: 6765357232671632441, guid: f645766e67f0e854087f13fd4a5ccdaa, type: 3}
+  _ignoreOwnerOnSpawn: 1
   _shootAudioClips:
   - {fileID: 8300000, guid: 5adc40988345ca24083e2ff285d79446, type: 3}
   _destroyedSounds:
