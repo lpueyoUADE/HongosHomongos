@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f1050b7cffad6429559c2c239a61b4, type: 3}
   m_Name: CharacterSapusWarrior_Passive
   m_EditorClassIdentifier: 
-  _life: 610
+  _life: 60
   _speed: 2
   _jumpForce: 13
   _floorMask:
@@ -25,7 +25,6 @@ MonoBehaviour:
   _fallDamageMinDistance: 6.5
   _fallDamageMultiplier: 1
   _fallMinVelocityTolerance: 0.25
-  _projectilePowerMultiplier: 0.9
   _abilitiesList:
   - {fileID: 11400000, guid: 5d6950c903d175749a9a323c31861305, type: 2}
   _deathSound: {fileID: 8300000, guid: dea7927385620b74d8e633ae608c7be6, type: 3}

@@ -18,7 +18,7 @@ MonoBehaviour:
   _chargeSpeed: 1.3
   _levelRequiredForUnlock: 0
   _baseDamage: 10
-  _baseSpeed: 25
+  _baseSpeed: 18
   _baseLife: 10
   _residualObjectAtDeath: {fileID: 6765357232671632441, guid: 3b003c0d7658893459da6a303d47e8ab, type: 3}
   _shootAudioClips:

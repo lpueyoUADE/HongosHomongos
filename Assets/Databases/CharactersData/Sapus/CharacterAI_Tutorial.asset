@@ -13,19 +13,18 @@ MonoBehaviour:
   m_Name: CharacterAI_Tutorial
   m_EditorClassIdentifier: 
   _life: 15
-  _speed: 0.1
-  _jumpForce: 0
+  _speed: 1.517
+  _jumpForce: 9.58
   _floorMask:
     serializedVersion: 2
     m_Bits: 1
   _isAIControlled: 1
   _characterPortrait: {fileID: 21300000, guid: 3de527e0576c2e24e9506f573e1f568e, type: 3}
-  _fallSpeedModifier: 0
-  _fallMaxSpeed: 25
-  _fallDamageMinDistance: 0.5
-  _fallDamageMultiplier: 0.1
-  _fallMinVelocityTolerance: 0.1
-  _projectilePowerMultiplier: 0.1
+  _fallSpeedModifier: 0.579
+  _fallMaxSpeed: 36.37
+  _fallDamageMinDistance: 3.31
+  _fallDamageMultiplier: 3
+  _fallMinVelocityTolerance: 0.2663
   _abilitiesList:
   - {fileID: 11400000, guid: 88b1b37fecb55da4682fcc589365eb5b, type: 2}
   _deathSound: {fileID: 8300000, guid: dea7927385620b74d8e633ae608c7be6, type: 3}
@@ -37,13 +36,13 @@ MonoBehaviour:
   - {fileID: 8300000, guid: ee0963cc5d4845b4d9ba66bf184b7ec9, type: 3}
   - {fileID: 8300000, guid: c7255cbebd4559a42a26de4aa34f4b8d, type: 3}
   _onHitParticles: {fileID: 4344084656301871635, guid: 8ed2bcafd438edc458aa4fa7557d2a0a, type: 3}
-  _intentionalIdleChances: 1
-  _swapTargetChances: 1
-  _moveChances: 1
-  _aimChances: 1
-  _minActionTime: 0.5
-  _maxActionTime: 0.5
-  _minMoveTime: 2
-  _maxMoveTime: 2
-  _minShootTimeWait: 0.1
-  _maxShootTimeWait: 0.9
+  _intentionalIdleChances: 20
+  _swapTargetChances: 20
+  _moveChances: 20
+  _aimChances: 20
+  _minActionTime: 3
+  _maxActionTime: 3
+  _minMoveTime: 5
+  _maxMoveTime: 5
+  _minShootTimeWait: 1
+  _maxShootTimeWait: 2

@@ -53,7 +53,7 @@ public class BaseProjectile : MonoBehaviour, IProjectile
         _ownerCollider = ownerCollider;
 
         _lifeTimer = StartCoroutine(ProjectileLife());
-        _rBody.AddForce(_direction * _abilityData.AbilityProjectileBaseSpeed * speedMultiplier, ForceMode.Impulse);
+        _rBody.AddForce(_direction * speedMultiplier, ForceMode.Impulse);
         
         StartCoroutine(OwnerCollision());
     }
