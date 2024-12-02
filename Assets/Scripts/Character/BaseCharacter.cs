@@ -10,7 +10,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
     [SerializeField] private CharacterData _characterData;
     [SerializeField, Range(0.01f, 0.25f)] private float _maxFloorDistance = 0.18f;
     [SerializeField] private GameObject _feetsReference;
-    [SerializeField] private GameObject _bodyMesh;
+    [SerializeField] public GameObject _bodyMesh;
     [SerializeField] private Animator _meshAnimation;
 
     [Header("Projectile settings")]
@@ -24,7 +24,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
     [SerializeField] private Image _lifeBar;
 
     [Header("Others")] 
-    [SerializeField, Range(0, 1)] private float _minVelocityToRotate = .15f;
+    [SerializeField, Range(0, 1)] public float _minVelocityToRotate = .15f;
     [SerializeField, Range(.25f, 1)] private float _abilityChangeCooldown = .35f;
     public bool _useRBodyForAnim = true;
 
@@ -364,7 +364,6 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
         float xVel = _rBody.velocity.x;
         if (xVel < _minVelocityToRotate && xVel < 0) _bodyMesh.transform.rotation = new Quaternion(0, 180, 0, 0);
         if (xVel > -_minVelocityToRotate && xVel > 0)  _bodyMesh.transform.rotation = new Quaternion(0, 0, 0, 0);
-
     }
 
     virtual public void OnAbilityHeal(float amount)
