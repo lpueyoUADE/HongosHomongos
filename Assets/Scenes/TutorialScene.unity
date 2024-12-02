@@ -7968,6 +7968,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 1364546828}
     m_Modifications:
+    - target: {fileID: 972284067411385241, guid: 27d32a9e783ec794a953a7888d25894a, type: 3}
+      propertyPath: m_Material
+      value: 
+      objectReference: {fileID: 13400000, guid: b7b0b323f9af87d459dd2d6e1372eadd, type: 2}
     - target: {fileID: 3227003402949107783, guid: 27d32a9e783ec794a953a7888d25894a, type: 3}
       propertyPath: m_Enabled
       value: 0
@@ -8012,6 +8016,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5291317767226581183, guid: 27d32a9e783ec794a953a7888d25894a, type: 3}
+      propertyPath: m_Constraints
+      value: 120
+      objectReference: {fileID: 0}
     - target: {fileID: 5723143996829644347, guid: 27d32a9e783ec794a953a7888d25894a, type: 3}
       propertyPath: m_Name
       value: Sapus_Warrior
@@ -8020,6 +8028,10 @@ PrefabInstance:
       propertyPath: _characterData
       value: 
       objectReference: {fileID: 11400000, guid: 575e4a0636f3c3c4ba5a8ba1947f2c65, type: 2}
+    - target: {fileID: 6035114852486356193, guid: 27d32a9e783ec794a953a7888d25894a, type: 3}
+      propertyPath: _abilityChangeCooldown
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6399151391367661920, guid: 27d32a9e783ec794a953a7888d25894a, type: 3}
       propertyPath: m_Enabled
       value: 0
