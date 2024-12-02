@@ -26,6 +26,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
     [Header("Others")] 
     [SerializeField, Range(0, 1)] private float _minVelocityToRotate = .15f;
     [SerializeField, Range(.25f, 1)] private float _abilityChangeCooldown = .35f;
+    public bool _useRBodyForAnim = true;
 
     [Header("Status")]
     public bool _isInAir;
@@ -94,13 +95,13 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
         if (!IsDead) _meshAnimation.SetBool("IsFalling", _isInAir);
     }
 
-    private void FixedUpdate()
+    protected virtual void FixedUpdate()
     {
         if (!CanChangeAbility) _currentAbilityChangeCooldown -= Time.fixedDeltaTime;
         LateUpdateFall();
         LateUpdateRotation();
 
-        if (!IsDead)
+        if (!IsDead && _useRBodyForAnim)
         {
             if (_rBody.velocity.x > .65f || _rBody.velocity.x < -.65f) _meshAnimation.SetBool("IsMoving", true);
             else _meshAnimation.SetBool("IsMoving", false);

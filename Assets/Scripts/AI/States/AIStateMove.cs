@@ -26,6 +26,8 @@ public class AIStateMove<T> : State<T>
             TestDebugBox.OnUpdateDebugBoxText?.Invoke($"AI destination = {_destination}");
 # endif
         }
+
+        _controller.CurrentControlledCharacter.CharacterAnimation.SetBool("IsMoving", true);
     }
 
     public override void LateExecute()
@@ -36,6 +38,7 @@ public class AIStateMove<T> : State<T>
 
     public override void Sleep()
     {
+        _controller.CurrentControlledCharacter.CharacterAnimation.SetBool("IsMoving", false);
         _controller.CurrentIControlleable.NavAgentForceStop();
         _destination = Vector3.zero;
     }
