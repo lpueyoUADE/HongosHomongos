@@ -14,6 +14,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
     [SerializeField] private Animator _meshAnimation;
 
     [Header("Projectile settings")]
+    [SerializeField] private GameObject _aimingArrowObjectAnimation;
     [SerializeField] private GameObject _weaponReference;
     [SerializeField] private GameObject _projectileOutReference;
 
@@ -178,6 +179,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
             InGameUIEvents.OnChargingWeaponBar?.Invoke(false);
             InGameUIEvents.OnUpdateAbilityPortrait?.Invoke(4, true); // Clear ability portraits - will also reset ability portraits animations
             _currentAbilityChangeCooldown = 0;
+            _aimingArrowObjectAnimation.SetActive(false);
         }
         else 
         {
@@ -239,12 +241,14 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
 
     virtual public void ChargeAbility()
     {
+        _aimingArrowObjectAnimation.SetActive(true);
         InGameUIEvents.OnChargingWeaponBar?.Invoke(true);
     }
 
     virtual public void ChargeAbilityStop()
     {
         _meshAnimation.SetBool("IsAiming", false);
+
         float force = InGameUIEvents.GetChargerBarIntensity();
 
         // If we are in control then OnTurnEnd True will make camera follow the spawned projectile.
