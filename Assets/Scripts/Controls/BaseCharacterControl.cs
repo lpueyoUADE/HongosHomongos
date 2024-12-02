@@ -44,12 +44,16 @@ public class BaseCharacterControl : MonoBehaviour, IControlleable
 
     public void NavAgentSetDestination(Vector3 newPath)
     {
+        if (_navAgent == null) return;
+
         _navAgent.isStopped = false;
         _navAgent.SetDestination(newPath);
     }
 
     public void NavAgentForceStop()
     {
+        if (_navAgent == null) return;
+        
         _navAgent.ResetPath();
         _navAgent.isStopped = true;
     }
