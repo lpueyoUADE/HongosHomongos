@@ -1035,6 +1035,11 @@ MonoBehaviour:
   affectedLayer:
     serializedVersion: 2
     m_Bits: 8
+  explosionSound:
+  - {fileID: 8300000, guid: 04a85876175b1644f9618a58508a9b82, type: 3}
+  - {fileID: 8300000, guid: f569a8139af20674e98b43cede234c5e, type: 3}
+  - {fileID: 8300000, guid: a8eed2c2903907e4680c49a151cf4cc5, type: 3}
+  - {fileID: 8300000, guid: 006b7183a40f33c448dc0b164de3ccc4, type: 3}
 --- !u!1 &7096114522015393078
 GameObject:
   m_ObjectHideFlags: 0
