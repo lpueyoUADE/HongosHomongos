@@ -12,9 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea1f6aa93efffa34ca87392027e14c38, type: 3}
   m_Name: CharacterHongusWarrior
   m_EditorClassIdentifier: 
-  _life: 10
-  _speed: 0.55
-  _jumpForce: 15
+  _life: 50
+  _speed: 0.5
+  _jumpForce: 9
   _floorMask:
     serializedVersion: 2
     m_Bits: 17

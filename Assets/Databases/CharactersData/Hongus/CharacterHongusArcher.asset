@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ea1f6aa93efffa34ca87392027e14c38, type: 3}
   m_Name: CharacterHongusArcher
   m_EditorClassIdentifier: 
-  _life: 10
-  _speed: 0.55
+  _life: 25
+  _speed: 0.65
   _jumpForce: 15
   _floorMask:
     serializedVersion: 2

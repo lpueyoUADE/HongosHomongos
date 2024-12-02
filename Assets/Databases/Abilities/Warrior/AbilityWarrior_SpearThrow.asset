@@ -15,13 +15,12 @@ MonoBehaviour:
   _abilityName: Spear
   _prefab: {fileID: 4453694735902730189, guid: 6f0870164e80adf4f858b4bbaf75dd1b, type: 3}
   _portraitSprite: {fileID: 21300000, guid: 897ee89b6031d1f44bbc62001161a5b8, type: 3}
-  _chargeSpeed: 1
+  _chargeSpeed: 1.35
   _levelRequiredForUnlock: 0
-  _baseDamage: 4
-  _baseSpeed: 30
+  _baseDamage: 10
+  _baseSpeed: 18
   _baseLife: 20
   _residualObjectAtDeath: {fileID: 6765357232671632441, guid: 77a8d2cefdc689848b5bef4f9446fa73, type: 3}
-  _ignoreOwnerOnSpawn: 1
   _shootAudioClips:
   - {fileID: 8300000, guid: 40bab89b32bfb62498ade1bc01214f92, type: 3}
   _destroyedSounds:
