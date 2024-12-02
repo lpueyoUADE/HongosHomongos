@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Residual_Landmine : MonoBehaviour
@@ -8,6 +9,7 @@ public class Residual_Landmine : MonoBehaviour
     [SerializeField] private int _triggerTimes = 1;
     public GameObject explosionParticles;
     public LayerMask affectedLayer;
+    public List<AudioClip> explosionSound = new();
 
     public void UpdateTrapData(float newDamage, float newExplosionRadius, bool newDmgDecaysOnDistance)
     {
@@ -40,6 +42,8 @@ public class Residual_Landmine : MonoBehaviour
 
         _triggerTimes--;
         Instantiate(explosionParticles, transform.position, new Quaternion());
+        PlaySoundEvents.PlaySound(transform.position, explosionSound[Random.Range(0, explosionSound.Count)], 1);
+
         if (_triggerTimes <= 0) Destroy(gameObject);
     }
 

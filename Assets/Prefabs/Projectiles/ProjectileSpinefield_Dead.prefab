@@ -692,7 +692,7 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 8
   m_CollisionDetection: 0
 --- !u!135 &2317657571100578250
 SphereCollider:
@@ -753,3 +753,8 @@ MonoBehaviour:
   affectedLayer:
     serializedVersion: 2
     m_Bits: 8
+  explosionSound:
+  - {fileID: 8300000, guid: 04a85876175b1644f9618a58508a9b82, type: 3}
+  - {fileID: 8300000, guid: f569a8139af20674e98b43cede234c5e, type: 3}
+  - {fileID: 8300000, guid: a8eed2c2903907e4680c49a151cf4cc5, type: 3}
+  - {fileID: 8300000, guid: 006b7183a40f33c448dc0b164de3ccc4, type: 3}

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f1050b7cffad6429559c2c239a61b4, type: 3}
   m_Name: CharacterSapusArcher_Passive
   m_EditorClassIdentifier: 
-  _life: 10
+  _life: 30
   _speed: 2
   _jumpForce: 13
   _floorMask:

@@ -64,6 +64,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
     public Vector3 CharacterPosition => transform.position;
     public CharacterData CharacterData => _characterData;
     public Animator CharacterAnimation => _meshAnimation;
+    public Rigidbody CharacterRigidbody => _rBody;
 
     public GameObject WeaponReference => _weaponReference;
     public Vector3 AimingDirection => _projectileOutReference.transform.right;

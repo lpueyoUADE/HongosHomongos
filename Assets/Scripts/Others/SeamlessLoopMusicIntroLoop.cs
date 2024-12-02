@@ -1,8 +1,7 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class MainMenuFortressMusicLoop : MonoBehaviour
+public class SeamlessLoopMusicIntroLoop : MonoBehaviour
 {
     public AudioSource audio1;
     public AudioSource audio2;
