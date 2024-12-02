@@ -204,7 +204,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
 
     virtual public void Aim(Vector3 direction)
     {
-        Quaternion target = Quaternion.LookRotation(Vector3.forward, direction);
+        Quaternion target = Quaternion.LookRotation(direction);
         WeaponReference.transform.rotation = target;//Quaternion.Lerp(transform.rotation, target, 1);
         
         // WeaponReference.transform.LookAt(direction);

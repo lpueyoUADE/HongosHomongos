@@ -27,7 +27,9 @@ public class AIStateAim<T> : State<T>
     {
         // https://www.forrestthewoods.com/blog/solving_ballistic_trajectories/
         float gravity = Mathf.Abs(Physics.gravity.y);
-        float projectileSpeed = 100f;
+        float projectileSpeed =  2 * _controller.CurrentControlledCharacter.CharacterData.AbilitiesList[_controller.CurrentControlledCharacter.SelectedAbility].AbilityProjectileBaseSpeed;
+
+        Debug.Log(projectileSpeed);
 
         Vector3 diff = _controller.TargetPosition - _controller.CurrentControlledCharacter.ProjectileOutPosition;
         Vector3 diffXY = new Vector3(diff.x, diff.y, 0);
@@ -57,10 +59,10 @@ public class AIStateAim<T> : State<T>
         Vector3 groundDir = diffXY.normalized;
         Vector3 s0 = groundDir * Mathf.Cos(lowAng) * projectileSpeed + Vector3.up * Mathf.Sin(lowAng) * projectileSpeed;
 
-        /*
+        
         if (numSolutions > 1)
             s0 = groundDir * Mathf.Cos(highAng) * projectileSpeed + Vector3.up * Mathf.Sin(highAng) * projectileSpeed;
-        */
+        
 
         _controller.CurrentIControlleable.InputAim(s0);
     }
