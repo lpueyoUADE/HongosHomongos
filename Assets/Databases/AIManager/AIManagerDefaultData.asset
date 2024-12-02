@@ -14,10 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _intentionalIdleChances: 1
   _swapTargetChances: 2
-  _moveTowardsChances: 1.5
-  _moveAwayChances: 1
+  _moveChances: 0
   _aimChances: 2.5
-  _minActionTime: 0.15
+  _minActionTime: 0.25
   _maxActionTime: 0.35
   _minShootTimeWait: 0.25
   _maxShootTimeWait: 0.25

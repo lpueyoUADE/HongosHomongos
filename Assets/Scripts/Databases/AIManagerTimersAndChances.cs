@@ -7,7 +7,7 @@ public class AIManagerTimersAndChances : ScriptableObject
     [Header("Behavior values")]
     [SerializeField, Range(1, 3)] private float _intentionalIdleChances = 1;
     [SerializeField, Range(1, 3)] private float _swapTargetChances = 2;
-    [SerializeField, Range(1, 3)] private float _moveChances = 1;
+    [SerializeField, Range(0, 3)] private float _moveChances = 1;
     [SerializeField, Range(1, 3)] private float _aimChances = 3;
 
     [Header("Time settings")]

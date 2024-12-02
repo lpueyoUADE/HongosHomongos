@@ -1,11 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 
 public class AIStateAim<T> : State<T>
 {
     private AIManager _controller;
-    bool test;
 
     public AIStateAim(AIManager controller)
     {
@@ -15,7 +15,6 @@ public class AIStateAim<T> : State<T>
     public override void Enter()
     {
         _controller.StartTimer(StatesEnum.Aim);
-        test = Random.Range(0, 50) >= 25;
     }
 
     public override void Execute()
@@ -28,13 +27,48 @@ public class AIStateAim<T> : State<T>
 
     public override void LateExecute()
     {
-        if (test) _controller.CurrentIControlleable.InputAim(new Vector3(0, -0.25f));
-        else _controller.CurrentIControlleable.InputAim(new Vector3(0, 0.25f));
+        // https://www.forrestthewoods.com/blog/solving_ballistic_trajectories/
+        float gravity = Mathf.Abs(Physics.gravity.y);
+        float projectileSpeed = 100f;
+
+        Vector3 diff = _controller.TargetPosition - _controller.CurrentControlledCharacter.ProjectileOutPosition;
+        Vector3 diffXY = new Vector3(diff.x, diff.y, 0);
+        float groundDist = diffXY.magnitude;
+
+        float speed2 = projectileSpeed * projectileSpeed;
+        float speed4 = projectileSpeed * projectileSpeed * projectileSpeed * projectileSpeed;
+        float y = diff.y;
+        float x = groundDist;
+        float gx = gravity * x;
+
+        float root = speed4 - gravity * (gravity * x * x + 2 * y * speed2);
+
+        // No solution
+        if (root < 0)
+        { 
+            Debug.Log("No solutions");
+            return;
+        }
+
+        root = Mathf.Sqrt(root);
+
+        float lowAng = Mathf.Atan2(speed2 - root, gx);
+        float highAng = Mathf.Atan2(speed2 + root, gx);
+        int numSolutions = lowAng != highAng ? 2 : 1;
+
+        Vector3 groundDir = diffXY.normalized;
+        Vector3 s0 = groundDir * Mathf.Cos(lowAng) * projectileSpeed + Vector3.up * Mathf.Sin(lowAng) * projectileSpeed;
+
+        /*
+        if (numSolutions > 1)
+            s0 = groundDir * Mathf.Cos(highAng) * projectileSpeed + Vector3.up * Mathf.Sin(highAng) * projectileSpeed;
+        */
+
+        _controller.CurrentIControlleable.InputAim(s0);
     }
 
     public override void Sleep()
     {
-        test = Random.Range(0, 50) >= 25;
         _controller.StartTimer(StatesEnum.Fire);
     }
 }
