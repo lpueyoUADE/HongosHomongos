@@ -3241,7 +3241,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 3.686}
   m_AnchorMin: {x: 0.14033337, y: 0.88900006}
   m_AnchorMax: {x: 0.45552084, y: 0.9731479}
-  m_AnchoredPosition: {x: -7.2700806, y: 38.940063}
+  m_AnchoredPosition: {x: -7.2700195, y: 38.940063}
   m_SizeDelta: {x: -5, y: -41}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &413561005
@@ -6720,7 +6720,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: If reaches 0 the turn ends!
+  m_text: If the time reaches 0 the turn ends!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 1ab6e63cf691d4442846868f149b58da, type: 2}
   m_sharedMaterial: {fileID: 5939211199076181378, guid: 1ab6e63cf691d4442846868f149b58da, type: 2}
@@ -8036,7 +8036,8 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6035114852486356193, guid: 27d32a9e783ec794a953a7888d25894a, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents:
@@ -8142,7 +8143,7 @@ MonoBehaviour:
   _currentAbilityChangeCooldown: 0
   _lastFallDistanceWithDamage: 0
   canDie: 0
-  neededDmg: 10
+  neededDmg: 20
   damageReceived: 0
 --- !u!1001 &984333564
 PrefabInstance:
@@ -13454,19 +13455,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1126757226}
+    m_TransformParent: {fileID: 1043355684230125036}
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: dc380703b756d0349a4b484c1587e37d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.33
+      value: 0.18469806
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dc380703b756d0349a4b484c1587e37d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.33
+      value: 0.18469806
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dc380703b756d0349a4b484c1587e37d, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.33
+      value: 0.18469806
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dc380703b756d0349a4b484c1587e37d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -13474,7 +13475,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dc380703b756d0349a4b484c1587e37d, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.9569998
+      value: -0.5356242
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: dc380703b756d0349a4b484c1587e37d, type: 3}
       propertyPath: m_LocalPosition.z
@@ -16387,7 +16388,7 @@ PrefabInstance:
     - {fileID: 1389536028961662363, guid: c0ee92d7e6bbb6e4d8afa83e3fb2ba93, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 8513286447472282450, guid: c0ee92d7e6bbb6e4d8afa83e3fb2ba93, type: 3}
+    - targetCorrespondingSourceObject: {fileID: 4682520661584941015, guid: c0ee92d7e6bbb6e4d8afa83e3fb2ba93, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1754513543}
     m_AddedComponents:
@@ -16430,6 +16431,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1cae8dea7fbc3a949b7bece77dd28bbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!4 &1043355684230125036 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 4682520661584941015, guid: c0ee92d7e6bbb6e4d8afa83e3fb2ba93, type: 3}
+  m_PrefabInstance: {fileID: 1043355684230125032}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1043355684230125041
 MonoBehaviour:
   m_ObjectHideFlags: 0

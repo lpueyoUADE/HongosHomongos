@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58f1050b7cffad6429559c2c239a61b4, type: 3}
   m_Name: CharacterAI_Tutorial
   m_EditorClassIdentifier: 
-  _life: 15
-  _speed: 1.517
+  _life: 25
+  _speed: 0.267
   _jumpForce: 9.58
   _floorMask:
     serializedVersion: 2

@@ -19,13 +19,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 17
   _isAIControlled: 0
-  _characterPortrait: {fileID: 21300000, guid: a0f9dd1d9b8a9c64e974846c87e09eb4, type: 3}
+  _characterPortrait: {fileID: 21300000, guid: f137dd45e29c0cf4cb5ef639200c0ce3, type: 3}
   _fallSpeedModifier: 0.38
   _fallMaxSpeed: 35
   _fallDamageMinDistance: 6.5
   _fallDamageMultiplier: 1
   _fallMinVelocityTolerance: 0.25
-  _projectilePowerMultiplier: 0.75
   _abilitiesList:
   - {fileID: 11400000, guid: 6252785648db5c04e9b29ce1cc7e76ef, type: 2}
   - {fileID: 11400000, guid: 0bf17a601858e1744b78ae4a96874c54, type: 2}
