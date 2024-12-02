@@ -20,9 +20,6 @@ public class CharacterData : ScriptableObject
     [SerializeField, Range(0.1f, 10)] private float _fallDamageMultiplier = 4;
     [SerializeField, Range(0.1f, 0.5f)] private float _fallMinVelocityTolerance = 0.25f;
 
-    [Header("Projectile settings")]
-    [SerializeField, Range(.1f, 2)] private float _projectilePowerMultiplier = .75f;
-
     [Header("Abilities")]
     [SerializeField] private List<CharacterAbilityData> _abilitiesList = new();
 
@@ -49,8 +46,6 @@ public class CharacterData : ScriptableObject
     public float FallDamageMinDistance { get { return _fallDamageMinDistance; } }
     public float FallDamageMultiplier { get { return _fallDamageMultiplier; } }
     public float FallMinVelocityTolerance { get { return _fallMinVelocityTolerance; } }
-
-    public float ProjectilePowerMultiplier { get { return _projectilePowerMultiplier; } }
 
     public List<CharacterAbilityData> AbilitiesList { get { return _abilitiesList; } }
 

@@ -250,7 +250,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
     {
         _meshAnimation.SetBool("IsAiming", false);
 
-        float force = InGameUIEvents.GetChargerBarIntensity();
+        float force = InGameUIEvents.GetChargerBarIntensity() * CharacterData.AbilitiesList[_selectedAbility].AbilityProjectileBaseSpeed;
 
         // If we are in control then OnTurnEnd True will make camera follow the spawned projectile.
         if (CharacterInControl)
@@ -260,7 +260,7 @@ public class BaseCharacter : MonoBehaviour, ICharacter, IDamageable, IAbilities
 
             // Get projectile data and set stuff
             IProjectile proData = spawnedProjectile.GetComponent<IProjectile>();
-            proData.UpdateData(CharacterData.AbilitiesList[_selectedAbility], _projectileOutReference.transform.right, force * CharacterData.ProjectilePowerMultiplier, gameObject, _baseCollider);
+            proData.UpdateData(CharacterData.AbilitiesList[_selectedAbility], _projectileOutReference.transform.right, force, gameObject, _baseCollider);
 
             _audio.PlayOneShot(CharacterData.AbilitiesList[_selectedAbility].AbilitFireSound);
             GameTurnEvents.OnTurnEnd?.Invoke(proData);
