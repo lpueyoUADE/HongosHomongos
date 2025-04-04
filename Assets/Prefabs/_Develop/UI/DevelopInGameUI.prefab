@@ -545,8 +545,8 @@ RectTransform:
   m_GameObject: {fileID: 486446087563459488}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 2166060923781290074}
   - {fileID: 1816001099989156828}
@@ -585,8 +585,8 @@ MonoBehaviour:
     m_Bottom: 10
   m_ChildAlignment: 7
   m_Spacing: 10
-  m_ChildForceExpandWidth: 1
-  m_ChildForceExpandHeight: 1
+  m_ChildForceExpandWidth: 0
+  m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
   m_ChildScaleWidth: 0
@@ -2711,8 +2711,8 @@ RectTransform:
   m_GameObject: {fileID: 3896442431243924287}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1753184454160545135}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -4759,8 +4759,8 @@ RectTransform:
   m_GameObject: {fileID: 6317918023526187072}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.7, y: 0.7, z: 0.7}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8671485343573017073}
   - {fileID: 3031745266928526795}
@@ -5880,9 +5880,9 @@ MonoBehaviour:
   m_UiScaleMode: 1
   m_ReferencePixelsPerUnit: 100
   m_ScaleFactor: 1
-  m_ReferenceResolution: {x: 1920, y: 1080}
-  m_ScreenMatchMode: 0
-  m_MatchWidthOrHeight: 0
+  m_ReferenceResolution: {x: 1280, y: 720}
+  m_ScreenMatchMode: 2
+  m_MatchWidthOrHeight: 0.5
   m_PhysicalUnit: 3
   m_FallbackScreenDPI: 96
   m_DefaultSpriteDPI: 96
@@ -5918,7 +5918,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioMixer: {fileID: 24100000, guid: f600b800c7ebfa041a28f231ac71f7cd, type: 2}
-  endGameMusic: {fileID: 8300000, guid: dd595cfb6b2a6d94987612c128a9376e, type: 3}
+  endGameMusic: {fileID: 8300000, guid: 70ee096472ba0e845a51c1b690b8f893, type: 3}
   musicSource: {fileID: 0}
   pauseObject: {fileID: 7797647024363292624}
   resumeGameButton: {fileID: 5796939218813672280}
@@ -6709,8 +6709,8 @@ RectTransform:
   m_GameObject: {fileID: 7797647024363292624}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 12.873, y: 8.4375, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 9.5, y: 6.226695, z: 0.7379787}
+  m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 8251401648056322889}
   - {fileID: 8212621785948479972}
@@ -7072,7 +7072,7 @@ RectTransform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1753184454160545135}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -7402,7 +7402,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1270140574648219420
 RectTransform:
   m_ObjectHideFlags: 0
@@ -7412,15 +7412,15 @@ RectTransform:
   m_GameObject: {fileID: 8915525222574350422}
   m_LocalRotation: {x: 0.7071068, y: 0.7071068, z: -0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.57, y: 4.272625, z: 2.57}
-  m_ConstrainProportionsScale: 0
+  m_LocalScale: {x: 0.66, y: 1.0972501, z: 0.66}
+  m_ConstrainProportionsScale: 1
   m_Children: []
   m_Father: {fileID: 1753184454160545135}
   m_LocalEulerAnglesHint: {x: 180, y: 0, z: -90}
-  m_AnchorMin: {x: 0.3844792, y: 0.22500001}
-  m_AnchorMax: {x: 0.61600006, y: 0.3202963}
-  m_AnchoredPosition: {x: 0, y: 0.25}
-  m_SizeDelta: {x: -405, y: 1}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -108}
+  m_SizeDelta: {x: 128, y: 256}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3410215372164683708
 CanvasRenderer:
@@ -7444,9 +7444,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []

@@ -24,11 +24,6 @@ public class MainMenuEvents : MonoBehaviour
         OnPlayButtonSound -= PlayButtonSound;
     }
 
-    private void Start() 
-    {
-        mainMenuObject.SetActive(true);
-    }
-
     public void PlayButtonSound()
     {
         _audio.PlayOneShot(clickSound);
